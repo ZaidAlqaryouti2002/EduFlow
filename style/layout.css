@@ -63,7 +63,7 @@
 /* ---------- Base ---------- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-padding-top: var(--topbar-h); }
+/* html { scroll-padding-top: var(--topbar-h); } */
 
 body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -163,6 +163,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
   padding: 0 var(--page-pad);
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+
+
 }
 .topbar-left { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
 .menu-toggle {
@@ -264,7 +266,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .search { font-size: 16px; padding: 10px 14px; }
   .menu-toggle, .theme-toggle { width: 38px; height: 38px; }
   .avatar { width: 36px; height: 36px; }
-  .user-name { display: none; }
+  /* .user-name { display: none; } */
   .top-actions { gap: 10px; }
 }
 

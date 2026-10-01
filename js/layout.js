@@ -7,8 +7,8 @@
 // Build the component URLs from this script's own location, so they
 // work from any page folder: js/layout.js -> ../components/...
 const layoutScript = document.currentScript;
-const SIDEBAR_URL = new URL("/pages/sidebar.html", layoutScript.src);
-const TOPBAR_URL = new URL("/pages/topbar.html", layoutScript.src);
+const SIDEBAR_URL = new URL("../pages/sidebar.html", layoutScript.src);
+const TOPBAR_URL = new URL("../pages/topbar.html", layoutScript.src);
 
 // ---------- Theme (restored right away to avoid a light flash) ----------
 function getSavedTheme() {
