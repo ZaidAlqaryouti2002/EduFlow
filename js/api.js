@@ -161,7 +161,8 @@ const StudentsApi = {
     return students.filter(
       student =>
         (student.teacherIds || [])
-          .includes(teacherId)
+      .map(String)
+          .includes(String(teacherId))
     );
   },
 
