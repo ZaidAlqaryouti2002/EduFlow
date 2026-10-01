@@ -309,7 +309,7 @@ if (registerForm) {
 
 
         // Go to login page
-        location.href = "index.html";
+        location.href = "Login.html";
 
       }
 

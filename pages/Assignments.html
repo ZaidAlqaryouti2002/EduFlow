@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Assignments</title>
+
+
+    <link
+        rel="shortcut icon"
+        href="../assets/icons/favicon.svg"
+        type="image/x-icon"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="../style/main_variables.css"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="../style/Assignments.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================================
+         HEADER
+    ======================================== -->
+
+    <header>
+
+        <!-- header -->
+
+    </header>
+
+
+    <!-- ========================================
+         SIDEBAR
+    ======================================== -->
+
+    <aside>
+
+        <!-- aside -->
+
+    </aside>
+
+
+    <!-- ========================================
+         MAIN
+    ======================================== -->
+
+    <main>
+
+
+        <!-- ========================================
+             PAGE HEADER
+        ======================================== -->
+
+        <div class="main-header">
+
+
+            <div>
+
+                <h1>
+                    Assignments
+                </h1>
+
+                <small>
+                    Plan upcoming work and keep every deadline visible
+                </small>
+
+            </div>
+
+
+            <button
+                class="add-assignment-btn"
+                id="addAssignmentBtn"
+                type="button"
+            >
+
+                <img
+                    src="../assets/icons/Pen icon.png"
+                    alt="Pen icon"
+                >
+
+                Add Assignment
+
+            </button>
+
+
+        </div>
+
+
+        <!-- ========================================
+             STAT CARDS
+        ======================================== -->
+
+        <div class="main-cards">
+
+
+            <!-- TOTAL ASSIGNMENTS -->
+
+            <div class="stat-card">
+
+                <div class="card-header">
+
+                    <h5>
+                        Total Assignments
+                    </h5>
+
+                    <img
+                        src="../assets/icons/double icon.svg"
+                        alt="Double assignment icon"
+                    >
+
+                </div>
+
+
+                <p id="totalAssignments">
+                    0
+                </p>
+
+
+                <small>
+
+                    Across
+
+                    <span id="totalAssignmentsInfo">
+                        0
+                    </span>
+
+                    courses
+
+                </small>
+
+            </div>
+
+
+            <!-- PENDING -->
+
+            <div class="stat-card">
+
+                <div class="card-header">
+
+                    <h5>
+                        Pending
+                    </h5>
+
+                    <img
+                        src="../assets/icons/clock.svg"
+                        alt="Clock icon"
+                    >
+
+                </div>
+
+
+                <p id="pendingAssignments">
+                    0
+                </p>
+
+
+                <small>
+
+                    <span id="pendingAssignmentsInfo">
+                        0
+                    </span>
+
+                    due this week
+
+                </small>
+
+            </div>
+
+
+            <!-- COMPLETED -->
+
+            <div class="stat-card">
+
+                <div class="card-header">
+
+                    <h5>
+                        Completed
+                    </h5>
+
+                    <img
+                        src="../assets/icons/check circle.svg"
+                        alt="Right check icon"
+                    >
+
+                </div>
+
+
+                <p id="completedAssignments">
+                    0
+                </p>
+
+
+                <small>
+
+                    <span id="completedAssignmentsInfo">
+                        0
+                    </span>
+
+                    % completion rate
+
+                </small>
+
+            </div>
+
+
+            <!-- OVERDUE -->
+
+            <div class="stat-card">
+
+                <div class="card-header">
+
+                    <h5>
+                        Overdue
+                    </h5>
+
+                    <img
+                        src="../assets/icons/danger icon.svg"
+                        alt="Danger icon"
+                    >
+
+                </div>
+
+
+                <p id="overdueAssignments">
+                    0
+                </p>
+
+
+                <small id="overdueAssignmentsInfo">
+                    Requires attention
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ========================================
+             ASSIGNMENT SECTION
+        ======================================== -->
+
+        <div class="assignment-section">
+
+
+            <!-- FILTER BUTTONS -->
+
+            <div class="highlight">
+
+                <button
+                    class="active"
+                    data-status="all"
+                    type="button"
+                >
+                    All
+                </button>
+
+
+                <button
+                    data-status="pending"
+                    type="button"
+                >
+                    Pending
+                </button>
+
+
+                <button
+                    data-status="in-progress"
+                    type="button"
+                >
+                    In Progress
+                </button>
+
+
+                <button
+                    data-status="completed"
+                    type="button"
+                >
+                    Completed
+                </button>
+
+
+                <button
+                    data-status="overdue"
+                    type="button"
+                >
+                    Overdue
+                </button>
+
+            </div>
+
+
+            <!-- ASSIGNMENT LIST -->
+
+            <div class="assignment-list">
+
+                <h3>
+                    Assignment list
+                </h3>
+
+
+                <div id="assignmentsList"></div>
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+    <!-- ========================================
+         ADD / EDIT ASSIGNMENT MODAL
+    ======================================== -->
+
+    <div
+        class="modal-overlay"
+        id="assignmentModal"
+    >
+
+
+        <div class="add-assignment-form">
+
+
+            <!-- MODAL HEADER -->
+
+            <div class="modal-header">
+
+                <h3>
+                    Add Assignment
+                </h3>
+
+
+                <button
+                    id="closeAssignmentBtn"
+                    type="button"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <!-- ASSIGNMENT TITLE -->
+
+            <input
+                type="text"
+                id="assignmentTitle"
+                placeholder="Assignment title"
+            >
+
+
+            <!-- ASSIGNMENT TYPE -->
+
+            <select id="assignmentType">
+
+                <option value="quiz">
+                    Quiz
+                </option>
+
+                <option value="homework">
+                    Homework
+                </option>
+
+                <option value="exam">
+                    Exam
+                </option>
+
+                <option value="project">
+                    Project
+                </option>
+
+                <option value="lab">
+                    Lab
+                </option>
+
+            </select>
+
+
+            <!-- ASSIGNMENT DATE -->
+
+            <input
+                type="date"
+                id="assignmentDate"
+            >
+
+
+            <!-- MAX SCORE -->
+
+            <input
+                type="number"
+                id="assignmentMaxScore"
+                placeholder="Max score"
+            >
+
+
+            <!-- WEIGHT -->
+
+            <input
+                type="number"
+                id="assignmentWeight"
+                placeholder="Weight"
+            >
+
+
+            <!-- STATUS -->
+
+            <select id="assignmentStatus">
+
+                <option value="pending">
+                    Pending
+                </option>
+
+                <option value="in-progress">
+                    In Progress
+                </option>
+
+                <option value="completed">
+                    Completed
+                </option>
+
+                <option value="overdue">
+                    Overdue
+                </option>
+
+            </select>
+
+
+            <!-- TEACHER ID -->
+
+            <input
+                type="text"
+                id="assignmentTeacherId"
+                placeholder="Teacher ID"
+            >
+
+
+            <!-- MODAL BUTTONS -->
+
+            <div class="modal-actions">
+
+
+                <button
+                    id="cancelAssignmentBtn"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    id="saveAssignmentBtn"
+                    type="button"
+                >
+                    Save Assignment
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================
+         JAVASCRIPT
+    ======================================== -->
+
+    <script src="../js/api.js"></script>
+
+    <script src="../js/assignments.js"></script>
+
+
+</body>
+
+</html>
