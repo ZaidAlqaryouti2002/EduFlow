@@ -254,7 +254,7 @@ const CoursesApi = {
 
     return courses.filter(
       course =>
-        course.teacherId === teacherId
+       (course.teacherIds || []) .map(String) .includes(String(teacherId))
     );
   },
 
