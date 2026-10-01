@@ -1,0 +1,60 @@
+/* ============== GOOGLE FONTS ============== */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Nunito+Sans:opsz,wght@6..12,200..1000&display=swap");
+
+:root {
+    /* ============== Font and typography ============== */
+    --body-font: "Nunito Sans", sans-serif;
+    --primary: #1677ff;
+    --primary-hover: #0b63e5;
+    --primary-light: #eaf3ff;
+    --purple: #8b5cf6;
+    --orange: #ff8a34;
+
+    --bg-page: #f7f9fc;
+    --bg-surface: #ffffff;
+    --bg-subtle: #fafbfc;
+
+    --text-primary: #111b3c;
+    --text-secondary: #667085;
+    --text-muted: #98a2b3;
+
+    --border: #e6eaf0;
+    --divider: #eef1f5;
+
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-card: 12px;
+    --radius-lg: 16px;
+    --radius-pill: 999px;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-12: 48px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    background-color: var(--bg-surface);
+}
+
+.sidebar .image-text img {
+    width: 40px;
+}
