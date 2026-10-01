@@ -219,6 +219,7 @@ body {
     cursor: pointer;
 }
 
+
 .btn-danger:hover:not(:disabled) {
     background-color: var(--danger);
     color: white;
