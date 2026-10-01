@@ -1,23 +1,5 @@
-/* ==========================================================================
-   EduFlow - Courses page
-   1. Variables
-   2. Reset & base
-   3. App layout
-   4. Sidebar
-   5. Topbar
-   6. Page header
-   7. Buttons
-   8. Courses grid & cards
-   9. Modal
-   10. Forms & validation
-   11. Utilities
-   ========================================================================== */
-
-
-/* 1. Variables
-   ========================================================================== */
+/* 1. Variables */
 :root {
-    /* Colors */
     --primary: #1677FF;
     --primary-hover: #0B63E5;
     --bg-page: #F7F9FC;
@@ -29,15 +11,12 @@
     --success: #16A34A;
     --success-bg: #EAF8EF;
     --danger: #DC2626;
-
-    /* Radius */
     --radius-md: 8px;
     --radius-card: 12px;
 }
 
 
-/* 2. Reset & base
-   ========================================================================== */
+/* 2. Reset & base */
 * {
     margin: 0;
     padding: 0;
@@ -51,8 +30,7 @@ body {
 }
 
 
-/* 3. App layout
-   ========================================================================== */
+/* 3. App layout */
 .app-layout {
     display: grid;
     grid-template-columns: 240px 1fr;
@@ -64,8 +42,7 @@ body {
 }
 
 
-/* 4. Sidebar
-   ========================================================================== */
+/* 4. Sidebar */
 .sidebar {
     background-color: var(--sidebar-bg);
     color: white;
@@ -122,8 +99,7 @@ body {
 }
 
 
-/* 5. Topbar
-   ========================================================================== */
+/* 5. Topbar */
 .topbar {
     height: 64px;
     background: var(--bg-surface);
@@ -175,8 +151,7 @@ body {
 }
 
 
-/* 6. Page header
-   ========================================================================== */
+/* 6. Page header */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -194,8 +169,7 @@ body {
 }
 
 
-/* 7. Buttons
-   ========================================================================== */
+/* 7. Buttons */
 .btn-primary {
     background-color: var(--primary);
     color: white;
@@ -230,13 +204,6 @@ body {
     cursor: pointer;
 }
 
-.close-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text-secondary);
-}
-
 .btn-danger {
     display: flex;
     align-items: center;
@@ -262,9 +229,15 @@ body {
     cursor: not-allowed;
 }
 
+.close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
 
-/* 8. Courses grid & cards
-   ========================================================================== */
+
+/* 8. Courses grid & cards */
 .courses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -276,6 +249,8 @@ body {
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
     padding: 24px;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-header {
@@ -316,19 +291,6 @@ body {
     margin-bottom: 24px;
 }
 
-.course-card {
-    /* add these two lines to your existing rule */
-    display: flex;
-    flex-direction: column;
-}
-
-.card-footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: auto;
-}
-
-/* Progress */
 .progress-section {
     margin-bottom: 24px;
 }
@@ -353,7 +315,12 @@ body {
     border-radius: 999px;
 }
 
-/* Card link */
+.card-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
 .view-details {
     display: flex;
     justify-content: space-between;
@@ -365,8 +332,7 @@ body {
 }
 
 
-/* 9. Modal
-   ========================================================================== */
+/* 9. Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -408,8 +374,7 @@ body {
 }
 
 
-/* 10. Forms & validation
-   ========================================================================== */
+/* 10. Forms & validation */
 .form-group {
     margin-bottom: 16px;
 }
@@ -435,7 +400,6 @@ body {
     border-color: var(--primary);
 }
 
-/* Validation (duplicate course name, failed request) */
 .form-group input.input-error,
 .form-group input.input-error:focus {
     border-color: var(--danger);
@@ -448,8 +412,7 @@ body {
 }
 
 
-/* 11. Utilities
-   ========================================================================== */
+/* 11. Utilities */
 .hidden {
     display: none !important;
 }
