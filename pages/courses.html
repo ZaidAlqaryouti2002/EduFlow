@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduFlow - Courses</title>
+    <title>Courses</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/style/courses.css">
@@ -12,22 +12,29 @@
 
 <div class="app-layout">
     <aside class="sidebar">
-        <div class="brand">
-            <div class="logo-icon">E</div>
-            <div class="brand-text">
-                <h2>EduFlow</h2>
-                <p>Simplify Student Progress.</p>
-            </div>
+    <div class="logo-section">
+        <div class="logo-icon">E</div>
+        <div class="logo-text">
+            <h2>EduFlow</h2>
+            <p>Simplify Student Progress</p>
         </div>
-        <nav class="nav-links">
-            <a href="#" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
-            <a href="#" class="nav-item"><i data-lucide="users"></i> Student</a>
-            <a href="#" class="nav-item"><i data-lucide="trending-up"></i> Progress</a>
-            <a href="#" class="nav-item active"><i data-lucide="book-open"></i> Courses</a>
-            <a href="#" class="nav-item"><i data-lucide="file-text"></i> Assignments</a>
-            <a href="#" class="nav-item"><i data-lucide="user"></i> Profile</a>
-        </nav>
-    </aside>
+    </div>
+    
+    <nav class="nav-links">
+        <a href="#" class="nav-item"><i data-lucide="layout-grid"></i> Dashboard</a>
+        <a href="#" class="nav-item"><i data-lucide="users"></i> Student</a>
+        <a href="#" class="nav-item"><i data-lucide="bar-chart-2"></i> Progress</a>
+        <a href="#" class="nav-item active"><i data-lucide="book-open"></i> Courses</a>
+        <a href="#" class="nav-item"><i data-lucide="file-text"></i> Assignments</a>
+        <a href="#" class="nav-item"><i data-lucide="user"></i> Profile</a>
+    </nav>
+
+    <div class="bottom-links">
+        <a href="#" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+        <a href="#" class="nav-item"><i data-lucide="help-circle"></i> Help / Support</a>
+        <a href="#" class="nav-item"><i data-lucide="log-out"></i> Logout</a>
+    </div>
+</aside>
 
     <main class="main-content">
         <header class="topbar">
@@ -59,7 +66,7 @@
                 <div class="course-card">
                     <div class="card-header">
                         <div class="course-icon"><i data-lucide="book"></i></div>
-                        <span class="badge badge-success">Active</span>
+                        <span class="badge-success">Active</span>
                     </div>
                     <h3>Data Structures</h3>
                     <p class="instructor">CS 301 - Dr. Maya Chen</p>
