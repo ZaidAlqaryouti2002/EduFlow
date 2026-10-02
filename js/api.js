@@ -251,10 +251,11 @@ const CoursesApi = {
 
     const courses =
       await this.list();
+      console.log("Teacher ID inside CoursesApi:", teacherId); console.log("All courses:", courses);
 
     return courses.filter(
       course =>
-       (course.teacherIds || []) .map(String) .includes(String(teacherId))
+       course.teacherIds.includes(String(teacherId))
     );
   },
 
