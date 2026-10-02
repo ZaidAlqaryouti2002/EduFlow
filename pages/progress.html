@@ -3,54 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Progress</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>EduFlow - Progress</title>
+    <link rel="stylesheet" href="/style/layout.css">
     <link rel="stylesheet" href="/style/progress.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/js/layout.js"></script>
 </head>
-<body>
-    <div class="dashboard-container">
-        <aside class="sidebar">
-            <div class="logo-section">
-                <div class="logo-icon">E</div>
-                <div class="logo-text">
-                    <h2>EduFlow</h2>
-                    <p>Simplify Student Progress</p>
-                </div>
-            </div>
-            
-            <nav class="nav-links">
-                <a href="#" class="nav-item"><i data-lucide="layout-grid"></i> Dashboard</a>
-                <a href="#" class="nav-item"><i data-lucide="users"></i> Student</a>
-                <a href="#" class="nav-item"><i data-lucide="bar-chart-2"></i> Progress</a>
-                <a href="#" class="nav-item active"><i data-lucide="book-open"></i> Courses</a>
-                <a href="#" class="nav-item"><i data-lucide="file-text"></i> Assignments</a>
-                <a href="#" class="nav-item"><i data-lucide="user"></i> Profile</a>
-            </nav>
+<body data-page="progress">
 
-            <div class="bottom-links">
-                <a href="#" class="nav-item"><i data-lucide="settings"></i> Settings</a>
-                <a href="#" class="nav-item"><i data-lucide="help-circle"></i> Help / Support</a>
-                <a href="#" class="nav-item"><i data-lucide="log-out"></i> Logout</a>
-            </div>
-        </aside>
+    <div id="sidebar-container"></div>
 
-        <main class="main-content">
-            <header class="top-header">
-                <h2>Academic Progress</h2>
-                <div class="header-actions">
-                    <div class="search-bar">
-                        <i data-lucide="search"></i>
-                        <input type="text" placeholder="Search students, courses...">
-                    </div>
-                    <div class="notification-dot"></div>
-                    <div class="user-profile">
-                        <div class="avatar">AM</div>
-                        <span>Alex Morgan</span>
-                    </div>
-                </div>
-            </header>
+    <div id="topbar-container"></div>
 
+    <div class="main">
+        <main class="content">
             <div class="page-header">
                 <div>
                     <h1>Academic Progress</h1>
@@ -102,7 +68,6 @@
                     <span class="dropdown-text">Fall 2026 <i data-lucide="chevron-down"></i></span>
                 </div>
                 <p class="subtitle">Current semester · previous semester · overall progress</p>
-                
                 <div class="bar-chart-container">
                     <div class="bar-wrapper"><div class="bar bg-blue" style="height: 50%;"></div><span>Sep</span></div>
                     <div class="bar-wrapper"><div class="bar bg-purple" style="height: 60%;"></div><span>Oct</span></div>
@@ -124,7 +89,6 @@
                         <div class="bar-wrapper"><div class="bar bg-darkblue" style="height: 70%;"></div><span>NET</span></div>
                     </div>
                 </div>
-                
                 <div class="chart-section circular-section">
                     <h3>Credit Completion</h3>
                     <div class="circular-progress">
@@ -146,9 +110,7 @@
             </div>
         </main>
     </div>
+
     <script src="/js/progress.js"></script>
-    <script>
-        lucide.createIcons();
-    </script>
 </body>
 </html>
