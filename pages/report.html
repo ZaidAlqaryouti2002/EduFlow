@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>EduTrack - Reports</title>
+
+  <link rel="stylesheet" href="/style/report.css">
+  <link rel="stylesheet" href="/style/layout.css">
+
+</head>
+
+<body data-page="reposts">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+
+  <!-- Main Content Area -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+
+    <!-- Page Content -->
+    <main class="content">
+
+      <div class="reports-page">
+
+
+        <!-- =========================
+             Page Heading
+        ========================== -->
+
+        <div class="reports-heading">
+
+          <h1>Reports</h1>
+
+          <p>
+            View student performance, grades, attendance and class progress.
+          </p>
+
+        </div>
+
+
+        <!-- =========================
+             Summary Cards
+        ========================== -->
+
+        <div class="report-summary">
+
+
+          <!-- Active Students -->
+
+          <div class="summary-box">
+
+            <div class="summary-top">
+
+              <span class="summary-title">
+                Active Students
+              </span>
+
+              <div class="summary-icon icon-blue">
+                👥
+              </div>
+
+            </div>
+
+            <h2 id="active-students">0</h2>
+
+            <small>
+              Students currently enrolled
+            </small>
+
+          </div>
+
+
+          <!-- Class Average -->
+
+          <div class="summary-box">
+
+            <div class="summary-top">
+
+              <span class="summary-title">
+                Class Average
+              </span>
+
+              <div class="summary-icon icon-purple">
+                📊
+              </div>
+
+            </div>
+
+            <h2 id="class-average">0%</h2>
+
+            <small>
+              Overall class performance
+            </small>
+
+          </div>
+
+
+          <!-- Pass Rate -->
+
+          <div class="summary-box">
+
+            <div class="summary-top">
+
+              <span class="summary-title">
+                Pass Rate
+              </span>
+
+              <div class="summary-icon icon-green">
+                ✓
+              </div>
+
+            </div>
+
+            <h2 id="pass-rate">0%</h2>
+
+            <small>
+              Students scoring 50% or higher
+            </small>
+
+          </div>
+
+
+          <!-- Assignments -->
+
+          <div class="summary-box">
+
+            <div class="summary-top">
+
+              <span class="summary-title">
+                Assignments
+              </span>
+
+              <div class="summary-icon icon-orange">
+                📝
+              </div>
+
+            </div>
+
+            <h2 id="assignment-count">0</h2>
+
+            <small>
+              Total assignments
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             Grade Distribution
+        ========================== -->
+
+        <div class="report-card">
+
+          <div class="report-card-header">
+
+            <div>
+
+              <h3>
+                Grade Distribution
+              </h3>
+
+              <p>
+                Number of students in each grade category
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="report-chart">
+
+            <canvas id="dist"></canvas>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             Average By Type
+        ========================== -->
+
+        <div class="report-card">
+
+          <div class="report-card-header">
+
+            <div>
+
+              <h3>
+                Average by Type
+              </h3>
+
+              <p>
+                Average performance for quizzes, assignments and exams
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="report-chart">
+
+            <canvas id="types"></canvas>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             Two Column Section
+        ========================== -->
+
+        <div class="report-columns">
+
+
+          <!-- Class Progress -->
+
+          <div class="report-card">
+
+            <div class="report-card-header">
+
+              <div>
+
+                <h3>
+                  Class Progress
+                </h3>
+
+                <p>
+                  Average performance by assessment type
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="progress-list">
+
+
+              <!-- Quiz -->
+
+              <div class="progress-item">
+
+                <div class="progress-info">
+
+                  <span class="progress-name">
+                    Quiz
+                  </span>
+
+                  <span
+                    class="progress-value"
+                    id="quiz-average"
+                  >
+                    0%
+                  </span>
+
+                </div>
+
+
+                <div class="progress-track">
+
+                  <div
+                    class="progress-fill fill-blue"
+                    id="quiz-progress"
+                    style="width: 0%"
+                  ></div>
+
+                </div>
+
+              </div>
+
+
+              <!-- Assignment -->
+
+              <div class="progress-item">
+
+                <div class="progress-info">
+
+                  <span class="progress-name">
+                    Assignment
+                  </span>
+
+                  <span
+                    class="progress-value"
+                    id="assignment-average"
+                  >
+                    0%
+                  </span>
+
+                </div>
+
+
+                <div class="progress-track">
+
+                  <div
+                    class="progress-fill fill-purple"
+                    id="assignment-progress"
+                    style="width: 0%"
+                  ></div>
+
+                </div>
+
+              </div>
+
+
+              <!-- Exam -->
+
+              <div class="progress-item">
+
+                <div class="progress-info">
+
+                  <span class="progress-name">
+                    Exam
+                  </span>
+
+                  <span
+                    class="progress-value"
+                    id="exam-average"
+                  >
+                    0%
+                  </span>
+
+                </div>
+
+
+                <div class="progress-track">
+
+                  <div
+                    class="progress-fill fill-orange"
+                    id="exam-progress"
+                    style="width: 0%"
+                  ></div>
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+
+          <!-- Overall Performance -->
+
+          <div class="report-card">
+
+            <div class="report-card-header">
+
+              <div>
+
+                <h3>
+                  Overall Performance
+                </h3>
+
+                <p>
+                  Class average
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="performance-box">
+
+
+              <div
+                class="performance-circle"
+                id="performance-circle"
+              >
+
+                <div class="performance-inner">
+
+                  <span id="performance-average">
+                    0%
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div class="performance-details">
+
+                <h4>
+                  Class Average
+                </h4>
+
+                <p>
+                  Overall performance of all active students.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             Student Performance
+        ========================== -->
+
+        <div class="report-card">
+
+
+          <div class="report-card-header">
+
+            <div>
+
+              <h3>
+                Student Performance
+              </h3>
+
+              <p>
+                Search and filter student reports
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- Filters -->
+
+          <div class="report-toolbar no-print">
+
+
+            <input
+              id="search"
+              type="search"
+              placeholder="Search student..."
+              aria-label="Search student"
+            >
+
+
+            <select
+              id="letter"
+              class="report-filter"
+              aria-label="Filter by letter"
+            >
+
+              <option value="">
+                All letters
+              </option>
+
+              <option value="A">
+                A
+              </option>
+
+              <option value="B">
+                B
+              </option>
+
+              <option value="C">
+                C
+              </option>
+
+              <option value="D/F">
+                D/F
+              </option>
+
+            </select>
+
+
+            <button
+              class="report-filter"
+              id="csv"
+              type="button"
+            >
+              Export CSV
+            </button>
+
+
+            <button
+              class="report-filter"
+              id="print"
+              type="button"
+            >
+              Print
+            </button>
+
+
+          </div>
+
+
+          <!-- Table -->
+
+          <div id="table"></div>
+
+
+        </div>
+
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <!-- Chart.js -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+
+  <!-- Project JavaScript -->
+
+  <script src="/js/api.js"></script>
+
+  <script src="/js/auth.js"></script>
+
+  <script src="/js/ui.js"></script>
+
+  <script src="/js/grades.js"></script>
+
+  <script src="/js/reports.js"></script>
+
+  <script src="/js/layout.js"></script>
+
+
+</body>
+
+</html>
