@@ -6,26 +6,32 @@ const SESSION_KEY = "teacherId";
 // Used to check if the email looks valid
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+
 // ==========================================
 // PASSWORD
 // ==========================================
 
 // Convert the password into a SHA-256 hash
 async function hashPassword(password) {
-    const data = new TextEncoder().encode(password);
 
-    const hash = await crypto.subtle.digest("SHA-256", data);
+  const data = new TextEncoder().encode(password);
 
-    const bytes = new Uint8Array(hash);
+  const hash = await crypto.subtle.digest(
+    "SHA-256",
+    data
+  );
 
-    let result = "";
+  const bytes = new Uint8Array(hash);
 
-    bytes.forEach(function (byte) {
-        result += byte.toString(16).padStart(2, "0");
-    });
+  let result = "";
 
-    return result;
+  bytes.forEach(function (byte) {
+    result += byte.toString(16).padStart(2, "0");
+  });
+
+  return result;
 }
+
 
 // ==========================================
 // MESSAGE
@@ -33,16 +39,18 @@ async function hashPassword(password) {
 
 // Show an error or success message
 function showMessage(message, type = "error") {
-    const messageBox = document.getElementById("message");
 
-    if (!messageBox) {
-        return;
-    }
+  const messageBox = document.getElementById("message");
 
-    messageBox.textContent = message;
+  if (!messageBox) {
+    return;
+  }
 
-    messageBox.className = "message " + type;
+  messageBox.textContent = message;
+
+  messageBox.className = "message " + type;
 }
+
 
 // ==========================================
 // BUTTON
@@ -50,14 +58,16 @@ function showMessage(message, type = "error") {
 
 // Disable button while waiting for the API
 function setBusy(button, isBusy, normalText) {
-    button.disabled = isBusy;
 
-    if (isBusy) {
-        button.textContent = "Please wait...";
-    } else {
-        button.textContent = normalText;
-    }
+  button.disabled = isBusy;
+
+  if (isBusy) {
+    button.textContent = "Please wait...";
+  } else {
+    button.textContent = normalText;
+  }
 }
+
 
 // ==========================================
 // COOKIES
@@ -65,37 +75,52 @@ function setBusy(button, isBusy, normalText) {
 
 // Save a cookie
 function setCookie(name, value, days = 30) {
-    const date = new Date();
 
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  const date = new Date();
 
-    const expires = date.toUTCString();
+  date.setTime(
+    date.getTime() + days * 24 * 60 * 60 * 1000
+  );
 
-    document.cookie =
-        name + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/; SameSite=Lax";
+  const expires = date.toUTCString();
+
+  document.cookie =
+    name +
+    "=" +
+    encodeURIComponent(value) +
+    "; expires=" +
+    expires +
+    "; path=/; SameSite=Lax";
 }
+
 
 // Get a cookie
 function getCookie(name) {
-    const cookies = document.cookie.split("; ");
 
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
+  const cookies = document.cookie.split("; ");
 
-        if (cookie.startsWith(name + "=")) {
-            const value = cookie.split("=")[1];
+  for (let i = 0; i < cookies.length; i++) {
 
-            return decodeURIComponent(value);
-        }
+    const cookie = cookies[i];
+
+    if (cookie.startsWith(name + "=")) {
+
+      const value = cookie.split("=")[1];
+
+      return decodeURIComponent(value);
     }
+  }
 
-    return "";
+  return "";
 }
+
 
 // Delete a cookie
 function deleteCookie(name) {
-    setCookie(name, "", -1);
+
+  setCookie(name, "", -1);
 }
+
 
 // ==========================================
 // SESSION
@@ -103,233 +128,397 @@ function deleteCookie(name) {
 
 // Get the logged-in teacher ID
 function getTeacherId() {
-    return sessionStorage.getItem(SESSION_KEY);
+
+  return sessionStorage.getItem(SESSION_KEY);
 }
+
 
 // Make sure the teacher is logged in
 function requireLogin() {
-    const teacherId = getTeacherId();
 
-    if (!teacherId) {
-        location.replace("index.html");
+  const teacherId = getTeacherId();
 
-        return null;
-    }
+  if (!teacherId) {
 
-    return teacherId;
+    location.replace("index.html");
+
+    return null;
+  }
+
+  return teacherId;
 }
+
 
 // Logout
 function logout() {
-    sessionStorage.removeItem(SESSION_KEY);
 
-    location.replace("Login.html");
+  sessionStorage.removeItem(SESSION_KEY);
+
+  location.replace("Login.html");
 }
+
 
 // ==========================================
 // REGISTER
 // ==========================================
 
-const registerForm = document.getElementById("registerForm");
+const registerForm =
+  document.getElementById("registerForm");
+
 
 if (registerForm) {
-    registerForm.addEventListener("submit", async function (event) {
-        // Stop the page from refreshing
-        event.preventDefault();
 
-        // Get values from the form
-        const name = document.getElementById("name").value.trim();
+  registerForm.addEventListener(
+    "submit",
+    async function (event) {
 
-        const email = document.getElementById("email").value.trim().toLowerCase();
+      // Stop the page from refreshing
+      event.preventDefault();
 
-        const department = document.getElementById("department").value.trim();
 
-        const password = document.getElementById("password").value;
+      // Get values from the form
+      const name =
+        document.getElementById("name").value.trim();
 
-        const confirmPassword = document.getElementById("confirmPassword").value;
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim()
+          .toLowerCase();
 
-        // Get the Register button
-        const button = registerForm.querySelector('button[type="submit"]');
+      const department =
+        document
+          .getElementById("department")
+          .value
+          .trim();
 
-        // -------------------------
-        // Validation
-        // -------------------------
+      const password =
+        document.getElementById("password").value;
 
-        if (name.length < 2) {
-            showMessage("Please enter your full name.");
+      const confirmPassword =
+        document.getElementById("confirmPassword").value;
 
-            return;
+
+      // Get the Register button
+      const button =
+        registerForm.querySelector(
+          'button[type="submit"]'
+        );
+
+
+      // -------------------------
+      // Validation
+      // -------------------------
+
+      if (name.length < 2) {
+
+        showMessage(
+          "Please enter your full name."
+        );
+
+        return;
+      }
+
+
+      if (!EMAIL_PATTERN.test(email)) {
+
+        showMessage(
+          "Please enter a valid email."
+        );
+
+        return;
+      }
+
+
+      if (!department) {
+
+        showMessage(
+          "Please enter your department."
+        );
+
+        return;
+      }
+
+
+      if (password.length < 6) {
+
+        showMessage(
+          "Password must be at least 6 characters."
+        );
+
+        return;
+      }
+
+
+      if (password !== confirmPassword) {
+
+        showMessage(
+          "Passwords do not match."
+        );
+
+        return;
+      }
+
+
+      // Disable button while creating account
+      setBusy(button, true);
+
+
+      try {
+
+        // Check if email already exists
+        const existingTeacher =
+          await TeachersApi.findByEmail(email);
+
+
+        if (existingTeacher) {
+
+          throw new Error(
+            "This email is already registered."
+          );
         }
 
-        if (!EMAIL_PATTERN.test(email)) {
-            showMessage("Please enter a valid email.");
 
-            return;
-        }
+        // Hash the password
+        const passwordHash =
+          await hashPassword(password);
 
-        if (!department) {
-            showMessage("Please enter your department.");
 
-            return;
-        }
+        // Create teacher
+        await TeachersApi.create({
 
-        if (password.length < 6) {
-            showMessage("Password must be at least 6 characters.");
+          name: name,
 
-            return;
-        }
+          email: email,
 
-        if (password !== confirmPassword) {
-            showMessage("Passwords do not match.");
+          department: department,
 
-            return;
-        }
+          passwordHash: passwordHash,
 
-        // Disable button while creating account
-        setBusy(button, true);
+          createdAt: new Date().toISOString()
 
-        try {
-            // Check if email already exists
-            const existingTeacher = await TeachersApi.findByEmail(email);
+        });
 
-            if (existingTeacher) {
-                throw new Error("This email is already registered.");
-            }
 
-            // Hash the password
-            const passwordHash = await hashPassword(password);
+        // Show message after redirect
+        sessionStorage.setItem(
+          "flash",
+          "Account created. Please sign in."
+        );
 
-            // Create teacher
-            await TeachersApi.create({
-                name: name,
 
-                email: email,
+        // Go to login page
+        location.href = "Login.html";
 
-                department: department,
+      }
 
-                passwordHash: passwordHash,
+      catch (error) {
 
-                createdAt: new Date().toISOString(),
-            });
+        showMessage(error.message);
 
-            // Show message after redirect
-            sessionStorage.setItem("flash", "Account created. Please sign in.");
+        // Enable button again
+        setBusy(
+          button,
+          false,
+          "Register"
+        );
+      }
 
-            // Go to login page
-            location.href = "Login.html";
-        } catch (error) {
-            showMessage(error.message);
-
-            // Enable button again
-            setBusy(button, false, "Register");
-        }
-    });
+    }
+  );
 }
+
 
 // ==========================================
 // LOGIN
 // ==========================================
 
-const loginForm = document.getElementById("loginForm");
+const loginForm =
+  document.getElementById("loginForm");
+
 
 if (loginForm) {
-    // If already logged in, go to dashboard
-    if (getTeacherId()) {
-        location.replace("dashboard.html");
-    }
 
-    // Get inputs
-    const emailInput = document.getElementById("email");
+  // If already logged in, go to dashboard
+  if (getTeacherId()) {
 
-    const rememberInput = document.getElementById("rememberMe");
+    location.replace("dashboard.html");
+  }
 
-    // Load saved email from cookie
-    const savedEmail = getCookie("edutrack_remember");
 
-    emailInput.value = savedEmail;
+  // Get inputs
+  const emailInput =
+    document.getElementById("email");
 
-    // Check Remember Me if email exists
-    if (savedEmail) {
-        rememberInput.checked = true;
-    } else {
-        rememberInput.checked = false;
-    }
+  const rememberInput =
+    document.getElementById("rememberMe");
 
-    // Get message from registration
-    const flashMessage = sessionStorage.getItem("flash");
 
-    if (flashMessage) {
-        showMessage(flashMessage, "success");
+  // Load saved email from cookie
+  const savedEmail =
+    getCookie("edutrack_remember");
 
-        sessionStorage.removeItem("flash");
-    }
 
-    // -------------------------
-    // Login form
-    // -------------------------
+  emailInput.value = savedEmail;
 
-    loginForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
 
-        // Get values
-        const email = emailInput.value.trim().toLowerCase();
+  // Check Remember Me if email exists
+  if (savedEmail) {
 
-        const password = document.getElementById("password").value;
+    rememberInput.checked = true;
 
-        // Get Sign In button
-        const button = loginForm.querySelector('button[type="submit"]');
+  } else {
 
-        // -------------------------
-        // Validation
-        // -------------------------
+    rememberInput.checked = false;
+  }
 
-        if (!EMAIL_PATTERN.test(email)) {
-            showMessage("Please enter a valid email.");
 
-            return;
+  // Get message from registration
+  const flashMessage =
+    sessionStorage.getItem("flash");
+
+
+  if (flashMessage) {
+
+    showMessage(
+      flashMessage,
+      "success"
+    );
+
+    sessionStorage.removeItem("flash");
+  }
+
+
+  // -------------------------
+  // Login form
+  // -------------------------
+
+  loginForm.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+
+      // Get values
+      const email =
+        emailInput.value
+          .trim()
+          .toLowerCase();
+
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+
+      // Get Sign In button
+      const button =
+        loginForm.querySelector(
+          'button[type="submit"]'
+        );
+
+
+      // -------------------------
+      // Validation
+      // -------------------------
+
+      if (!EMAIL_PATTERN.test(email)) {
+
+        showMessage(
+          "Please enter a valid email."
+        );
+
+        return;
+      }
+
+
+      if (!password) {
+
+        showMessage(
+          "Please enter your password."
+        );
+
+        return;
+      }
+
+
+      // Disable button
+      setBusy(button, true);
+
+
+      try {
+
+        // Find teacher by email
+        const teacher =
+          await TeachersApi.findByEmail(email);
+
+
+        // Hash entered password
+        const passwordHash =
+          await hashPassword(password);
+
+
+        // Check email and password
+        if (
+          !teacher ||
+          teacher.passwordHash !== passwordHash
+        ) {
+
+          throw new Error(
+            "Invalid email or password."
+          );
         }
 
-        if (!password) {
-            showMessage("Please enter your password.");
 
-            return;
+        // Save teacher ID in sessionStorage
+        sessionStorage.setItem(
+          SESSION_KEY,
+          teacher.id
+        );
+
+
+        // Remember email if checkbox is checked
+        if (rememberInput.checked) {
+
+          setCookie(
+            "edutrack_remember",
+            email
+          );
+
+        } else {
+
+          deleteCookie(
+            "edutrack_remember"
+          );
         }
 
-        // Disable button
-        setBusy(button, true);
 
-        try {
-            // Find teacher by email
-            const teacher = await TeachersApi.findByEmail(email);
+        // Go to dashboard
+        location.href = "dashboard.html";
 
-            // Hash entered password
-            const passwordHash = await hashPassword(password);
+      }
 
-            // Check email and password
-            if (!teacher || teacher.passwordHash !== passwordHash) {
-                throw new Error("Invalid email or password.");
-            }
+      catch (error) {
 
-            // Save teacher ID in sessionStorage
-            sessionStorage.setItem(SESSION_KEY, teacher.id);
+        showMessage(error.message);
 
-            // Remember email if checkbox is checked
-            if (rememberInput.checked) {
-                setCookie("edutrack_remember", email);
-            } else {
-                deleteCookie("edutrack_remember");
-            }
 
-            // Go to dashboard
-            location.href = "dashboard.html";
-        } catch (error) {
-            showMessage(error.message);
+        // Clear password
+        document.getElementById(
+          "password"
+        ).value = "";
 
-            // Clear password
-            document.getElementById("password").value = "";
 
-            // Enable button again
-            setBusy(button, false, "Sign In");
-        }
-    });
+        // Enable button again
+        setBusy(
+          button,
+          false,
+          "Sign In"
+        );
+      }
+
+    }
+  );
 }
