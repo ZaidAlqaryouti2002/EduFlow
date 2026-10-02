@@ -107,6 +107,13 @@
     font-size: 18px;
 }
 
+.dashboard-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
 /* Performance chart */
 .chart {
     height: var(--chart-h);
@@ -228,18 +235,75 @@
 }
 
 /* Assignments */
+
 .assignments {
-    margin-top: 18px;
-    display: grid;
-    gap: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.assignment-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.assignment-item:last-child {
+    border-bottom: 0;
+}
+
+.assignment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.assignment-title {
     font-size: 14px;
-}
-.assignments li {
-    overflow-wrap: break-word;
-}
-.assignments .overdue {
-    color: var(--danger);
     font-weight: 600;
+}
+
+.assignment-meta {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.assignment-status {
+    padding: 5px 9px;
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Status */
+
+.assignment-status.completed {
+    color: var(--green);
+    background: rgba(22, 163, 74, 0.1);
+}
+
+.assignment-status.overdue {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.assignment-status.pending {
+    color: var(--orange);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.assignment-status.in-progress {
+    color: var(--blue);
+    background: rgba(59, 130, 246, 0.1);
 }
 
 /* ---------- Color modifiers ---------- */
@@ -290,6 +354,10 @@
     }
     .courses {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-row {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 

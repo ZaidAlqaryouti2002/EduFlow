@@ -1,4 +1,3 @@
-
 /* =========================================================
    EduFlow - Students Page
    Design System
@@ -9,17 +8,9 @@
    ========================================================= */
 
 body {
-    background: var(--canvas);
+    background: var(--bg);
     color: var(--text-primary);
-    font-family: Arial, sans-serif;
 }
-
-.main-content {
-    margin-left: 250px;
-    padding: 100px 35px 40px;
-    min-height: 100vh;
-}
-
 
 /* =========================================================
    3. PAGE TITLE
@@ -71,7 +62,6 @@ body {
     box-shadow: var(--shadow-md);
 }
 
-
 /* Small colored line */
 
 .impInfoCard::before {
@@ -102,7 +92,6 @@ body {
     background: var(--orange);
 }
 
-
 .impInfoCard h1 {
     margin: 5px 0 8px;
 
@@ -116,7 +105,6 @@ body {
     font-size: 13px;
     color: var(--text-secondary);
 }
-
 
 /* =========================================================
    5. STUDENT TOOLBAR
@@ -138,7 +126,6 @@ body {
 
     box-shadow: var(--shadow-sm);
 }
-
 
 /* Search */
 
@@ -172,10 +159,8 @@ body {
 #searchInput:focus {
     border-color: var(--primary);
 
-    box-shadow:
-        0 0 0 3px rgba(21, 114, 254, 0.10);
+    box-shadow: 0 0 0 3px rgba(21, 114, 254, 0.1);
 }
-
 
 /* =========================================================
    6. SELECT FILTERS
@@ -193,7 +178,7 @@ body {
 
     border-radius: var(--radius-sm);
 
-    background: var(--white);
+    background: var(--bg);
 
     color: var(--navy);
 
@@ -209,11 +194,8 @@ body {
 #courseFilter:focus,
 #statusFilter:focus {
     border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 3px rgba(21, 114, 254, 0.10);
+    box-shadow: 0 0 0 3px rgba(21, 114, 254, 0.1);
 }
-
 
 /* =========================================================
    7. BUTTONS
@@ -236,11 +218,10 @@ body {
     transition: 0.2s ease;
 }
 
-
 /* Export */
 
 .export {
-    background: #F3F6FB;
+    background: var(--bg);
 
     color: var(--navy);
 
@@ -248,9 +229,8 @@ body {
 }
 
 .export:hover {
-    background: #EAF0F8;
+    background: var(--surface);
 }
-
 
 /* Add Student */
 
@@ -259,16 +239,14 @@ body {
 
     color: white;
 
-    box-shadow:
-        0 4px 10px rgba(21, 114, 254, 0.20);
+    box-shadow: 0 4px 10px rgba(21, 114, 254, 0.2);
 }
 
 .addStudentsBtn:hover {
-    background: #0F62D8;
+    background: #0f62d8;
 
     transform: translateY(-1px);
 }
-
 
 /* =========================================================
    8. TABLE CONTAINER
@@ -284,9 +262,7 @@ body {
     overflow: hidden;
 
     box-shadow: var(--shadow-sm);
-   
 }
-
 
 /* =========================================================
    9. TABLE
@@ -298,14 +274,12 @@ body {
     border-collapse: collapse;
 
     border: none !important;
-     
 }
-
 
 /* Header */
 
 .studentsTable thead {
-    background: #F7F9FC;
+    background: var(--surface);
 }
 
 .studentsTable th {
@@ -326,7 +300,6 @@ body {
     border-bottom: 1px solid var(--border);
 }
 
-
 /* Rows */
 
 .studentsTable td {
@@ -346,20 +319,18 @@ body {
 }
 
 .studentsTable tbody tr:hover {
-    background: #FAFBFD;
+    background: var(--surface);
 }
 
 .studentsTable tbody tr:last-child td {
     border-bottom: none;
 }
 
-
 /* Student name */
 
 .studentsTable td:first-child {
     font-weight: 600;
 }
-
 
 /* Student ID */
 
@@ -368,7 +339,6 @@ body {
 
     font-size: 13px;
 }
-
 
 /* =========================================================
    10. ATTENDANCE SELECT
@@ -383,7 +353,7 @@ body {
 
     border: 1px solid var(--border);
 
-    background: var(--white);
+    background: var(--bg);
 
     color: var(--navy);
 
@@ -397,10 +367,8 @@ body {
 .attendance-select:focus {
     border-color: var(--primary);
 
-    box-shadow:
-        0 0 0 3px rgba(21, 114, 254, 0.08);
+    box-shadow: 0 0 0 3px rgba(21, 114, 254, 0.08);
 }
-
 
 /* =========================================================
    11. STATUS
@@ -410,13 +378,11 @@ body {
     font-weight: 600;
 }
 
-
 /* Active */
 
 .studentsTable td:nth-child(5) {
     color: var(--success);
 }
-
 
 /* =========================================================
    12. ACTION BUTTONS
@@ -444,58 +410,45 @@ body {
     transition: 0.2s;
 }
 
-
 /* View */
-
 .view-btn {
-    background: #EEF4FF;
-
-    color: var(--primary);
+    color: var(--blue);
+    background: rgba(59, 130, 246, 0.1);
 }
 
 .view-btn:hover {
-    background: #DDEAFF;
+    background: rgba(59, 130, 246, 0.2);
 }
 
-
 /* Edit */
-
 .edit-btn {
-    background: #F4ECFC;
-
-    color: #8A5BB5;
+    color: var(--purple);
+    background: rgba(182, 108, 255, 0.1);
 }
 
 .edit-btn:hover {
-    background: #EBDDF8;
+    background: rgba(182, 108, 255, 0.2);
 }
 
-
 /* Archive */
-
 .archive-btn {
-    background: #FFF5E8;
-
-    color: #C98226;
+    color: var(--orange);
+    background: rgba(245, 158, 11, 0.1);
 }
 
 .archive-btn:hover {
-    background: #FFEBCF;
+    background: rgba(245, 158, 11, 0.2);
 }
 
-
 /* Delete */
-
 .delete-btn {
-    background: #FFF0F2;
-
-    color: var(--error);
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
 }
 
 .delete-btn:hover {
-    background: #FFE0E4;
+    background: rgba(239, 68, 68, 0.2);
 }
-
 
 /* =========================================================
    13. EMPTY TABLE
@@ -510,7 +463,6 @@ body {
 
     font-size: 14px;
 }
-
 
 /* =========================================================
    14. ADD / EDIT FORM OVERLAY
@@ -530,7 +482,6 @@ body {
     z-index: 9999;
 }
 
-
 /* Dark background */
 
 .form-overlay {
@@ -548,7 +499,6 @@ body {
     padding: 20px;
 }
 
-
 /* Form */
 
 .student-form {
@@ -562,12 +512,10 @@ body {
 
     padding: 30px;
 
-    box-shadow:
-        0 20px 60px rgba(41, 41, 64, 0.20);
+    box-shadow: 0 20px 60px rgba(41, 41, 64, 0.2);
 
     animation: formAppear 0.2s ease;
 }
-
 
 @keyframes formAppear {
     from {
@@ -581,7 +529,6 @@ body {
     }
 }
 
-
 .student-form h2 {
     margin: 0 0 24px;
 
@@ -589,7 +536,6 @@ body {
 
     font-size: 22px;
 }
-
 
 /* Labels */
 
@@ -604,7 +550,6 @@ body {
 
     font-weight: 600;
 }
-
 
 /* Inputs */
 
@@ -637,10 +582,8 @@ body {
 .student-form input:focus {
     border-color: var(--primary);
 
-    box-shadow:
-        0 0 0 3px rgba(21, 114, 254, 0.10);
+    box-shadow: 0 0 0 3px rgba(21, 114, 254, 0.1);
 }
-
 
 /* Form buttons */
 
@@ -670,7 +613,6 @@ body {
     transition: 0.2s;
 }
 
-
 /* Submit */
 
 .form-buttons button[type="submit"] {
@@ -680,22 +622,20 @@ body {
 }
 
 .form-buttons button[type="submit"]:hover {
-    background: #0F62D8;
+    background: #0f62d8;
 }
-
 
 /* Cancel */
 
 #cancelForm {
-    background: #F1F3F7;
+    background: #f1f3f7;
 
     color: var(--navy);
 }
 
 #cancelForm:hover {
-    background: #E5E8EE;
+    background: #e5e8ee;
 }
-
 
 /* =========================================================
    15. TOAST
@@ -721,8 +661,7 @@ body {
 
     border-radius: 10px;
 
-    box-shadow:
-        0 10px 30px rgba(41, 41, 64, 0.15);
+    box-shadow: 0 10px 30px rgba(41, 41, 64, 0.15);
 
     color: var(--navy);
 
@@ -749,13 +688,11 @@ body {
     transform: translateY(0);
 }
 
-
 /* =========================================================
    16. RESPONSIVE - TABLET
    ========================================================= */
 
 @media (max-width: 1100px) {
-
     .main-content {
         margin-left: 230px;
 
@@ -777,13 +714,11 @@ body {
     }
 }
 
-
 /* =========================================================
    17. RESPONSIVE - MOBILE
    ========================================================= */
 
 @media (max-width: 768px) {
-
     .main-content {
         margin-left: 0;
 
@@ -841,13 +776,11 @@ body {
     }
 }
 
-
 /* =========================================================
    18. SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 480px) {
-
     .impInfo {
         grid-template-columns: 1fr;
     }
@@ -864,4 +797,3 @@ body {
         flex-direction: column;
     }
 }
-

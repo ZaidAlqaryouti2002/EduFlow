@@ -1,497 +1,333 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
 
-<head>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
 
-    <meta charset="UTF-8">
+        <title>Assignments</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        <!-- FAVICON -->
+        <link
+            rel="shortcut icon"
+            href="../assets/icons/favicon.svg"
+            type="image/x-icon"
+        />
 
-    <title>Assignments</title>
+        <!-- GLOBAL VARIABLES -->
+        <link
+            rel="stylesheet"
+            href="../style/main_variables.css"
+        />
 
+        <!-- ASSIGNMENTS STYLE -->
+        <link
+            rel="stylesheet"
+            href="../style/Assignments.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
 
-    <!-- FAVICON -->
-    <link
-        rel="shortcut icon"
-        href="../assets/icons/favicon.svg"
-        type="image/x-icon"
-    >
+        <!-- SHARED LAYOUT -->
+        <link
+            rel="stylesheet"
+            href="../style/layout.css"
+        />
 
+        <script src="https://unpkg.com/@jsblocks/theme@1/dist/theme.min.js"></script>
 
-    <!-- GLOBAL VARIABLES -->
-    <link
-        rel="stylesheet"
-        href="../style/main_variables.css"
-    >
+        <!-- SHARED LAYOUT JS -->
 
+        <script src="../js/api.js"></script>
+        <script src="../js/auth.js"></script>
+        <script src="../js/layout.js"></script>
+    </head>
 
-    <!-- SHARED LAYOUT -->
-    <link
-        rel="stylesheet"
-        href="../style/layout.css"
-    >
-
-
-    <!-- ASSIGNMENTS STYLE -->
-    <link
-        rel="stylesheet"
-        href="../style/Assignments.css"
-    >
-
-
-    <!-- SHARED LAYOUT JS -->
-    <script src="../js/layout.js"></script>
-
-</head>
-
-
-<body data-page="assignments">
-
-
-    <!-- ========================================
+    <body data-page="assignments">
+        <!-- ========================================
          SHARED TOPBAR
     ======================================== -->
 
-    <div id="topbar-container"></div>
+        <div id="topbar-container"></div>
 
-
-    <!-- ========================================
+        <!-- ========================================
          SHARED SIDEBAR
     ======================================== -->
 
-    <div id="sidebar-container"></div>
+        <div id="sidebar-container"></div>
 
-
-    <!-- ========================================
+        <!-- ========================================
          MAIN
     ======================================== -->
 
-    <main>
+        <div class="main">
+            <main class="content">
+                <div class="main-header">
+                    <div>
+                        <h1>Assignments</h1>
 
-        <div class="main-header">
+                        <small> Plan upcoming work and keep every deadline visible </small>
+                    </div>
 
-            <div>
+                    <button
+                        class="add-assignment-btn"
+                        id="addAssignmentBtn"
+                        type="button"
+                    >
+                        <span class="material-symbols-rounded"> add </span>
 
-                <h1>
-                    Assignments
-                </h1>
+                        Add Assignment
+                    </button>
+                </div>
 
-                <small>
-                    Plan upcoming work and keep every deadline visible
-                </small>
-
-            </div>
-
-
-            <button
-                class="add-assignment-btn"
-                id="addAssignmentBtn"
-                type="button"
-            >
-
-                <img
-                    src="../assets/icons/Pen icon.png"
-                    alt="Pen icon"
-                >
-
-                Add Assignment
-
-            </button>
-
-        </div>
-
-
-        <!-- ========================================
+                <!-- ========================================
              STATISTICS CARDS
         ======================================== -->
 
-        <div class="main-cards">
+                <div class="main-cards">
+                    <!-- TOTAL -->
 
+                    <div class="stat-card">
+                        <div class="card-header">
+                            <h5>Total Assignments</h5>
 
-            <!-- TOTAL -->
+                            <span class="material-symbols-rounded icon"> contract_edit </span>
+                        </div>
 
-            <div class="stat-card">
+                        <p id="totalAssignments">0</p>
 
-                <div class="card-header">
+                        <small>
+                            Across
 
-                    <h5>
-                        Total Assignments
-                    </h5>
+                            <span id="totalAssignmentsInfo"> 0 </span>
 
-                    <img
-                        src="../assets/icons/double icon.svg"
-                        alt="Double assignment icon"
-                    >
+                            courses
+                        </small>
+                    </div>
 
+                    <!-- PENDING -->
+
+                    <div class="stat-card">
+                        <div class="card-header">
+                            <h5>Pending</h5>
+
+                            <span class="material-symbols-rounded icon"> schedule </span>
+                        </div>
+
+                        <p id="pendingAssignments">0</p>
+
+                        <small>
+                            <span id="pendingAssignmentsInfo"> 0 </span>
+
+                            due this week
+                        </small>
+                    </div>
+
+                    <!-- COMPLETED -->
+
+                    <div class="stat-card">
+                        <div class="card-header">
+                            <h5>Completed</h5>
+
+                            <span class="material-symbols-rounded icon"> check_circle </span>
+                        </div>
+
+                        <p id="completedAssignments">0</p>
+
+                        <small>
+                            <span id="completedAssignmentsInfo"> 0 </span>
+
+                            % completion rate
+                        </small>
+                    </div>
+
+                    <!-- OVERDUE -->
+
+                    <div class="stat-card">
+                        <div class="card-header">
+                            <h5>Overdue</h5>
+
+                            <span class="material-symbols-rounded icon"> warning </span>
+                        </div>
+
+                        <p id="overdueAssignments">0</p>
+
+                        <small id="overdueAssignmentsInfo"> Requires attention </small>
+                    </div>
                 </div>
 
-
-                <p id="totalAssignments">
-                    0
-                </p>
-
-
-                <small>
-
-                    Across
-
-                    <span id="totalAssignmentsInfo">
-                        0
-                    </span>
-
-                    courses
-
-                </small>
-
-            </div>
-
-
-            <!-- PENDING -->
-
-            <div class="stat-card">
-
-                <div class="card-header">
-
-                    <h5>
-                        Pending
-                    </h5>
-
-                    <img
-                        src="../assets/icons/clock.svg"
-                        alt="Clock icon"
-                    >
-
-                </div>
-
-
-                <p id="pendingAssignments">
-                    0
-                </p>
-
-
-                <small>
-
-                    <span id="pendingAssignmentsInfo">
-                        0
-                    </span>
-
-                    due this week
-
-                </small>
-
-            </div>
-
-
-            <!-- COMPLETED -->
-
-            <div class="stat-card">
-
-                <div class="card-header">
-
-                    <h5>
-                        Completed
-                    </h5>
-
-                    <img
-                        src="../assets/icons/check circle.svg"
-                        alt="Right check icon"
-                    >
-
-                </div>
-
-
-                <p id="completedAssignments">
-                    0
-                </p>
-
-
-                <small>
-
-                    <span id="completedAssignmentsInfo">
-                        0
-                    </span>
-
-                    % completion rate
-
-                </small>
-
-            </div>
-
-
-            <!-- OVERDUE -->
-
-            <div class="stat-card">
-
-                <div class="card-header">
-
-                    <h5>
-                        Overdue
-                    </h5>
-
-                    <img
-                        src="../assets/icons/danger icon.svg"
-                        alt="Danger icon"
-                    >
-
-                </div>
-
-
-                <p id="overdueAssignments">
-                    0
-                </p>
-
-
-                <small id="overdueAssignmentsInfo">
-                    Requires attention
-                </small>
-
-            </div>
-
-
-        </div>
-
-
-        <!-- ========================================
+                <!-- ========================================
              ASSIGNMENTS SECTION
         ======================================== -->
 
-        <div class="assignment-section">
+                <div class="assignment-section">
+                    <!-- FILTERS -->
 
+                    <div class="highlight">
+                        <button
+                            class="active"
+                            data-status="all"
+                            type="button"
+                        >
+                            All
+                        </button>
 
-            <!-- FILTERS -->
+                        <button
+                            data-status="pending"
+                            type="button"
+                        >
+                            Pending
+                        </button>
 
-            <div class="highlight">
+                        <button
+                            data-status="in-progress"
+                            type="button"
+                        >
+                            In Progress
+                        </button>
 
-                <button
-                    class="active"
-                    data-status="all"
-                    type="button"
-                >
-                    All
-                </button>
+                        <button
+                            data-status="completed"
+                            type="button"
+                        >
+                            Completed
+                        </button>
 
+                        <button
+                            data-status="overdue"
+                            type="button"
+                        >
+                            Overdue
+                        </button>
+                    </div>
 
-                <button
-                    data-status="pending"
-                    type="button"
-                >
-                    Pending
-                </button>
+                    <!-- ASSIGNMENT LIST -->
 
+                    <div class="assignment-list">
+                        <h3>Assignment list</h3>
 
-                <button
-                    data-status="in-progress"
-                    type="button"
-                >
-                    In Progress
-                </button>
-
-
-                <button
-                    data-status="completed"
-                    type="button"
-                >
-                    Completed
-                </button>
-
-
-                <button
-                    data-status="overdue"
-                    type="button"
-                >
-                    Overdue
-                </button>
-
-            </div>
-
-
-            <!-- ASSIGNMENT LIST -->
-
-            <div class="assignment-list">
-
-                <h3>
-                    Assignment list
-                </h3>
-
-
-                <div id="assignmentsList"></div>
-
-            </div>
-
-
+                        <div id="assignmentsList"></div>
+                    </div>
+                </div>
+            </main>
         </div>
 
-    </main>
-
-
-    <!-- ========================================
+        <!-- ========================================
          ASSIGNMENT MODAL
     ======================================== -->
 
-    <div
-        class="modal-overlay"
-        id="assignmentModal"
-    >
+        <div
+            class="modal-overlay"
+            id="assignmentModal"
+        >
+            <div class="add-assignment-form">
+                <!-- MODAL HEADER -->
 
-        <div class="add-assignment-form">
+                <div class="modal-header">
+                    <h3>Add Assignment</h3>
 
+                    <button
+                        id="closeAssignmentBtn"
+                        type="button"
+                    >
+                        &times;
+                    </button>
+                </div>
 
-            <!-- MODAL HEADER -->
+                <!-- TITLE -->
 
-            <div class="modal-header">
+                <input
+                    type="text"
+                    id="assignmentTitle"
+                    placeholder="Assignment title"
+                />
 
-                <h3>
-                    Add Assignment
-                </h3>
+                <!-- TYPE -->
 
+                <select id="assignmentType">
+                    <option value="quiz">Quiz</option>
 
-                <button
-                    id="closeAssignmentBtn"
-                    type="button"
-                >
-                    &times;
-                </button>
+                    <option value="homework">Homework</option>
 
+                    <option value="exam">Exam</option>
+
+                    <option value="project">Project</option>
+
+                    <option value="lab">Lab</option>
+                </select>
+
+                <!-- DATE -->
+
+                <input
+                    type="date"
+                    id="assignmentDate"
+                />
+
+                <!-- MAX SCORE -->
+
+                <input
+                    type="number"
+                    id="assignmentMaxScore"
+                    placeholder="Max score"
+                />
+
+                <!-- WEIGHT -->
+
+                <input
+                    type="number"
+                    id="assignmentWeight"
+                    placeholder="Weight"
+                />
+
+                <!-- STATUS -->
+
+                <select id="assignmentStatus">
+                    <option value="pending">Pending</option>
+
+                    <option value="in-progress">In Progress</option>
+
+                    <option value="completed">Completed</option>
+
+                    <option value="overdue">Overdue</option>
+                </select>
+
+                <!-- TEACHER -->
+
+                <input
+                    type="text"
+                    id="assignmentTeacherId"
+                    placeholder="Teacher ID"
+                />
+
+                <!-- ACTIONS -->
+
+                <div class="modal-actions">
+                    <button
+                        id="cancelAssignmentBtn"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        id="saveAssignmentBtn"
+                        type="button"
+                    >
+                        Save Assignment
+                    </button>
+                </div>
             </div>
-
-
-            <!-- TITLE -->
-
-            <input
-                type="text"
-                id="assignmentTitle"
-                placeholder="Assignment title"
-            >
-
-
-            <!-- TYPE -->
-
-            <select id="assignmentType">
-
-                <option value="quiz">
-                    Quiz
-                </option>
-
-                <option value="homework">
-                    Homework
-                </option>
-
-                <option value="exam">
-                    Exam
-                </option>
-
-                <option value="project">
-                    Project
-                </option>
-
-                <option value="lab">
-                    Lab
-                </option>
-
-            </select>
-
-
-            <!-- DATE -->
-
-            <input
-                type="date"
-                id="assignmentDate"
-            >
-
-
-            <!-- MAX SCORE -->
-
-            <input
-                type="number"
-                id="assignmentMaxScore"
-                placeholder="Max score"
-            >
-
-
-            <!-- WEIGHT -->
-
-            <input
-                type="number"
-                id="assignmentWeight"
-                placeholder="Weight"
-            >
-
-
-            <!-- STATUS -->
-
-            <select id="assignmentStatus">
-
-                <option value="pending">
-                    Pending
-                </option>
-
-                <option value="in-progress">
-                    In Progress
-                </option>
-
-                <option value="completed">
-                    Completed
-                </option>
-
-                <option value="overdue">
-                    Overdue
-                </option>
-
-            </select>
-
-
-            <!-- TEACHER -->
-
-            <input
-                type="text"
-                id="assignmentTeacherId"
-                placeholder="Teacher ID"
-            >
-
-
-            <!-- ACTIONS -->
-
-            <div class="modal-actions">
-
-                <button
-                    id="cancelAssignmentBtn"
-                    type="button"
-                >
-                    Cancel
-                </button>
-
-
-                <button
-                    id="saveAssignmentBtn"
-                    type="button"
-                >
-                    Save Assignment
-                </button>
-
-            </div>
-
         </div>
 
-    </div>
-
-
-    <!-- ========================================
-         API
-    ======================================== -->
-
-    <script src="../js/api.js"></script>
-
-
-    <!-- ========================================
+        <!-- ========================================
          ASSIGNMENTS JS
     ======================================== -->
 
-    <script src="../js/assignments.js"></script>
-
-
-</body>
-
+        <script src="../js/Assignments.js"></script>
+    </body>
 </html>
