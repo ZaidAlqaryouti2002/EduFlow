@@ -6,38 +6,17 @@ const SIDEBAR_URL = new URL("../pages/sidebar.html", layoutScript.src);
 const TOPBAR_URL = new URL("../pages/topbar.html", layoutScript.src);
 
 // ---------- Theme (restored right away to avoid a light flash) ----------
-function getSavedTheme() {
-    try {
-        return localStorage.getItem("theme") === "dark" ? "dark" : "light";
-    } catch (error) {
-        return "light"; // storage unavailable
-    }
-}
 
-function saveTheme(theme) {
-    try {
-        localStorage.setItem("theme", theme);
-    } catch (error) {
-        // Ignore: the theme still works for this visit, it just won't be remembered
-    }
-}
-
-function applyTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
-}
+const theme = new Theme("light");
+theme.init();
 
 function initializeTheme() {
     const themeToggle = document.querySelector(".theme-toggle");
 
     themeToggle.addEventListener("click", () => {
-        const nextTheme =
-            document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        applyTheme(nextTheme);
-        saveTheme(nextTheme);
+        theme.toggleTheme();
     });
 }
-
-applyTheme(getSavedTheme());
 
 // ---------- Sidebar controls ----------
 function initializeSidebar() {
@@ -173,10 +152,12 @@ async function loadTopbarData() {
     const logoutButton = document.querySelector(".topbar .logout-button");
 
     if (avatarElement) {
-        if (teacher.name.split(" ").length < 2) {
+        if (localStorage.getItem("teacherProfileImage_1")) {
+            avatarElement.innerHTML = `<img src="${localStorage.getItem("teacherProfileImage_1")}" alt="${teacher.name}'s avatar" />`;
+        } else if (teacher.name.split(" ").length < 2) {
             avatarElement.textContent = teacher.name[0].toUpperCase();
         } else {
-            avatarElement.textContent = `${teacher.name.split(" ")[0][0].toUpperCase()}${teacher.name.split(" ")[1][0].toUpperCase()}`;
+            avatarElement.textContent = `${teacher.name.split(" ")[0][0].toUpperCase()}${teacher.name.split(" ")[teacher.name.split(" ").length - 1][0].toUpperCase()}`;
         }
     }
 

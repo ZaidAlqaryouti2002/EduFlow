@@ -15,14 +15,14 @@ const openModal = () => {
 
 const closeModal = () => {
     modalOverlay.classList.add("hidden");
-    courseForm.reset(); 
+    courseForm.reset();
 };
 
 const renderCourses = () => {
-    coursesContainer.innerHTML = ""; 
+    coursesContainer.innerHTML = "";
 
     courses.forEach((course) => {
-        const card = document.createElement("div"); 
+        const card = document.createElement("div");
         card.classList.add("course-card");
 
         card.innerHTML = `
@@ -43,22 +43,22 @@ const renderCourses = () => {
                 </div>
             </div>
 
-            <div style="display: flex; justify-content: flex-end; margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f5f9;">
+            <div style="display: flex; justify-content: flex-end; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
                 <button class="delete-course-btn" data-id="${course.id}" 
                     onmouseenter="this.querySelector('i').style.transform='scale(1.25)'" 
                     onmouseleave="this.querySelector('i').style.transform='scale(1)'"
-                    style="background-color: #fee2e2; color: #ef4444; border: none; padding: 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease;"
+                    style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: none; padding: 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease;"
                     title="Delete Course">
                     <i data-lucide="trash-2" style="width: 16px; height: 16px; transition: transform 0.2s ease;"></i>
                 </button>
             </div>
         `;
-        
-        coursesContainer.appendChild(card); 
+
+        coursesContainer.appendChild(card);
     });
-    
+
     if (window.lucide) {
-        lucide.createIcons(); 
+        lucide.createIcons();
     }
 };
 
@@ -68,11 +68,11 @@ const fetchCoursesAPI = async () => {
     try {
         const response = await fetch(courses_API);
         const data = await response.json();
-        
-        const formattedData = data.map(item => ({
+
+        const formattedData = data.map((item) => ({
             id: item.id,
-            name: item.title || item.name, 
-            code: item.code ? `Course Code: ${item.code}` : `Course ID: ${item.id}`
+            name: item.title || item.name,
+            code: item.code ? `Course Code: ${item.code}` : `Course ID: ${item.id}`,
         }));
 
         courses = formattedData;
@@ -85,32 +85,34 @@ const fetchCoursesAPI = async () => {
 };
 
 courseForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const nameValue = courseNameInput.value.trim();
     const codeValue = courseCodeInput.value.trim();
 
-    if (nameValue === "" || codeValue === "") return; 
+    if (nameValue === "" || codeValue === "") return;
 
-    const isDuplicate = courses.some(course => course.name.toLowerCase() === nameValue.toLowerCase());
-    
+    const isDuplicate = courses.some(
+        (course) => course.name.toLowerCase() === nameValue.toLowerCase(),
+    );
+
     if (isDuplicate) {
         alert("هذا الكورس موجود مسبقاً، لا يمكن إضافة كورس بنفس الاسم!");
-        return; 
+        return;
     }
 
     const newCourseData = {
         title: nameValue,
-        code: codeValue
+        code: codeValue,
     };
 
     try {
         const response = await fetch(courses_API, {
-            method: "POST", 
+            method: "POST",
             headers: {
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(newCourseData) 
+            body: JSON.stringify(newCourseData),
         });
 
         const savedCourse = await response.json();
@@ -118,15 +120,16 @@ courseForm.addEventListener("submit", async (event) => {
         const formattedNewCourse = {
             id: savedCourse.id,
             name: savedCourse.title || savedCourse.name,
-            code: savedCourse.code ? `Course Code: ${savedCourse.code}` : `Course ID: ${savedCourse.id}`
+            code: savedCourse.code
+                ? `Course Code: ${savedCourse.code}`
+                : `Course ID: ${savedCourse.id}`,
         };
 
-        courses.push(formattedNewCourse); 
+        courses.push(formattedNewCourse);
         localStorage.setItem("edutrack_courses", JSON.stringify(courses));
-        
-        renderCourses(); 
-        closeModal(); 
-        
+
+        renderCourses();
+        closeModal();
     } catch (error) {
         console.error("Error adding course to API:", error);
     }
@@ -134,10 +137,10 @@ courseForm.addEventListener("submit", async (event) => {
 
 coursesContainer.addEventListener("click", async (event) => {
     const deleteBtn = event.target.closest(".delete-course-btn");
-    
+
     if (deleteBtn) {
         const courseId = deleteBtn.getAttribute("data-id");
-        
+
         const confirmDelete = confirm("Are you sure you want to delete this course?");
         if (!confirmDelete) return;
 
@@ -146,11 +149,11 @@ coursesContainer.addEventListener("click", async (event) => {
 
         try {
             const response = await fetch(`${courses_API}/${courseId}`, {
-                method: "DELETE"
+                method: "DELETE",
             });
 
             if (response.ok) {
-                courses = courses.filter(course => String(course.id) !== String(courseId));
+                courses = courses.filter((course) => String(course.id) !== String(courseId));
                 localStorage.setItem("edutrack_courses", JSON.stringify(courses));
                 renderCourses();
             } else {
