@@ -1,9 +1,7 @@
-// reports.js
-
 const teacherId = requireLogin();
 
-let rows = [];            // one row per active student
-let letterFilter = "";    // "" = all letters
+let rows = [];
+let letterFilter = "";
 let searchText = "";
 
 
@@ -19,266 +17,589 @@ async function loadPage() {
 
   try {
 
-    const teacher = await TeachersApi.get(teacherId);
-    const content = document.getElementById("content");
-    
-
     const students = await StudentsApi.listMine(teacherId);
-    const assignments = await AssignmentsApi.listMine(teacherId);
 
-    rows = buildRows(students, teacherId, assignments);
-
-    const summary = summarize(rows);
-    const averages = averageByType(students, assignments);
-
-    content.innerHTML = `
-      <div class="grid">
-
-        <div class="card stat">
-          <b>${rows.length}</b>
-          <span>Active students</span>
-        </div>
-
-        <div class="card stat">
-          <b>${summary.average}%</b>
-          <span>Class average</span>
-        </div>
-
-        <div class="card stat">
-          <b>${summary.passRate}%</b>
-          <span>Pass rate (≥ 50)</span>
-        </div>
-
-      </div>
-
-      <div class="charts">
-
-        <div class="card">
-          <h3>Grade distribution</h3>
-          <canvas id="dist"></canvas>
-        </div>
-
-        <div class="card">
-          <h3>Average by type (%)</h3>
-          <canvas id="types"></canvas>
-        </div>
-
-      </div>
-
-      <div class="toolbar no-print">
-        <input id="search" type="search" placeholder="Search student" aria-label="Search">
-
-        <select id="letter" aria-label="Filter by letter">
-          <option value="">All letters</option>
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
-          <option>D/F</option>
-        </select>
-
-        <button class="btn" id="csv">Export CSV</button>
-        <button class="btn" id="print">Print</button>
-      </div>
-
-      <div class="card table-wrap" id="table"></div>
-    `;
+    const assignments =
+      await AssignmentsApi.listMine(teacherId);
 
 
+    // Build report rows
+
+    rows =
+      buildRows(
+        students,
+        teacherId,
+        assignments
+      );
+
+
+    // Calculate summary
+
+    const summary =
+      summarize(rows);
+
+
+    // Calculate averages
+
+    const averages =
+      averageByType(
+        students,
+        assignments
+      );
+
+
+    // ==========================================
+    // Update Summary Cards
+    // ==========================================
+
+    document.getElementById("active-students").textContent =
+      rows.length;
+
+
+    document.getElementById("class-average").textContent =
+      summary.average + "%";
+
+
+    document.getElementById("pass-rate").textContent =
+      summary.passRate + "%";
+
+
+    document.getElementById("assignment-count").textContent =
+      assignments.length;
+
+
+    // ==========================================
+    // Update Progress
+    // ==========================================
+
+    document.getElementById("quiz-average").textContent =
+      averages[0] + "%";
+
+    document.getElementById("quiz-progress").style.width =
+      averages[0] + "%";
+
+
+    document.getElementById("assignment-average").textContent =
+      averages[1] + "%";
+
+    document.getElementById("assignment-progress").style.width =
+      averages[1] + "%";
+
+
+    document.getElementById("exam-average").textContent =
+      averages[2] + "%";
+
+    document.getElementById("exam-progress").style.width =
+      averages[2] + "%";
+
+
+    // ==========================================
+    // Overall Performance
+    // ==========================================
+
+    document.getElementById("performance-average").textContent =
+      summary.average + "%";
+
+
+    document.getElementById("performance-circle").style.background =
+      `conic-gradient(
+        var(--primary) 0% ${summary.average}%,
+        var(--track) ${summary.average}% 100%
+      )`;
+
+
+    // ==========================================
     // Charts
-    drawChart("dist", "bar", Object.keys(summary.distribution), Object.values(summary.distribution), "Students");
-    drawChart("types", "bar", ["Quiz", "Assignment", "Exam"], averages, "Average %");
+    // ==========================================
 
-    // Search box
-    document.getElementById("search").oninput = function (event) {
-      searchText = event.target.value.trim().toLowerCase();
-      displayTable();
-    };
+    drawChart(
+      "dist",
+      "bar",
+      Object.keys(summary.distribution),
+      Object.values(summary.distribution),
+      "Students"
+    );
 
-    // Letter filter
-    document.getElementById("letter").onchange = function (event) {
-      letterFilter = event.target.value;
-      displayTable();
-    };
 
+    drawChart(
+      "types",
+      "bar",
+      ["Quiz", "Assignment", "Exam"],
+      averages,
+      "Average %"
+    );
+
+
+    // ==========================================
+    // Search
+    // ==========================================
+
+    document.getElementById("search").oninput =
+      function (event) {
+
+        searchText =
+          event.target.value
+            .trim()
+            .toLowerCase();
+
+        displayTable();
+
+      };
+
+
+    // ==========================================
+    // Letter Filter
+    // ==========================================
+
+    document.getElementById("letter").onchange =
+      function (event) {
+
+        letterFilter =
+          event.target.value;
+
+        displayTable();
+
+      };
+
+
+    // ==========================================
     // Print
-    document.getElementById("print").onclick = function () {
-      window.print();
-    };
+    // ==========================================
 
+    document.getElementById("print").onclick =
+      function () {
+
+        window.print();
+
+      };
+
+
+    // ==========================================
     // Export CSV
-    document.getElementById("csv").onclick = exportCSV;
+    // ==========================================
+
+    document.getElementById("csv").onclick =
+      exportCSV;
+
+
+    // ==========================================
+    // Show Table
+    // ==========================================
 
     displayTable();
+
 
   } catch (error) {
 
     showError(error.message);
+
   }
+
 }
 
 
 // ==========================================
-// Average score (in %) for quiz / assignment / exam
+// Average score for Quiz / Assignment / Exam
 // ==========================================
 
 function averageByType(students, assignments) {
 
-  const types = ["quiz", "assignment", "exam"];
+  const types = [
+    "quiz",
+    "assignment",
+    "exam"
+  ];
+
   const averages = [];
+
 
   for (let t = 0; t < types.length; t++) {
 
     let total = 0;
     let count = 0;
 
+
     for (let i = 0; i < assignments.length; i++) {
 
-      const a = assignments[i];
+      const assignment =
+        assignments[i];
 
-      if (a.type !== types[t]) {
+
+      if (assignment.type !== types[t]) {
         continue;
       }
 
+
       for (let j = 0; j < students.length; j++) {
 
-        const student = students[j];
+        const student =
+          students[j];
 
-        if (student.scores && student.scores[teacherId]) {
 
-          const score = student.scores[teacherId][a.id];
+        if (
+          student.scores &&
+          student.scores[teacherId]
+        ) {
+
+          const score =
+            student.scores[teacherId][assignment.id];
+
 
           if (score !== undefined) {
-            total += (score / a.maxScore) * 100;
+
+            total +=
+              (score / assignment.maxScore) * 100;
+
             count++;
+
           }
+
         }
+
       }
+
     }
+
 
     if (count > 0) {
-      averages.push(Math.round(total / count));
+
+      averages.push(
+        Math.round(total / count)
+      );
+
     } else {
+
       averages.push(0);
+
     }
+
   }
 
+
   return averages;
+
 }
 
 
 // ==========================================
-// Rows that match the search and the letter filter
+// Get rows after Search + Filter
 // ==========================================
 
 function getVisibleRows() {
 
   const visible = [];
 
+
   for (let i = 0; i < rows.length; i++) {
 
-    const row = rows[i];
+    const row =
+      rows[i];
 
-    if (letterFilter !== "" && row.letter !== letterFilter) {
+
+    // Letter filter
+
+    if (
+      letterFilter !== "" &&
+      row.letter !== letterFilter
+    ) {
+
       continue;
+
     }
 
-    const text = (row.name + " " + row.code).toLowerCase();
+
+    // Search
+
+    const text =
+      (
+        row.name +
+        " " +
+        row.code
+      ).toLowerCase();
+
 
     if (!text.includes(searchText)) {
+
       continue;
+
     }
 
+
     visible.push(row);
+
   }
 
+
   return visible;
+
 }
 
 
 // ==========================================
-// Show the table
+// Display Student Table
 // ==========================================
 
 function displayTable() {
 
-  const table = document.getElementById("table");
-  const visible = getVisibleRows();
+  const table =
+    document.getElementById("table");
+
+
+  const visible =
+    getVisibleRows();
+
+
+  // ==========================================
+  // No Results
+  // ==========================================
 
   if (visible.length === 0) {
-    table.innerHTML = '<p class="empty">No results.</p>';
+
+    table.innerHTML = `
+
+      <div class="report-empty">
+
+        <div class="report-empty-icon">
+          🔍
+        </div>
+
+        <h3>
+          No results found
+        </h3>
+
+        <p>
+          Try changing your search or filter.
+        </p>
+
+      </div>
+
+    `;
+
     return;
+
   }
+
+
+  // ==========================================
+  // Create Table Rows
+  // ==========================================
 
   let rowsHTML = "";
 
+
   for (let i = 0; i < visible.length; i++) {
 
-    const row = visible[i];
+    const row =
+      visible[i];
+
 
     let gradeText = "—";
+
     let letterHTML = "—";
+
     let attendanceText = "—";
 
+
+    // Grade
+
     if (row.grade !== null) {
-      gradeText = row.grade;
-      letterHTML = `<span class="badge ${row.letter.replace("/", "")}">${row.letter}</span>`;
+
+      gradeText =
+        row.grade;
+
+
+      // Letter badge
+
+      let statusClass =
+        "status-low";
+
+
+      if (row.letter === "A") {
+
+        statusClass =
+          "status-good";
+
+      } else if (
+        row.letter === "B" ||
+        row.letter === "C"
+      ) {
+
+        statusClass =
+          "status-average";
+
+      }
+
+
+      letterHTML = `
+
+        <span class="report-status ${statusClass}">
+          ${row.letter}
+        </span>
+
+      `;
+
     }
+
+
+    // Attendance
 
     if (row.attendance !== null) {
-      attendanceText = row.attendance + "%";
+
+      attendanceText =
+        row.attendance + "%";
+
     }
 
+
+    // Row
+
     rowsHTML += `
+
       <tr>
-        <td>${esc(row.code)}</td>
+
         <td>
-          <a href="student-details.html?id=${encodeURIComponent(row.id)}">${esc(row.name)}</a>
+          ${esc(row.code)}
         </td>
-        <td>${gradeText}</td>
-        <td>${letterHTML}</td>
-        <td>${attendanceText}</td>
+
+
+        <td>
+
+          <a
+            href="student-details.html?id=${encodeURIComponent(row.id)}"
+          >
+            ${esc(row.name)}
+          </a>
+
+        </td>
+
+
+        <td>
+          ${gradeText}
+        </td>
+
+
+        <td>
+          ${letterHTML}
+        </td>
+
+
+        <td>
+          ${attendanceText}
+        </td>
+
       </tr>
+
     `;
+
   }
 
+
+  // ==========================================
+  // Add Table to Page
+  // ==========================================
+
   table.innerHTML = `
-    <table>
+
+    <table class="report-table">
+
       <thead>
+
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Final grade</th>
-          <th>Letter</th>
-          <th>Attendance</th>
+
+          <th>
+            ID
+          </th>
+
+          <th>
+            Name
+          </th>
+
+          <th>
+            Final Grade
+          </th>
+
+          <th>
+            Letter
+          </th>
+
+          <th>
+            Attendance
+          </th>
+
         </tr>
+
       </thead>
-      <tbody>${rowsHTML}</tbody>
+
+
+      <tbody>
+
+        ${rowsHTML}
+
+      </tbody>
+
     </table>
+
   `;
+
 }
 
 
 // ==========================================
-// Export the visible rows to a CSV file
+// Export CSV
 // ==========================================
 
 function exportCSV() {
 
-  const visible = getVisibleRows();
+  const visible =
+    getVisibleRows();
+
 
   const data = [
-    ["Code", "Name", "Final Grade", "Letter", "Attendance %"]
+
+    [
+      "Code",
+      "Name",
+      "Final Grade",
+      "Letter",
+      "Attendance %"
+    ]
+
   ];
+
 
   for (let i = 0; i < visible.length; i++) {
 
-    const row = visible[i];
+    const row =
+      visible[i];
 
-    data.push([row.code, row.name, row.grade, row.letter, row.attendance]);
+
+    data.push([
+
+      row.code,
+
+      row.name,
+
+      row.grade,
+
+      row.letter,
+
+      row.attendance
+
+    ]);
+
   }
 
-  downloadCSV(data, "edutrack-report.csv");
+
+  downloadCSV(
+    data,
+    "edutrack-report.csv"
+  );
+
 }
 
+
+// ==========================================
+// Start
+// ==========================================
 
 loadPage();
