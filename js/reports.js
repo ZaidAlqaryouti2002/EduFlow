@@ -113,7 +113,7 @@ function displayTable() {
     <tr>
       <td>${esc(row.code)}</td>
       <td>
-        <a href="student-details.html?id=${encodeURIComponent(row.id)}">
+        <a href="StudentDetails.html?id=${encodeURIComponent(row.id)}">
           ${esc(row.name)}
         </a>
       </td>
