@@ -2,7 +2,6 @@
 // 1. VARIABLES
 // ==========================================
 
-const teacherId = getTeacherId();
 
 const studentsContainer =
     document.getElementById("studentsContainer");

@@ -3,8 +3,6 @@
 // =========================================================
 
 
-const teacherId =
-    localStorage.getItem("teacherId") || "1";
 
 
 const profileImageKey =

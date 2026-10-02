@@ -1,4 +1,3 @@
-const teacherId = requireLogin();
 const TYPES = ["quiz", "assignment", "exam"];
 
 let rows = [];

@@ -53,10 +53,10 @@ async function loadDashboardData() {
     try {
 
         assignments =
-            await AssignmentsApi.listMine();
+            await AssignmentsApi.listMine(teacherId);
 
         courses =
-            await CoursesApi.listMine();
+            await CoursesApi.listMine(teacherId);
 
 
         updateStatistics();
@@ -674,7 +674,7 @@ saveAssignmentBtn.addEventListener(
             ).value;
 
 
-        let teacherId =
+        let TeacherId =
             document.getElementById(
                 "assignmentTeacherId"
             ).value;
@@ -682,7 +682,7 @@ saveAssignmentBtn.addEventListener(
 
         const assignmentData = {
 
-            teacherId: teacherId,
+            teacherId: TeacherId,
 
             title: title,
 
