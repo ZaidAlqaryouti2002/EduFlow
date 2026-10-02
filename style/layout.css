@@ -242,6 +242,29 @@ button {
     border-radius: 10px;
 }
 
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.breadcrumb a {
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: var(--ink);
+}
+
+.breadcrumb-current {
+    color: var(--ink);
+    font-weight: 600;
+}
+
 .search {
     display: flex;
     align-items: center;

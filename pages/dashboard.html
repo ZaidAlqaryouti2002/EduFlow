@@ -22,7 +22,7 @@
             rel="stylesheet"
             href="/style/dashboard.css"
         />
-
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="../js/api.js"></script>
         <script src="../js/auth.js"></script>
         <script src="../js/layout.js"></script>
@@ -35,240 +35,136 @@
             <div id="topbar-container"></div>
 
             <main class="content dashboard">
+                <!-- Greeting Section -->
                 <section class="greeting">
                     <div>
                         <h2>
                             Good morning,
                             <span
                                 class="name"
-                                style="color: var(--primary)"
-                                >Loading...</span
+                                style="color: var(--primary); text-transform: capitalize"
                             >
+                                Loading...
+                            </span>
                             👋
                         </h2>
                         <p>Here's an overview of your academic progress.</p>
                     </div>
-                    <button
-                        class="btn-primary"
-                        type="button"
-                    >
-                        ✎ View Report
-                    </button>
                 </section>
 
+                <!-- Summary Section -->
                 <section
                     class="stats"
                     aria-label="Summary"
                 >
                     <article class="card stat">
-                        <span class="stat-icon is-blue">📈</span>
-                        <div class="stat-label">Overall Progress</div>
-                        <div class="stat-value">78%</div>
-                        <div class="stat-note">+6.2% · 18 of 23 modules</div>
+                        <span class="stat-icon is-blue">
+                            <span class="material-symbols-rounded"> groups </span>
+                        </span>
+                        <div class="stat-label">Total Students</div>
+                        <div
+                            class="stat-value"
+                            id="totalStudents"
+                        >
+                            0
+                        </div>
+                        <div class="stat-note">Students assigned to you</div>
                     </article>
+
                     <article class="card stat">
-                        <span class="stat-icon is-purple">🏅</span>
-                        <div class="stat-label">Current GPA</div>
-                        <div class="stat-value">3.72</div>
-                        <div class="stat-note">+0.12 · Dean's List pace</div>
-                    </article>
-                    <article class="card stat">
-                        <span class="stat-icon is-orange">📖</span>
+                        <span class="stat-icon is-purple">
+                            <span class="material-symbols-rounded"> import_contacts </span>
+                        </span>
                         <div class="stat-label">Active Courses</div>
-                        <div class="stat-value">5</div>
-                        <div class="stat-note">17 semester credits</div>
+                        <div
+                            class="stat-value"
+                            id="activeCourses"
+                        >
+                            0
+                        </div>
+                        <div class="stat-note">Courses you are teaching</div>
                     </article>
+
                     <article class="card stat">
-                        <span class="stat-icon is-green">📋</span>
-                        <div class="stat-label">Pending Assignments</div>
-                        <div class="stat-value">6</div>
-                        <div class="stat-note">2 due within 7 days</div>
+                        <span class="stat-icon is-orange">
+                            <span class="material-symbols-rounded"> contract_edit </span>
+                        </span>
+                        <div class="stat-label">Total Assignments</div>
+                        <div
+                            class="stat-value"
+                            id="totalAssignments"
+                        >
+                            0
+                        </div>
+                        <div class="stat-note">Assignments across your courses</div>
+                    </article>
+
+                    <article class="card stat">
+                        <span class="stat-icon is-green">
+                            <span class="material-symbols-rounded"> monitoring </span>
+                        </span>
+                        <div class="stat-label">Avg. Students / Course</div>
+                        <div
+                            class="stat-value"
+                            id="studentsPerCourse"
+                        >
+                            0
+                        </div>
+                        <div class="stat-note">Average class size</div>
                     </article>
                 </section>
 
-                <section class="card">
-                    <div class="card-head">
-                        <div>
-                            <h3>Academic performance over time</h3>
-                            <p class="sub">
-                                Current semester · previous semester · overall progress
-                            </p>
+                <section class="dashboard-row">
+                    <!-- Student Performance  -->
+                    <div class="card">
+                        <div class="card-head">
+                            <div>
+                                <h3>Student Performance</h3>
+                                <p class="sub">Average assignment scores across your students</p>
+                            </div>
                         </div>
-                        <a
-                            class="link"
-                            href="#"
-                            >Fall 2026 ⌄</a
-                        >
-                    </div>
-                    <div
-                        class="chart"
-                        role="img"
-                        aria-label="Bar chart of performance from September to February"
-                    >
-                        <div class="bar-col">
-                            <div
-                                class="bar is-blue"
-                                style="--bar-height: 55%"
-                            ></div>
-                            <span>Sep</span>
-                        </div>
-                        <div class="bar-col">
-                            <div
-                                class="bar is-purple"
-                                style="--bar-height: 62%"
-                            ></div>
-                            <span>Oct</span>
-                        </div>
-                        <div class="bar-col">
-                            <div
-                                class="bar is-blue"
-                                style="--bar-height: 68%"
-                            ></div>
-                            <span>Nov</span>
-                        </div>
-                        <div class="bar-col">
-                            <div
-                                class="bar is-orange"
-                                style="--bar-height: 72%"
-                            ></div>
-                            <span>Dec</span>
-                        </div>
-                        <div class="bar-col">
-                            <div
-                                class="bar is-blue"
-                                style="--bar-height: 78%"
-                            ></div>
-                            <span>Jan</span>
-                        </div>
-                        <div class="bar-col">
-                            <div
-                                class="bar is-green"
-                                style="--bar-height: 84%"
-                            ></div>
-                            <span>Feb</span>
+                        <div class="chart">
+                            <canvas id="studentPerformanceChart"></canvas>
                         </div>
                     </div>
-                    <div class="legend">
-                        <span class="pill is-blue">Current semester</span>
-                        <span class="pill is-purple">Previous semester</span>
-                        <span class="pill is-orange">Overall progress</span>
+
+                    <!-- Assignments -->
+                    <div class="card">
+                        <div class="card-head">
+                            <div>
+                                <h3>Assignments</h3>
+                                <p class="sub">Deadline, priority, and current status</p>
+                            </div>
+                            <a
+                                class="link"
+                                href="./Assignments.html"
+                            >
+                                View all
+                            </a>
+                        </div>
+                        <div class="assignments">Loading...</div>
                     </div>
                 </section>
 
                 <section>
                     <div class="section-head">
                         <div>
-                            <h3>Current courses</h3>
-                            <p class="sub">Your most active classes this semester</p>
+                            <h3>Current Courses</h3>
+                            <p class="sub">Courses you are currently teaching</p>
                         </div>
+
                         <a
                             class="link"
-                            href="#"
-                            >View all courses</a
+                            href="./courses.html"
                         >
+                            View all courses
+                        </a>
                     </div>
 
-                    <div class="courses">
-                        <article class="card course">
-                            <div class="course-top">
-                                <span class="course-icon is-blue">📘</span>
-                                <span class="badge">Active</span>
-                            </div>
-                            <h4>Data Structures</h4>
-                            <p class="meta">CS 301 · Dr. Maya Chen</p>
-                            <div class="progress-row">
-                                <span>Progress</span><strong>78%</strong>
-                            </div>
-                            <div class="track">
-                                <div
-                                    class="fill is-blue"
-                                    style="--value: 78%"
-                                ></div>
-                            </div>
-                            <div class="course-stats">
-                                <span>4 credits</span><strong>Grade A−</strong><span>7 / 9</span>
-                            </div>
-                            <a
-                                class="course-link"
-                                href="#"
-                                ><span>View Details</span><span>→</span></a
-                            >
-                        </article>
-
-                        <article class="card course">
-                            <div class="course-top">
-                                <span class="course-icon is-purple">📗</span>
-                                <span class="badge">Active</span>
-                            </div>
-                            <h4>Web Development</h4>
-                            <p class="meta">CS 245 · Prof. Liam Brooks</p>
-                            <div class="progress-row">
-                                <span>Progress</span><strong>86%</strong>
-                            </div>
-                            <div class="track">
-                                <div
-                                    class="fill is-purple"
-                                    style="--value: 86%"
-                                ></div>
-                            </div>
-                            <div class="course-stats">
-                                <span>3 credits</span><strong>Grade A</strong><span>10 / 11</span>
-                            </div>
-                            <a
-                                class="course-link"
-                                href="#"
-                                ><span>View Details</span><span>→</span></a
-                            >
-                        </article>
-
-                        <article class="card course">
-                            <div class="course-top">
-                                <span class="course-icon is-orange">📙</span>
-                                <span class="badge">Active</span>
-                            </div>
-                            <h4>Database Systems</h4>
-                            <p class="meta">CS 320 · Dr. Sofia Reyes</p>
-                            <div class="progress-row">
-                                <span>Progress</span><strong>71%</strong>
-                            </div>
-                            <div class="track">
-                                <div
-                                    class="fill is-orange"
-                                    style="--value: 71%"
-                                ></div>
-                            </div>
-                            <div class="course-stats">
-                                <span>4 credits</span><strong>Grade B+</strong><span>6 / 9</span>
-                            </div>
-                            <a
-                                class="course-link"
-                                href="#"
-                                ><span>View Details</span><span>→</span></a
-                            >
-                        </article>
-                    </div>
-                </section>
-
-                <section class="card">
-                    <div class="card-head">
-                        <div>
-                            <h3>Upcoming assignments</h3>
-                            <p class="sub">Deadline, priority, and current status</p>
-                        </div>
-                        <a
-                            class="link"
-                            href="#"
-                            >View all</a
-                        >
-                    </div>
-                    <ul class="assignments">
-                        <li>Binary Tree Implementation · CS 301 · Oct 02 · HIGH · IN PROGRESS</li>
-                        <li>Responsive Portfolio · CS 245 · Oct 04 · MEDIUM · PENDING</li>
-                        <li>SQL Query Optimization · CS 320 · Oct 06 · HIGH · PENDING</li>
-                        <li class="overdue">
-                            Sprint Retrospective · CS 355 · Sep 28 · HIGH · OVERDUE
-                        </li>
-                    </ul>
+                    <div
+                        class="courses"
+                        id="coursesContainer"
+                    ></div>
                 </section>
             </main>
         </div>

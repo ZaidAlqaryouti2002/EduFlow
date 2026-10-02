@@ -108,6 +108,53 @@ function setActiveNavigation() {
     });
 }
 
+// ---------- Breadcrumb ----------
+function initializeBreadcrumb() {
+    const breadcrumb = document.querySelector(".breadcrumb");
+
+    if (!breadcrumb) return;
+
+    const currentPage = getCurrentPage();
+
+    console.log(currentPage);
+
+    const pageNames = {
+        dashboard: "Dashboard",
+        students: "Students",
+        "student-details": "Student Details",
+        courses: "Courses",
+        assignments: "Assignments",
+        progress: "Progress",
+        reports: "Reports",
+        profile: "Profile",
+        settings: "Settings",
+    };
+
+    const pageName = pageNames[currentPage] || currentPage;
+
+    // Dashboard
+    if (currentPage === "dashboard") {
+        breadcrumb.innerHTML = `
+            <span class="breadcrumb-current">
+                Dashboard
+            </span>
+        `;
+
+        return;
+    }
+
+    // Other pages
+    breadcrumb.innerHTML = `
+        <a href="dashboard.html">Dashboard</a>
+
+        <span class="breadcrumb-separator">/</span>
+
+        <span class="breadcrumb-current">
+            ${pageName}
+        </span>
+    `;
+}
+
 // ---------- Load the shared components ----------
 async function fetchComponent(url) {
     const response = await fetch(url);
@@ -126,7 +173,11 @@ async function loadTopbarData() {
     const logoutButton = document.querySelector(".topbar .logout-button");
 
     if (avatarElement) {
-        avatarElement.textContent = `${teacher.name.split(" ")[0][0].toUpperCase()}${teacher.name.split(" ")[1][0].toUpperCase()}`;
+        if (teacher.name.split(" ").length < 2) {
+            avatarElement.textContent = teacher.name[0].toUpperCase();
+        } else {
+            avatarElement.textContent = `${teacher.name.split(" ")[0][0].toUpperCase()}${teacher.name.split(" ")[1][0].toUpperCase()}`;
+        }
     }
 
     if (userNameElement) {
@@ -189,6 +240,7 @@ async function loadLayout() {
         initializeSidebar();
         initializeTheme();
         setActiveNavigation();
+        initializeBreadcrumb();
     } catch (error) {
         console.error(error);
     }
