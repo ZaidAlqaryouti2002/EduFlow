@@ -29,6 +29,17 @@
   --avatar-ink: #7a47c9;
   --danger: #d63c3c;
 
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --bg-light: #f8fafc;
+    --bg-white: #ffffff;
+    --border-color: #e2e8f0;
+    --dark-section: #0f172a;
+    --card-bg: #ffffff;
+    --radius: 12px;
+
   --radius: 14px;
 
   /* Layout sizes (desktop) */

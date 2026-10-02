@@ -1,4 +1,867 @@
-.main-content{
-    margin-left: 250px;
-       padding: 100px 30px 30px;
+
+/* =========================================================
+   EduFlow - Students Page
+   Design System
+   ========================================================= */
+
+/* =========================================================
+   2. PAGE
+   ========================================================= */
+
+body {
+    background: var(--canvas);
+    color: var(--text-primary);
+    font-family: Arial, sans-serif;
 }
+
+.main-content {
+    margin-left: 250px;
+    padding: 100px 35px 40px;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   3. PAGE TITLE
+   ========================================================= */
+
+.main-content::before {
+    content: "Students";
+    display: block;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    color: var(--navy);
+
+    margin-bottom: 6px;
+}
+
+/* =========================================================
+   4. STATISTICS CARDS
+   ========================================================= */
+
+.impInfo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+
+    margin-bottom: 28px;
+}
+
+.impInfoCard {
+    position: relative;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    padding: 22px;
+
+    min-height: 125px;
+
+    box-shadow: var(--shadow-sm);
+
+    transition: 0.25s ease;
+}
+
+.impInfoCard:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+
+/* Small colored line */
+
+.impInfoCard::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 4px;
+
+    border-radius: 16px 16px 0 0;
+
+    background: var(--primary);
+}
+
+.impInfoCard:nth-child(2)::before {
+    background: var(--purple);
+}
+
+.impInfoCard:nth-child(3)::before {
+    background: var(--green);
+}
+
+.impInfoCard:nth-child(4)::before {
+    background: var(--orange);
+}
+
+
+.impInfoCard h1 {
+    margin: 5px 0 8px;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    color: var(--navy);
+}
+
+.impInfoCard span {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   5. STUDENT TOOLBAR
+   ========================================================= */
+
+.students {
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    padding: 18px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 18px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+
+/* Search */
+
+#searchInput {
+    flex: 1;
+
+    min-width: 220px;
+
+    height: 42px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    background: var(--white);
+
+    color: var(--navy);
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+#searchInput::placeholder {
+    color: var(--text-light);
+}
+
+#searchInput:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(21, 114, 254, 0.10);
+}
+
+
+/* =========================================================
+   6. SELECT FILTERS
+   ========================================================= */
+
+#courseFilter,
+#statusFilter {
+    height: 42px;
+
+    min-width: 145px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-sm);
+
+    background: var(--white);
+
+    color: var(--navy);
+
+    font-size: 14px;
+
+    outline: none;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#courseFilter:focus,
+#statusFilter:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(21, 114, 254, 0.10);
+}
+
+
+/* =========================================================
+   7. BUTTONS
+   ========================================================= */
+
+.students button {
+    height: 42px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: var(--radius-sm);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+/* Export */
+
+.export {
+    background: #F3F6FB;
+
+    color: var(--navy);
+
+    border: 1px solid var(--border) !important;
+}
+
+.export:hover {
+    background: #EAF0F8;
+}
+
+
+/* Add Student */
+
+.addStudentsBtn {
+    background: var(--primary);
+
+    color: white;
+
+    box-shadow:
+        0 4px 10px rgba(21, 114, 254, 0.20);
+}
+
+.addStudentsBtn:hover {
+    background: #0F62D8;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   8. TABLE CONTAINER
+   ========================================================= */
+
+.studentsTable {
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-lg);
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow-sm);
+   
+}
+
+
+/* =========================================================
+   9. TABLE
+   ========================================================= */
+
+.studentsTable table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    border: none !important;
+     
+}
+
+
+/* Header */
+
+.studentsTable thead {
+    background: #F7F9FC;
+}
+
+.studentsTable th {
+    padding: 16px 18px;
+
+    text-align: left;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: var(--text-secondary);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+/* Rows */
+
+.studentsTable td {
+    padding: 17px 18px;
+
+    font-size: 14px;
+
+    color: var(--navy);
+
+    border-bottom: 1px solid var(--border);
+
+    vertical-align: middle;
+}
+
+.studentsTable tbody tr {
+    transition: 0.2s ease;
+}
+
+.studentsTable tbody tr:hover {
+    background: #FAFBFD;
+}
+
+.studentsTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* Student name */
+
+.studentsTable td:first-child {
+    font-weight: 600;
+}
+
+
+/* Student ID */
+
+.studentsTable td:nth-child(2) {
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   10. ATTENDANCE SELECT
+   ========================================================= */
+
+.attendance-select {
+    min-width: 120px;
+
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+    border: 1px solid var(--border);
+
+    background: var(--white);
+
+    color: var(--navy);
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    outline: none;
+}
+
+.attendance-select:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(21, 114, 254, 0.08);
+}
+
+
+/* =========================================================
+   11. STATUS
+   ========================================================= */
+
+.studentsTable td:nth-child(5) {
+    font-weight: 600;
+}
+
+
+/* Active */
+
+.studentsTable td:nth-child(5) {
+    color: var(--success);
+}
+
+
+/* =========================================================
+   12. ACTION BUTTONS
+   ========================================================= */
+
+.studentsTable td:last-child {
+    white-space: nowrap;
+}
+
+.studentsTable td:last-child button {
+    border: none;
+
+    padding: 7px 11px;
+
+    margin-right: 5px;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+/* View */
+
+.view-btn {
+    background: #EEF4FF;
+
+    color: var(--primary);
+}
+
+.view-btn:hover {
+    background: #DDEAFF;
+}
+
+
+/* Edit */
+
+.edit-btn {
+    background: #F4ECFC;
+
+    color: #8A5BB5;
+}
+
+.edit-btn:hover {
+    background: #EBDDF8;
+}
+
+
+/* Archive */
+
+.archive-btn {
+    background: #FFF5E8;
+
+    color: #C98226;
+}
+
+.archive-btn:hover {
+    background: #FFEBCF;
+}
+
+
+/* Delete */
+
+.delete-btn {
+    background: #FFF0F2;
+
+    color: var(--error);
+}
+
+.delete-btn:hover {
+    background: #FFE0E4;
+}
+
+
+/* =========================================================
+   13. EMPTY TABLE
+   ========================================================= */
+
+.studentsTable td[colspan] {
+    text-align: center;
+
+    padding: 50px 20px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   14. ADD / EDIT FORM OVERLAY
+   ========================================================= */
+
+#studentFormBox {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    margin-left: 0 !important;
+
+    z-index: 9999;
+}
+
+
+/* Dark background */
+
+.form-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(41, 41, 64, 0.45);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+
+/* Form */
+
+.student-form {
+    width: 100%;
+
+    max-width: 500px;
+
+    background: rgb(189, 194, 222);
+
+    border-radius: 18px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 20px 60px rgba(41, 41, 64, 0.20);
+
+    animation: formAppear 0.2s ease;
+}
+
+
+@keyframes formAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+.student-form h2 {
+    margin: 0 0 24px;
+
+    color: var(--navy);
+
+    font-size: 22px;
+}
+
+
+/* Labels */
+
+.student-form label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--navy);
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* Inputs */
+
+.student-form input {
+    width: 100%;
+
+    height: 44px;
+
+    box-sizing: border-box;
+
+    padding: 0 13px;
+
+    margin-bottom: 17px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    background: var(--white);
+
+    color: var(--navy);
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.student-form input:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(21, 114, 254, 0.10);
+}
+
+
+/* Form buttons */
+
+.form-buttons {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 8px;
+}
+
+.form-buttons button {
+    flex: 1;
+
+    height: 44px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+/* Submit */
+
+.form-buttons button[type="submit"] {
+    background: var(--primary);
+
+    color: white;
+}
+
+.form-buttons button[type="submit"]:hover {
+    background: #0F62D8;
+}
+
+
+/* Cancel */
+
+#cancelForm {
+    background: #F1F3F7;
+
+    color: var(--navy);
+}
+
+#cancelForm:hover {
+    background: #E5E8EE;
+}
+
+
+/* =========================================================
+   15. TOAST
+   ========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 30px;
+    bottom: 30px;
+
+    min-width: 280px;
+
+    max-width: 400px;
+
+    padding: 15px 18px;
+
+    background: var(--purple);
+
+    border: 1px solid var(--border);
+
+    border-left: 4px solid var(--success);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 10px 30px rgba(41, 41, 64, 0.15);
+
+    color: var(--navy);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(15px);
+
+    transition: 0.3s ease;
+
+    z-index: 10000;
+}
+
+.toast.show {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   16. RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .main-content {
+        margin-left: 230px;
+
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .impInfo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .students {
+        flex-wrap: wrap;
+    }
+
+    #searchInput {
+        width: 100%;
+        flex-basis: 100%;
+    }
+}
+
+
+/* =========================================================
+   17. RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .main-content {
+        margin-left: 0;
+
+        padding: 90px 16px 30px;
+    }
+
+    .main-content::before {
+        font-size: 25px;
+    }
+
+    .impInfo {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 12px;
+    }
+
+    .impInfoCard {
+        padding: 17px;
+
+        min-height: 105px;
+    }
+
+    .impInfoCard h1 {
+        font-size: 25px;
+    }
+
+    .students {
+        padding: 14px;
+
+        align-items: stretch;
+    }
+
+    #searchInput,
+    #courseFilter,
+    #statusFilter,
+    .students button {
+        width: 100%;
+    }
+
+    .studentsTable {
+        overflow-x: auto;
+    }
+
+    .studentsTable table {
+        min-width: 850px;
+    }
+
+    .toast {
+        right: 16px;
+        left: 16px;
+
+        bottom: 20px;
+
+        min-width: auto;
+    }
+}
+
+
+/* =========================================================
+   18. SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .impInfo {
+        grid-template-columns: 1fr;
+    }
+
+    .student-form {
+        padding: 22px;
+
+        max-height: 90vh;
+
+        overflow-y: auto;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+}
+
