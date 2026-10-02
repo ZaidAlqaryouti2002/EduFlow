@@ -1,605 +1,147 @@
 const teacherId = requireLogin();
+const TYPES = ["quiz", "assignment", "exam"];
 
 let rows = [];
 let letterFilter = "";
 let searchText = "";
 
+// ---------- tiny DOM helpers ----------
+const setText  = (id, value) => document.getElementById(id).textContent = value;
+const setWidth = (id, value) => document.getElementById(id).style.width = value + "%";
 
-// ==========================================
-// Load the page
-// ==========================================
-
+// ---------- load page ----------
 async function loadPage() {
-
-  if (!teacherId) {
-    return;
-  }
+  if (!teacherId) return;
 
   try {
+    const students    = await StudentsApi.listMine(teacherId);
+    const assignments = await AssignmentsApi.listMine(teacherId);
 
-    const students = await StudentsApi.listMine(teacherId);
+    rows = buildRows(students, teacherId, assignments);
+    const summary  = summarize(rows);
+    const averages = averageByType(students, assignments);
 
-    const assignments =
-      await AssignmentsApi.listMine(teacherId);
+    // summary cards
+    setText("active-students", rows.length);
+    setText("class-average", summary.average + "%");
+    setText("pass-rate", summary.passRate + "%");
+    setText("assignment-count", assignments.length);
 
+    // progress bars (quiz / assignment / exam)
+    TYPES.forEach((type, i) => {
+      setText(`${type}-average`, averages[i] + "%");
+      setWidth(`${type}-progress`, averages[i]);
+    });
 
-    // Build report rows
-
-    rows =
-      buildRows(
-        students,
-        teacherId,
-        assignments
-      );
-
-
-    // Calculate summary
-
-    const summary =
-      summarize(rows);
-
-
-    // Calculate averages
-
-    const averages =
-      averageByType(
-        students,
-        assignments
-      );
-
-
-    // ==========================================
-    // Update Summary Cards
-    // ==========================================
-
-    document.getElementById("active-students").textContent =
-      rows.length;
-
-
-    document.getElementById("class-average").textContent =
-      summary.average + "%";
-
-
-    document.getElementById("pass-rate").textContent =
-      summary.passRate + "%";
-
-
-    document.getElementById("assignment-count").textContent =
-      assignments.length;
-
-
-    // ==========================================
-    // Update Progress
-    // ==========================================
-
-    document.getElementById("quiz-average").textContent =
-      averages[0] + "%";
-
-    document.getElementById("quiz-progress").style.width =
-      averages[0] + "%";
-
-
-    document.getElementById("assignment-average").textContent =
-      averages[1] + "%";
-
-    document.getElementById("assignment-progress").style.width =
-      averages[1] + "%";
-
-
-    document.getElementById("exam-average").textContent =
-      averages[2] + "%";
-
-    document.getElementById("exam-progress").style.width =
-      averages[2] + "%";
-
-
-    // ==========================================
-    // Overall Performance
-    // ==========================================
-
-    document.getElementById("performance-average").textContent =
-      summary.average + "%";
-
-
+    // overall circle
+    setText("performance-average", summary.average + "%");
     document.getElementById("performance-circle").style.background =
-      `conic-gradient(
-        var(--primary) 0% ${summary.average}%,
-        var(--track) ${summary.average}% 100%
-      )`;
+      `conic-gradient(var(--primary) 0% ${summary.average}%,
+                      var(--track) ${summary.average}% 100%)`;
 
+    // charts
+    drawChart("dist", "bar", Object.keys(summary.distribution),
+              Object.values(summary.distribution), "Students");
+    drawChart("types", "bar", ["Quiz", "Assignment", "Exam"],
+              averages, "Average %");
 
-    // ==========================================
-    // Charts
-    // ==========================================
-
-    drawChart(
-      "dist",
-      "bar",
-      Object.keys(summary.distribution),
-      Object.values(summary.distribution),
-      "Students"
-    );
-
-
-    drawChart(
-      "types",
-      "bar",
-      ["Quiz", "Assignment", "Exam"],
-      averages,
-      "Average %"
-    );
-
-
-    // ==========================================
-    // Search
-    // ==========================================
-
-    document.getElementById("search").oninput =
-      function (event) {
-
-        searchText =
-          event.target.value
-            .trim()
-            .toLowerCase();
-
-        displayTable();
-
-      };
-
-
-    // ==========================================
-    // Letter Filter
-    // ==========================================
-
-    document.getElementById("letter").onchange =
-      function (event) {
-
-        letterFilter =
-          event.target.value;
-
-        displayTable();
-
-      };
-
-
-    // ==========================================
-    // Print
-    // ==========================================
-
-    document.getElementById("print").onclick =
-      function () {
-
-        window.print();
-
-      };
-
-
-    // ==========================================
-    // Export CSV
-    // ==========================================
-
-    document.getElementById("csv").onclick =
-      exportCSV;
-
-
-    // ==========================================
-    // Show Table
-    // ==========================================
+    // events
+    document.getElementById("search").oninput = e => {
+      searchText = e.target.value.trim().toLowerCase();
+      displayTable();
+    };
+    document.getElementById("letter").onchange = e => {
+      letterFilter = e.target.value;
+      displayTable();
+    };
+    document.getElementById("print").onclick = () => window.print();
+    document.getElementById("csv").onclick = exportCSV;
 
     displayTable();
 
-
   } catch (error) {
-
     showError(error.message);
-
   }
-
 }
 
-
-// ==========================================
-// Average score for Quiz / Assignment / Exam
-// ==========================================
-
+// ---------- average % per type ----------
 function averageByType(students, assignments) {
+  return TYPES.map(type => {
+    const percents = [];
 
-  const types = [
-    "quiz",
-    "assignment",
-    "exam"
-  ];
-
-  const averages = [];
-
-
-  for (let t = 0; t < types.length; t++) {
-
-    let total = 0;
-    let count = 0;
-
-
-    for (let i = 0; i < assignments.length; i++) {
-
-      const assignment =
-        assignments[i];
-
-
-      if (assignment.type !== types[t]) {
-        continue;
+    for (const a of assignments.filter(a => a.type === type)) {
+      for (const s of students) {
+        const score = s.scores?.[teacherId]?.[a.id];
+        if (hasScore(score)) percents.push((score / a.maxScore) * 100);
       }
-
-
-      for (let j = 0; j < students.length; j++) {
-
-        const student =
-          students[j];
-
-
-        if (
-          student.scores &&
-          student.scores[teacherId]
-        ) {
-
-          const score =
-            student.scores[teacherId][assignment.id];
-
-
-          if (score !== undefined) {
-
-            total +=
-              (score / assignment.maxScore) * 100;
-
-            count++;
-
-          }
-
-        }
-
-      }
-
     }
 
-
-    if (count > 0) {
-
-      averages.push(
-        Math.round(total / count)
-      );
-
-    } else {
-
-      averages.push(0);
-
-    }
-
-  }
-
-
-  return averages;
-
+    const sum = percents.reduce((x, y) => x + y, 0);
+    return percents.length ? Math.round(sum / percents.length) : 0;
+  });
 }
 
-
-// ==========================================
-// Get rows after Search + Filter
-// ==========================================
-
+// ---------- search + filter ----------
 function getVisibleRows() {
-
-  const visible = [];
-
-
-  for (let i = 0; i < rows.length; i++) {
-
-    const row =
-      rows[i];
-
-
-    // Letter filter
-
-    if (
-      letterFilter !== "" &&
-      row.letter !== letterFilter
-    ) {
-
-      continue;
-
-    }
-
-
-    // Search
-
-    const text =
-      (
-        row.name +
-        " " +
-        row.code
-      ).toLowerCase();
-
-
-    if (!text.includes(searchText)) {
-
-      continue;
-
-    }
-
-
-    visible.push(row);
-
-  }
-
-
-  return visible;
-
+  return rows.filter(row =>
+    (letterFilter === "" || row.letter === letterFilter) &&
+    `${row.name} ${row.code}`.toLowerCase().includes(searchText)
+  );
 }
 
-
-// ==========================================
-// Display Student Table
-// ==========================================
+// ---------- table ----------
+function statusClass(letterGrade) {
+  if (letterGrade === "A") return "status-good";
+  if (letterGrade === "B" || letterGrade === "C") return "status-average";
+  return "status-low";
+}
 
 function displayTable() {
-
-  const table =
-    document.getElementById("table");
-
-
-  const visible =
-    getVisibleRows();
-
-
-  // ==========================================
-  // No Results
-  // ==========================================
+  const table   = document.getElementById("table");
+  const visible = getVisibleRows();
 
   if (visible.length === 0) {
-
     table.innerHTML = `
-
       <div class="report-empty">
-
-        <div class="report-empty-icon">
-          🔍
-        </div>
-
-        <h3>
-          No results found
-        </h3>
-
-        <p>
-          Try changing your search or filter.
-        </p>
-
-      </div>
-
-    `;
-
+        <div class="report-empty-icon">🔍</div>
+        <h3>No results found</h3>
+        <p>Try changing your search or filter.</p>
+      </div>`;
     return;
-
   }
 
-
-  // ==========================================
-  // Create Table Rows
-  // ==========================================
-
-  let rowsHTML = "";
-
-
-  for (let i = 0; i < visible.length; i++) {
-
-    const row =
-      visible[i];
-
-
-    let gradeText = "—";
-
-    let letterHTML = "—";
-
-    let attendanceText = "—";
-
-
-    // Grade
-
-    if (row.grade !== null) {
-
-      gradeText =
-        row.grade;
-
-
-      // Letter badge
-
-      let statusClass =
-        "status-low";
-
-
-      if (row.letter === "A") {
-
-        statusClass =
-          "status-good";
-
-      } else if (
-        row.letter === "B" ||
-        row.letter === "C"
-      ) {
-
-        statusClass =
-          "status-average";
-
-      }
-
-
-      letterHTML = `
-
-        <span class="report-status ${statusClass}">
-          ${row.letter}
-        </span>
-
-      `;
-
-    }
-
-
-    // Attendance
-
-    if (row.attendance !== null) {
-
-      attendanceText =
-        row.attendance + "%";
-
-    }
-
-
-    // Row
-
-    rowsHTML += `
-
-      <tr>
-
-        <td>
-          ${esc(row.code)}
-        </td>
-
-
-        <td>
-
-          <a
-            href="student-details.html?id=${encodeURIComponent(row.id)}"
-          >
-            ${esc(row.name)}
-          </a>
-
-        </td>
-
-
-        <td>
-          ${gradeText}
-        </td>
-
-
-        <td>
-          ${letterHTML}
-        </td>
-
-
-        <td>
-          ${attendanceText}
-        </td>
-
-      </tr>
-
-    `;
-
-  }
-
-
-  // ==========================================
-  // Add Table to Page
-  // ==========================================
+  const rowsHTML = visible.map(row => `
+    <tr>
+      <td>${esc(row.code)}</td>
+      <td>
+        <a href="student-details.html?id=${encodeURIComponent(row.id)}">
+          ${esc(row.name)}
+        </a>
+      </td>
+      <td>${row.grade ?? "—"}</td>
+      <td>
+        ${row.grade === null
+          ? "—"
+          : `<span class="report-status ${statusClass(row.letter)}">${row.letter}</span>`}
+      </td>
+    </tr>`).join("");
 
   table.innerHTML = `
-
     <table class="report-table">
-
       <thead>
-
-        <tr>
-
-          <th>
-            ID
-          </th>
-
-          <th>
-            Name
-          </th>
-
-          <th>
-            Final Grade
-          </th>
-
-          <th>
-            Letter
-          </th>
-
-          <th>
-            Attendance
-          </th>
-
-        </tr>
-
+        <tr><th>ID</th><th>Name</th><th>Final Grade</th><th>Letter</th></tr>
       </thead>
-
-
-      <tbody>
-
-        ${rowsHTML}
-
-      </tbody>
-
-    </table>
-
-  `;
-
+      <tbody>${rowsHTML}</tbody>
+    </table>`;
 }
 
-
-// ==========================================
-// Export CSV
-// ==========================================
-
+// ---------- CSV ----------
 function exportCSV() {
-
-  const visible =
-    getVisibleRows();
-
-
   const data = [
-
-    [
-      "Code",
-      "Name",
-      "Final Grade",
-      "Letter",
-      "Attendance %"
-    ]
-
+    ["Code", "Name", "Final Grade", "Letter"],
+    ...getVisibleRows().map(r => [r.code, r.name, r.grade, r.letter])
   ];
-
-
-  for (let i = 0; i < visible.length; i++) {
-
-    const row =
-      visible[i];
-
-
-    data.push([
-
-      row.code,
-
-      row.name,
-
-      row.grade,
-
-      row.letter,
-
-      row.attendance
-
-    ]);
-
-  }
-
-
-  downloadCSV(
-    data,
-    "edutrack-report.csv"
-  );
-
+  downloadCSV(data, "edutrack-report.csv");
 }
-
-
-// ==========================================
-// Start
-// ==========================================
 
 loadPage();
