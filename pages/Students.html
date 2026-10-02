@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>EduFlow</title>
+    <link rel="stylesheet" href="../style/layout.css">
+     <link rel="stylesheet" href="../style/Students.css">
 </head>
 <body>
+     <!-- Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+     <main class="main-content">
     <section class="impInfo">
-        <div class="impInfoCard"><h1>0</h1>
+        <div class="impInfoCard"><h1 id="activeStudentsCount">0</h1>
         <span>Active Students</span>
     </div>
-        <div class="impInfoCard"><h1>0</h1>
+        <div class="impInfoCard"><h1  id="classAverage">0</h1>
         <span>Class average</span>
     </div>
-        <div class="impInfoCard"><h1>0%</h1>
+        <div class="impInfoCard"><h1 id="attendanceAverage">0%</h1>
         <span>Avg.attendence</span>
     </div>
-        <div class="impInfoCard"><h1>0</h1>
+        <div class="impInfoCard"><h1 id="monitoringCount">0</h1>
         <span>Need attention</span>
     </div>
     </section>
@@ -29,7 +37,7 @@
         <option value="active">Active</option> 
         <option value="archived">Archived</option> 
         </select>
-        <button class="export">Export</button>
+        <button class="export" id="export">Export</button>
         <button class="addStudentsBtn" id="addStudentsBtn">Add Student</button>
     </section>
  <section class="studentsTable">
@@ -49,6 +57,8 @@
  </section>
  <script src="../js/auth.js"></script>
  <script src="../js/api.js"></script>
+ <script src="../js/layout.js"></script>
  <script src="../js/Students.js"></script>
+ </main>
 </body>
 </html>

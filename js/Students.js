@@ -1,14 +1,51 @@
 const teacherId = getTeacherId();
+
 const addStudentBtn = document.getElementById("addStudentsBtn")
 console.log("Teacher ID:", teacherId);
 if (!teacherId) { location.replace("Login.html"); }
 const studentsContainer = document.getElementById("studentsContainer")
 let allStudents = [];
+const exportStudentsBtn = document.getElementById("export");
+
+exportStudentsBtn.addEventListener("click", function () {
+
+    if (allStudents.length === 0) {
+        alert("No students to export.");
+        return;
+    }
+
+    // نحول الداتا إلى JSON
+     let csv = "Student ID,Student Code,Full Name,Email,Courses,Grade\n"
+   allStudents.forEach(student => {
+
+        const grade = calculateCourseGrade(student.scores);
+
+        const courses = (student.courses || []).join(" - ");
+
+        csv += `"${student.id}","${student.studentCode || ""}","${student.fullName}","${student.email}","${courses}","${grade}"\n`;
+    })
+     const blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "students.csv";
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+})
 async function loadStudents(){
     try{
     const students = await StudentsApi.listMine(String(teacherId))
+        assignments = await AssignmentsApi.listMine(teacherId);
     console.log("students : ",students);
     allStudents = students;
+    updateDashboardStats()
      displayStudentsInHtml(students)
      
                 }
@@ -31,14 +68,30 @@ function displayStudentsInHtml(students){
         (std.archivedBy || [])
         .map(String)
         .includes(String(teacherId));
+const today = new Date().toISOString().split("T")[0];
 
+const todayAttendance =
+    (std.attendance && std.attendance[today]) || "Present";
     const row = document.createElement("tr");
-
+    const grade = calculateCourseGrade(std.scores);
     row.innerHTML = `
         <td>${std.fullName}</td>
         <td>${std.studentCode}</td>
-        <td>-</td>
-        <td>-</td>
+        <td>
+        <select class="attendance-select" data-id="${std.id}">
+         <option value="Present" ${todayAttendance === "Present" ? "selected" : ""}>
+        Present
+    </option>
+    <option value="Absent" ${todayAttendance === "Absent" ? "selected" : ""}>
+        Absent
+    </option>
+    <option value="Late" ${todayAttendance === "Late" ? "selected" : ""}>
+        Late
+    </option>
+</select>
+        
+        </td>
+        <td>(${grade.letter})</td>
         <td>${isArchived ? "Archived" : "Active"}</td>
 
         <td>
@@ -177,18 +230,6 @@ function createStudentForm(student = null) {
                         value="${student ? student.fullName : ""}"
                         required
                     >
-
-
-                    <label>Student Code</label>
-
-                    <input
-                        type="text"
-                        id="studentCode"
-                        value="${student ? student.studentCode : ""}"
-                        required
-                    >
-
-
                     <label>Email</label>
 
                     <input
@@ -266,10 +307,6 @@ async function saveStudent(event) {
 
     const fullName =
         document.getElementById("fullName").value.trim();
-
-    const studentCode =
-        document.getElementById("studentCode").value.trim();
-
     const email =
         document.getElementById("email").value.trim();
 
@@ -328,9 +365,6 @@ async function saveStudent(event) {
             const newStudent = {
 
                 fullName: fullName,
-
-                studentCode: studentCode,
-
                 email: email,
 
                 courses: courses,
@@ -357,6 +391,7 @@ async function saveStudent(event) {
 
 
             allStudents.push(result);
+            updateDashboardStats()
 
 
             alert("Student added successfully!");
@@ -419,7 +454,7 @@ async function archiveStudent(student) {
               catch (error) {
                  alert(error.message);
                 } }
-    //delte student ========================================================================================
+    //delete student ========================================================================================
 async function deleteStudent(student) {
      const confirmDelete = confirm( `Delete ${student.fullName}?` )
       if (!confirmDelete) { 
@@ -428,6 +463,7 @@ async function deleteStudent(student) {
             await StudentsApi.remove(student.id)
              allStudents = allStudents.filter( item => String(item.id) !== String(student.id) )
               displayStudentsInHtml(allStudents)
+              updateDashboardStats()
                alert("Student deleted successfully!")} 
 catch (error) {
      alert(error.message)
@@ -451,14 +487,224 @@ studentsContainer.addEventListener( "click", function (event) {
                   // DELETE
                    else if
                     ( event.target.classList.contains( "delete-btn" ) ) {
-                         deleteStudent(student)} } )
+                         deleteStudent(student)}
+
+                         })
 
 addStudentBtn.addEventListener( "click", ()=>{
     createStudentForm()
 } )
-  
+function calculateCourseGrade(scores) {
+
+    let total = 0;
+    let maxTotal = 0;
+
+    Object.values(scores || {}).forEach(courseScores => {
+
+        const marks = Object.values(courseScores);
+
+        const quiz = Number(marks[0] || 0);
+        const project = Number(marks[1] || 0);
+        const final = Number(marks[2] || 0);
+
+        total += quiz + project + final;
+
+        maxTotal += 10 + 50 + 100;
+    });
+
+    if (maxTotal === 0) {
+        return {
+            percentage: 0,
+            letter: "N/A"
+        };
+    }
+
+    const percentage = Math.round((total / maxTotal) * 100);
+
+    let letter;
+
+    if (percentage >= 90) {
+        letter = "A";
+    } else if (percentage >= 80) {
+        letter = "B";
+    } else if (percentage >= 70) {
+        letter = "C";
+    } else if (percentage >= 60) {
+        letter = "D";
+    } else {
+        letter = "F";
+    }
+
+    return {
+        percentage: percentage,
+        letter: letter
+    };
+}
+studentsContainer.addEventListener("change", async function(event) {
+
+    if (!event.target.classList.contains("attendance-select")) {
+        return;
+    }
+
+    const studentId = event.target.dataset.id;
+    const attendanceStatus = event.target.value;
+
+    const student = allStudents.find(
+        item => String(item.id) === String(studentId)
+    );
+
+    if (!student) {
+        return;
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+
+    const attendance = {
+        ...(student.attendance || {}),
+        [today]: attendanceStatus
+    };
+
+    try {
+
+        const updatedStudent = await StudentsApi.update(
+            student.id,
+            {
+                ...student,
+                attendance: attendance
+            }
+        );
+
+        const index = allStudents.findIndex(
+            item => String(item.id) === String(student.id)
+        );
+
+        allStudents[index] = updatedStudent;
+        updateDashboardStats()
+
+        console.log("Attendance saved:", updatedStudent);
+
+    } catch (error) {
+
+        console.log(error);
+        alert(error.message);
+
+    }
+
+});
+function calculateAttendancePercentage(attendance) {
+
+    const records = Object.values(attendance || {});
+
+    if (records.length === 0) {
+        return 0;
+    }
+
+    let points = 0;
+
+    records.forEach(status => {
+
+        if (status === "Present") {
+            points += 1;
+        }
+
+        else if (status === "Late") {
+            points += 0.5;
+        }
+
+        else if (status === "Absent") {
+            points += 0;
+        }
+    });
+
+    return Math.round((points / records.length) * 100);
+}
+function getStudentsNeedMonitoring() {
+
+    return allStudents.filter(student => {
+
+        const grade = calculateCourseGrade(student.scores);
+
+        return grade.percentage < 50;
+    });
+}
+ const monitoringStudents = getStudentsNeedMonitoring();
+
+console.log("Students need monitoring:", monitoringStudents.length);
+
+function getActiveStudents() {
+
+    return allStudents.filter(student => {
+
+        return !(student.archivedBy || [])
+            .map(String)
+            .includes(String(teacherId));
+
+    });
+}
+const activeStudents = getActiveStudents();
+
+console.log("Active Students:", activeStudents.length);
+function calculateClassAverage() {
+    let total = 0;
+    let studentsWithGrades = 0;
+
+    allStudents.forEach(student => {
+
+        const grade = calculateCourseGrade(student.scores);
+
+        if (Object.keys(student.scores || {}).length > 0) {
+            total += grade.percentage;
+            studentsWithGrades++;
+        }
+    });
+
+    if (studentsWithGrades === 0) {
+        return 0;
+    }
+
+    return Math.round(total / studentsWithGrades);
+}
+function updateDashboardStats() {
+
+    
+
+     const classAverage = calculateClassAverage();
+    const activeStudents = getActiveStudents();
+
+    const monitoringStudents = getStudentsNeedMonitoring();
+
+    let attendanceTotal = 0;
+    let studentsWithAttendance = 0;
+
+    allStudents.forEach(student => {
+
+        const attendance =
+            calculateAttendancePercentage(student.attendance);
+
+        if (Object.keys(student.attendance || {}).length > 0) {
+
+            attendanceTotal += attendance;
+            studentsWithAttendance++;
+        }
+    });
+
+    const attendanceAverage =
+        studentsWithAttendance === 0
+            ? 0
+            : Math.round(attendanceTotal / studentsWithAttendance);
 
 
- 
+    document.getElementById("classAverage").textContent =
+        `${classAverage}%`;
+
+    document.getElementById("attendanceAverage").textContent =
+        `${attendanceAverage}%`;
+
+    document.getElementById("monitoringCount").textContent =
+        monitoringStudents.length;
+
+    document.getElementById("activeStudentsCount").textContent =
+        activeStudents.length;
+}
 loadStudents();
 fetchCourse();

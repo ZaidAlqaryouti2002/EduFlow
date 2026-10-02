@@ -1,55 +1,47 @@
-/* 1. Variables */
 :root {
+    --bg-color: #f8fafc;
+    --sidebar-bg: #2a2c41;
     --primary: #1677FF;
     --primary-hover: #0B63E5;
-    --bg-page: #F7F9FC;
-    --bg-surface: #FFFFFF;
-    --sidebar-bg: #292940;
-    --text-primary: #111B3C;
-    --text-secondary: #667085;
-    --border: #E6EAF0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #98A2B3;
+    --white: #ffffff;
+    --border: #e2e8f0;
     --success: #16A34A;
     --success-bg: #EAF8EF;
-    --danger: #DC2626;
-    --radius-md: 8px;
-    --radius-card: 12px;
+    --danger: #EF4444;
+    --danger-bg: #FEECEC;
+    --bg-surface: #FFFFFF;
 }
 
-
-/* 2. Reset & base */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: var(--bg-page);
+    background-color: var(--bg-color);
     color: var(--text-primary);
 }
 
-
-/* 3. App layout */
 .app-layout {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    min-height: 100vh;
+    display: flex;
+    height: 100vh;
 }
 
-.content-wrapper {
-    padding: 32px;
-}
-
-
-/* 4. Sidebar */
 .sidebar {
+    width: 250px;
     background-color: var(--sidebar-bg);
-    color: white;
-    padding: 24px 16px;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
 }
 
-.brand {
+.logo-section {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -58,6 +50,7 @@ body {
 
 .logo-icon {
     background: var(--primary);
+    color: white;
     width: 40px;
     height: 40px;
     border-radius: 8px;
@@ -65,93 +58,109 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    font-size: 20px;
 }
 
-.brand-text h2 {
-    font-size: 18px;
-}
+.logo-text h2 { font-size: 18px; margin-bottom: 2px; }
+.logo-text p { font-size: 11px; color: #94a3b8; }
 
-.brand-text p {
-    font-size: 11px;
-    color: #98A2B3;
-}
-
-.nav-links {
+.nav-links, .bottom-links {
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.bottom-links {
+    margin-top: auto;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 16px;
-    color: #98A2B3;
+    color: #cbd5e1;
     text-decoration: none;
-    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    border-radius: 8px;
     font-size: 14px;
+    transition: 0.2s;
 }
 
-.nav-item.active {
+.nav-item:hover, .nav-item.active {
     background-color: var(--primary);
     color: white;
 }
 
+.nav-item i { width: 18px; height: 18px; }
 
-/* 5. Topbar */
+.main-content {
+    flex: 1;
+    padding: 0 40px 40px 40px;
+    overflow-y: auto;
+}
+
 .topbar {
-    height: 64px;
-    background: var(--bg-surface);
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0 32px;
+    align-items: center;
+    padding: 20px 0;
     border-bottom: 1px solid var(--border);
+    margin-bottom: 30px;
+}
+
+.topbar h2 {
+    font-size: 22px;
+    font-weight: 700;
 }
 
 .topbar-actions {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
 }
 
 .search-box {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: #F3F4F6;
+    background: white;
     padding: 8px 16px;
-    border-radius: 999px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    gap: 8px;
 }
 
 .search-box input {
     border: none;
-    background: transparent;
     outline: none;
+    font-size: 13px;
+    width: 200px;
+}
+
+.search-box i {
+    color: var(--text-secondary);
+    width: 16px;
 }
 
 .profile-info {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-weight: 500;
+    gap: 10px;
     font-size: 14px;
+    font-weight: 500;
 }
 
 .avatar {
-    width: 32px;
-    height: 32px;
-    background: #EAF3FF;
+    background: #e0e7ff;
     color: var(--primary);
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
 }
 
-
-/* 6. Page header */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -161,36 +170,33 @@ body {
 
 .page-header h1 {
     font-size: 28px;
+    font-weight: 700;
     margin-bottom: 4px;
 }
 
 .page-header p {
     color: var(--text-secondary);
+    font-size: 14px;
 }
 
-
-/* 7. Buttons */
 .btn-primary {
     background-color: var(--primary);
     color: white;
     border: none;
     padding: 0 20px;
     height: 44px;
-    border-radius: var(--radius-md);
+    border-radius: 8px;
     font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
+    transition: background-color 0.2s ease;
 }
 
 .btn-primary:hover:not(:disabled) {
     background-color: var(--primary-hover);
-}
-
-.btn-primary:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
 }
 
 .btn-secondary {
@@ -199,46 +205,12 @@ body {
     border: 1px solid #D7E5FA;
     padding: 0 20px;
     height: 44px;
-    border-radius: var(--radius-md);
+    border-radius: 8px;
     font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
 }
 
-.btn-danger {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background-color: #FEF2F2;
-    color: var(--danger);
-    border: 1px solid #FECACA;
-    padding: 0 14px;
-    height: 36px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-
-.btn-danger:hover:not(:disabled) {
-    background-color: var(--danger);
-    color: white;
-}
-
-.btn-danger:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.close-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text-secondary);
-}
-
-
-/* 8. Courses grid & cards */
 .courses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -248,10 +220,11 @@ body {
 .course-card {
     background: var(--bg-surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-card);
+    border-radius: 12px;
     padding: 24px;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 1px 3px rgba(16,24,40,0.04);
 }
 
 .card-header {
@@ -264,7 +237,7 @@ body {
 .course-icon {
     width: 44px;
     height: 44px;
-    background: #EAF3FF;
+    background: #e0e7ff;
     color: var(--primary);
     border-radius: 10px;
     display: flex;
@@ -275,7 +248,7 @@ body {
 .badge-success {
     background: var(--success-bg);
     color: var(--success);
-    padding: 4px 10px;
+    padding: 5px 10px;
     border-radius: 999px;
     font-size: 12px;
     font-weight: 500;
@@ -283,6 +256,7 @@ body {
 
 .course-card h3 {
     font-size: 18px;
+    font-weight: 600;
     margin-bottom: 4px;
 }
 
@@ -306,7 +280,7 @@ body {
 
 .progress-bar-bg {
     height: 6px;
-    background: #EEF1F5;
+    background: #e2e8f0;
     border-radius: 999px;
     overflow: hidden;
 }
@@ -316,12 +290,6 @@ body {
     border-radius: 999px;
 }
 
-.card-footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: auto;
-}
-
 .view-details {
     display: flex;
     justify-content: space-between;
@@ -329,11 +297,10 @@ body {
     color: var(--primary);
     text-decoration: none;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    margin-top: auto;
 }
 
-
-/* 9. Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -351,7 +318,7 @@ body {
     background: var(--bg-surface);
     width: 100%;
     max-width: 400px;
-    border-radius: var(--radius-card);
+    border-radius: 12px;
     padding: 24px;
     box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
 }
@@ -365,6 +332,17 @@ body {
 
 .modal-header h2 {
     font-size: 18px;
+    font-weight: 600;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-actions {
@@ -374,8 +352,6 @@ body {
     margin-top: 24px;
 }
 
-
-/* 10. Forms & validation */
 .form-group {
     margin-bottom: 16px;
 }
@@ -392,18 +368,16 @@ body {
     width: 100%;
     height: 44px;
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: 8px;
     padding: 0 14px;
     outline: none;
+    font-size: 14px;
+    color: var(--text-primary);
 }
 
 .form-group input:focus {
     border-color: var(--primary);
-}
-
-.form-group input.input-error,
-.form-group input.input-error:focus {
-    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.1);
 }
 
 .form-error {
@@ -412,8 +386,6 @@ body {
     margin-top: 6px;
 }
 
-
-/* 11. Utilities */
 .hidden {
     display: none !important;
 }
