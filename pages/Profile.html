@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>EduFlow - Profile</title>
+
+
+    <!-- =====================================================
+         FAVICON
+         ===================================================== -->
+
+    <link
+        rel="shortcut icon"
+        href="../assets/favicon.svg"
+        type="image/x-icon"
+    >
+
+
+    <!-- =====================================================
+         GLOBAL VARIABLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../style/layout.css"
+    >
+    
+    <link
+        rel="stylesheet"
+        href="../style/main_variables.css"
+    >
+
+
+    <!-- =====================================================
+         PROFILE CSS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../style/Profile.css"
+    >
+
+
+    <!-- =====================================================
+         SHARED LAYOUT CSS
+         ===================================================== -->
+
+    
+
+</head>
+
+
+<body data-page="profile">
+
+
+    <!-- =====================================================
+         SHARED TOPBAR
+         
+         layout.js will load:
+         pages/topbar.html
+         ===================================================== -->
+
+    <div id="topbar-container"></div>
+
+
+
+    <!-- =====================================================
+         SHARED SIDEBAR
+         
+         layout.js will load:
+         pages/sidebar.html
+         ===================================================== -->
+
+    <div id="sidebar-container"></div>
+
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="profile-main">
+
+
+        <!-- =================================================
+             PAGE HEADER
+             ================================================= -->
+
+        <section class="profile-page-header">
+
+            <div>
+
+                <h1>
+                    Profile
+                </h1>
+
+                <p>
+                    Manage your personal details and account preferences.
+                </p>
+
+            </div>
+
+
+            <button
+                class="edit-profile-btn"
+                id="editProfileBtn"
+                type="button"
+            >
+
+                <span class="edit-icon">
+                    ✎
+                </span>
+
+                Edit Profile
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LOADING
+             ================================================= -->
+
+        <div
+            class="loading-message"
+            id="loadingMessage"
+        >
+            Loading profile...
+        </div>
+
+
+
+        <!-- =================================================
+             PROFILE CONTENT
+             ================================================= -->
+
+        <div
+            class="profile-content"
+            id="profileContent"
+        >
+
+
+            <!-- =================================================
+                 PROFILE CARD
+                 ================================================= -->
+
+            <section
+                class="profile-card main-profile-card"
+            >
+
+                <div class="profile-main-info">
+
+
+                    <div
+                        class="profile-avatar"
+                        id="profileAvatar"
+                    >
+                        AM
+                    </div>
+
+
+                    <div class="profile-name-info">
+
+                        <h2 id="profileName">
+                            Alex Morgan
+                        </h2>
+
+                        <p
+                            class="profile-major"
+                            id="profileMajor"
+                        >
+                            Computer Science
+                        </p>
+
+                        <p
+                            class="profile-university"
+                            id="profileUniversity"
+                        >
+                            EduFlow University
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="active-status">
+                    Active Teacher
+                </div>
+
+
+
+                <div class="profile-summary">
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Teacher ID
+                        </span>
+
+                        <strong id="teacherId">
+                            -
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Email
+                        </span>
+
+                        <strong id="profileEmail">
+                            -
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Department
+                        </span>
+
+                        <strong id="profileDepartment">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ACADEMIC INFORMATION
+                 ================================================= -->
+
+            <div class="information-grid">
+
+
+                <section
+                    class="profile-card information-card"
+                >
+
+                    <h3>
+                        Academic Information
+                    </h3>
+
+
+                    <div class="information-list">
+
+
+                        <div class="information-row">
+
+                            <span>
+                                Teacher ID
+                            </span>
+
+                            <strong id="academicId">
+                                -
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="information-row">
+
+                            <span>
+                                Major
+                            </span>
+
+                            <strong id="academicMajor">
+                                -
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="information-row">
+
+                            <span>
+                                Department
+                            </span>
+
+                            <strong id="academicDepartment">
+                                -
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="information-row">
+
+                            <span>
+                                Academic Year
+                            </span>
+
+                            <strong id="academicYear">
+                                Not provided
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ACCOUNT SETTINGS
+                 ================================================= -->
+
+            <section
+                class="profile-card account-settings"
+            >
+
+
+                <div class="section-heading">
+
+                    <h3>
+                        Account Settings
+                    </h3>
+
+                    <p>
+                        Security, language, and appearance.
+                    </p>
+
+                </div>
+
+
+
+                <div class="settings-list">
+
+
+                    <!-- ================================
+                         CHANGE PASSWORD
+                         ================================= -->
+
+                    <div class="setting-row">
+
+                        <span>
+                            Change Password
+                        </span>
+
+
+                        <div class="setting-value">
+
+                            <span>
+                                Update your password
+                            </span>
+
+
+                            <button
+                                type="button"
+                                id="changePasswordBtn"
+                            >
+                                UPDATE
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================================
+                         LANGUAGE
+                         ================================= -->
+
+                    <div class="setting-row">
+
+                        <span>
+                            Language
+                        </span>
+
+
+                        <button
+                            class="setting-value setting-clickable"
+                            id="languageBtn"
+                            type="button"
+                        >
+
+                            <span id="currentLanguage">
+                                English
+                            </span>
+
+                            <span>
+                                ›
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- ================================
+                         THEME
+                         ================================= -->
+
+                    <div class="setting-row">
+
+                        <span>
+                            Theme
+                        </span>
+
+
+                        <button
+                            class="setting-value setting-clickable"
+                            id="themeBtn"
+                            type="button"
+                        >
+
+                            <span id="currentTheme">
+                                Light
+                            </span>
+
+                            <span>
+                                ›
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         EDIT PROFILE MODAL
+         ===================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="editModal"
+    >
+
+        <div class="edit-modal">
+
+
+            <!-- ================================
+                 MODAL HEADER
+                 ================================= -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Edit Profile
+                    </h2>
+
+                    <p>
+                        Update your personal information.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close-modal-btn"
+                    id="closeModalBtn"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- ================================
+                 EDIT FORM
+                 ================================= -->
+
+            <form id="editProfileForm">
+
+
+                <!-- Profile Picture -->
+
+                <div class="picture-section">
+
+
+                    <div
+                        class="edit-avatar"
+                        id="editAvatar"
+                    >
+                        AM
+                    </div>
+
+
+                    <div class="picture-actions">
+
+
+                        <label
+                            for="profilePicture"
+                            class="upload-picture-btn"
+                        >
+                            Upload Picture
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="profilePicture"
+                            accept="image/*"
+                        >
+
+
+                        <button
+                            type="button"
+                            class="remove-picture-btn"
+                            id="removePictureBtn"
+                        >
+                            Remove
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Name -->
+
+                <div class="form-group">
+
+                    <label for="editName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editName"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="editEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="editEmail"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Department -->
+
+                <div class="form-group">
+
+                    <label for="editDepartment">
+                        Department / Major
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editDepartment"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div
+                    class="form-message"
+                    id="formMessage"
+                ></div>
+
+
+
+                <!-- Modal Actions -->
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        id="cancelBtn"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-profile-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CHANGE PASSWORD MODAL
+         ===================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="passwordModal"
+    >
+
+        <div class="edit-modal password-modal">
+
+
+            <!-- ================================
+                 MODAL HEADER
+                 ================================= -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Change Password
+                    </h2>
+
+                    <p>
+                        Update your account password.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close-modal-btn"
+                    id="closePasswordModalBtn"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- ================================
+                 PASSWORD FORM
+                 ================================= -->
+
+            <form id="passwordForm">
+
+
+                <div class="form-group">
+
+                    <label for="currentPassword">
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="newPassword">
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirm New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div
+                    class="form-message"
+                    id="passwordMessage"
+                ></div>
+
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        id="cancelPasswordBtn"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-profile-btn"
+                    >
+                        Change Password
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SETTINGS MODAL
+         ===================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="settingsModal"
+    >
+
+        <div class="edit-modal settings-modal">
+
+
+            <!-- ================================
+                 MODAL HEADER
+                 ================================= -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="settingsModalTitle">
+                        Settings
+                    </h2>
+
+                    <p id="settingsModalDescription">
+                        Manage your preferences.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close-modal-btn"
+                    id="closeSettingsModalBtn"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LANGUAGE OPTIONS
+                 ================================================= -->
+
+            <div
+                class="settings-options"
+                id="languageOptions"
+            >
+
+
+                <button
+                    class="option-button active"
+                    id="englishOption"
+                    type="button"
+                >
+
+                    <span>
+                        English
+                    </span>
+
+                    <span>
+                        ✓
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    class="option-button disabled"
+                    id="arabicOption"
+                    type="button"
+                    disabled
+                >
+
+                    <span>
+                        العربية
+                    </span>
+
+                    <span>
+                        Coming soon
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 THEME OPTIONS
+                 ================================================= -->
+
+            <div
+                class="settings-options"
+                id="themeOptions"
+                style="display: none;"
+            >
+
+
+                <button
+                    class="option-button active"
+                    id="lightThemeOption"
+                    type="button"
+                >
+
+                    <span>
+                        Light
+                    </span>
+
+                    <span>
+                        ☀
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    class="option-button"
+                    id="darkThemeOption"
+                    type="button"
+                >
+
+                    <span>
+                        Dark
+                    </span>
+
+                    <span>
+                        ◐
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <!-- Shared Topbar + Sidebar -->
+    <script src="../js/layout.js"></script>
+
+    <!-- API -->
+    <script src="../js/api.js"></script>
+
+    <!-- Profile Page -->
+    <script src="../js/Profile.js"></script>
+
+
+</body>
+
+</html>

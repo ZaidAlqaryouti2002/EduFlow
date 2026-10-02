@@ -13,6 +13,7 @@
     <title>Assignments</title>
 
 
+    <!-- FAVICON -->
     <link
         rel="shortcut icon"
         href="../assets/icons/favicon.svg"
@@ -20,43 +21,48 @@
     >
 
 
+    <!-- GLOBAL VARIABLES -->
     <link
         rel="stylesheet"
         href="../style/main_variables.css"
     >
 
 
+    <!-- SHARED LAYOUT -->
+    <link
+        rel="stylesheet"
+        href="../style/layout.css"
+    >
+
+
+    <!-- ASSIGNMENTS STYLE -->
     <link
         rel="stylesheet"
         href="../style/Assignments.css"
     >
 
+
+    <!-- SHARED LAYOUT JS -->
+    <script src="../js/layout.js"></script>
+
 </head>
 
 
-<body>
+<body data-page="assignments">
 
 
     <!-- ========================================
-         HEADER
+         SHARED TOPBAR
     ======================================== -->
 
-    <header>
-
-        <!-- header -->
-
-    </header>
+    <div id="topbar-container"></div>
 
 
     <!-- ========================================
-         SIDEBAR
+         SHARED SIDEBAR
     ======================================== -->
 
-    <aside>
-
-        <!-- aside -->
-
-    </aside>
+    <div id="sidebar-container"></div>
 
 
     <!-- ========================================
@@ -65,13 +71,7 @@
 
     <main>
 
-
-        <!-- ========================================
-             PAGE HEADER
-        ======================================== -->
-
         <div class="main-header">
-
 
             <div>
 
@@ -101,18 +101,17 @@
 
             </button>
 
-
         </div>
 
 
         <!-- ========================================
-             STAT CARDS
+             STATISTICS CARDS
         ======================================== -->
 
         <div class="main-cards">
 
 
-            <!-- TOTAL ASSIGNMENTS -->
+            <!-- TOTAL -->
 
             <div class="stat-card">
 
@@ -256,13 +255,13 @@
 
 
         <!-- ========================================
-             ASSIGNMENT SECTION
+             ASSIGNMENTS SECTION
         ======================================== -->
 
         <div class="assignment-section">
 
 
-            <!-- FILTER BUTTONS -->
+            <!-- FILTERS -->
 
             <div class="highlight">
 
@@ -325,19 +324,17 @@
 
         </div>
 
-
     </main>
 
 
     <!-- ========================================
-         ADD / EDIT ASSIGNMENT MODAL
+         ASSIGNMENT MODAL
     ======================================== -->
 
     <div
         class="modal-overlay"
         id="assignmentModal"
     >
-
 
         <div class="add-assignment-form">
 
@@ -361,7 +358,7 @@
             </div>
 
 
-            <!-- ASSIGNMENT TITLE -->
+            <!-- TITLE -->
 
             <input
                 type="text"
@@ -370,7 +367,7 @@
             >
 
 
-            <!-- ASSIGNMENT TYPE -->
+            <!-- TYPE -->
 
             <select id="assignmentType">
 
@@ -397,7 +394,7 @@
             </select>
 
 
-            <!-- ASSIGNMENT DATE -->
+            <!-- DATE -->
 
             <input
                 type="date"
@@ -446,7 +443,7 @@
             </select>
 
 
-            <!-- TEACHER ID -->
+            <!-- TEACHER -->
 
             <input
                 type="text"
@@ -455,10 +452,9 @@
             >
 
 
-            <!-- MODAL BUTTONS -->
+            <!-- ACTIONS -->
 
             <div class="modal-actions">
-
 
                 <button
                     id="cancelAssignmentBtn"
@@ -475,9 +471,7 @@
                     Save Assignment
                 </button>
 
-
             </div>
-
 
         </div>
 
@@ -485,10 +479,15 @@
 
 
     <!-- ========================================
-         JAVASCRIPT
+         API
     ======================================== -->
 
     <script src="../js/api.js"></script>
+
+
+    <!-- ========================================
+         ASSIGNMENTS JS
+    ======================================== -->
 
     <script src="../js/assignments.js"></script>
 

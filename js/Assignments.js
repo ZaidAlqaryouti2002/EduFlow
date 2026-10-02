@@ -1,25 +1,47 @@
 let assignments = [];
 let courses = [];
 
-let totalAssignments = document.getElementById("totalAssignments");
-let totalAssignmentsInfo = document.getElementById("totalAssignmentsInfo");
+let totalAssignments =
+    document.getElementById("totalAssignments");
 
-let pendingAssignments = document.getElementById("pendingAssignments");
-let pendingAssignmentsInfo = document.getElementById("pendingAssignmentsInfo");
+let totalAssignmentsInfo =
+    document.getElementById("totalAssignmentsInfo");
 
-let completedAssignments = document.getElementById("completedAssignments");
-let completedAssignmentsInfo = document.getElementById("completedAssignmentsInfo");
+let pendingAssignments =
+    document.getElementById("pendingAssignments");
 
-let overdueAssignments = document.getElementById("overdueAssignments");
-let overdueAssignmentsInfo = document.getElementById("overdueAssignmentsInfo");
+let pendingAssignmentsInfo =
+    document.getElementById("pendingAssignmentsInfo");
 
-let assignmentsList = document.getElementById("assignmentsList");
+let completedAssignments =
+    document.getElementById("completedAssignments");
 
-let assignmentModal = document.getElementById("assignmentModal");
-let addAssignmentBtn = document.getElementById("addAssignmentBtn");
-let closeAssignmentBtn = document.getElementById("closeAssignmentBtn");
-let cancelAssignmentBtn = document.getElementById("cancelAssignmentBtn");
-let saveAssignmentBtn = document.getElementById("saveAssignmentBtn");
+let completedAssignmentsInfo =
+    document.getElementById("completedAssignmentsInfo");
+
+let overdueAssignments =
+    document.getElementById("overdueAssignments");
+
+let overdueAssignmentsInfo =
+    document.getElementById("overdueAssignmentsInfo");
+
+let assignmentsList =
+    document.getElementById("assignmentsList");
+
+let assignmentModal =
+    document.getElementById("assignmentModal");
+
+let addAssignmentBtn =
+    document.getElementById("addAssignmentBtn");
+
+let closeAssignmentBtn =
+    document.getElementById("closeAssignmentBtn");
+
+let cancelAssignmentBtn =
+    document.getElementById("cancelAssignmentBtn");
+
+let saveAssignmentBtn =
+    document.getElementById("saveAssignmentBtn");
 
 
 // ========================================
@@ -30,11 +52,15 @@ async function loadDashboardData() {
 
     try {
 
-        assignments = await AssignmentsApi.listMine();
-        courses = await CoursesApi.listMine();
+        assignments =
+            await AssignmentsApi.listMine();
+
+        courses =
+            await CoursesApi.listMine();
 
 
         updateStatistics();
+
         displayAssignments();
 
     } catch (error) {
@@ -42,38 +68,61 @@ async function loadDashboardData() {
         console.log(error.message);
 
     }
+
 }
 
 
 // ========================================
-// CHECK IF DATE IS THIS WEEK
+// CHECK IF DUE THIS WEEK
 // ========================================
 
 function isDueThisWeek(date) {
 
-    const today = new Date();
+    const today =
+        new Date();
 
-    const startOfWeek = new Date(today);
+    const startOfWeek =
+        new Date(today);
 
-    const day = today.getDay();
+    const day =
+        today.getDay();
 
-    startOfWeek.setDate(today.getDate() - day);
+    startOfWeek.setDate(
+        today.getDate() - day
+    );
 
-    startOfWeek.setHours(0, 0, 0, 0);
-
-
-    const endOfWeek = new Date(startOfWeek);
-
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-    endOfWeek.setHours(23, 59, 59, 999);
-
-
-    const assignmentDate = new Date(date);
+    startOfWeek.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
 
-    return assignmentDate >= startOfWeek &&
-           assignmentDate <= endOfWeek;
+    const endOfWeek =
+        new Date(startOfWeek);
+
+    endOfWeek.setDate(
+        startOfWeek.getDate() + 6
+    );
+
+    endOfWeek.setHours(
+        23,
+        59,
+        59,
+        999
+    );
+
+
+    const assignmentDate =
+        new Date(date);
+
+
+    return (
+        assignmentDate >= startOfWeek &&
+        assignmentDate <= endOfWeek
+    );
+
 }
 
 
@@ -83,25 +132,40 @@ function isDueThisWeek(date) {
 
 function updateStatistics() {
 
-    let total = assignments.length;
+    let total =
+        assignments.length;
 
     let pending = 0;
+
     let completed = 0;
+
     let overdue = 0;
+
     let dueThisWeek = 0;
 
 
-    for (let i = 0; i < assignments.length; i++) {
+    for (
+        let i = 0;
+        i < assignments.length;
+        i++
+    ) {
 
-        const assignment = assignments[i];
+        const assignment =
+            assignments[i];
 
 
-        if (assignment.status === "pending") {
+        if (
+            assignment.status === "pending"
+        ) {
 
             pending++;
 
 
-            if (isDueThisWeek(assignment.date)) {
+            if (
+                isDueThisWeek(
+                    assignment.date
+                )
+            ) {
 
                 dueThisWeek++;
 
@@ -110,14 +174,18 @@ function updateStatistics() {
         }
 
 
-        if (assignment.status === "completed") {
+        if (
+            assignment.status === "completed"
+        ) {
 
             completed++;
 
         }
 
 
-        if (assignment.status === "overdue") {
+        if (
+            assignment.status === "overdue"
+        ) {
 
             overdue++;
 
@@ -126,7 +194,8 @@ function updateStatistics() {
     }
 
 
-    let totalCourses = courses.length;
+    let totalCourses =
+        courses.length;
 
     let completionRate = 0;
 
@@ -134,12 +203,16 @@ function updateStatistics() {
     if (total > 0) {
 
         completionRate =
-            Math.round((completed / total) * 100);
+            Math.round(
+                (completed / total) * 100
+            );
 
     }
 
 
-    totalAssignments.textContent = total;
+    totalAssignments.textContent =
+        total;
+
 
     totalAssignmentsInfo.textContent =
         totalCourses;
@@ -148,6 +221,7 @@ function updateStatistics() {
     pendingAssignments.textContent =
         pending;
 
+
     pendingAssignmentsInfo.textContent =
         dueThisWeek;
 
@@ -155,12 +229,14 @@ function updateStatistics() {
     completedAssignments.textContent =
         completed;
 
+
     completedAssignmentsInfo.textContent =
         completionRate;
 
 
     overdueAssignments.textContent =
         overdue;
+
 }
 
 
@@ -168,9 +244,12 @@ function updateStatistics() {
 // DISPLAY ASSIGNMENTS
 // ========================================
 
-function displayAssignments(filter = "all") {
+function displayAssignments(
+    filter = "all"
+) {
 
-    let filteredAssignments = assignments;
+    let filteredAssignments =
+        assignments;
 
 
     if (filter !== "all") {
@@ -211,7 +290,11 @@ function displayAssignments(filter = "all") {
     `;
 
 
-    for (let i = 0; i < filteredAssignments.length; i++) {
+    for (
+        let i = 0;
+        i < filteredAssignments.length;
+        i++
+    ) {
 
         const assignment =
             filteredAssignments[i];
@@ -251,6 +334,7 @@ function displayAssignments(filter = "all") {
         `;
 
     }
+
 }
 
 
@@ -262,7 +346,8 @@ function editAssignment(id) {
 
     const assignment =
         assignments.find(
-            assignment => assignment.id === id
+            assignment =>
+                assignment.id === id
         );
 
 
@@ -273,58 +358,65 @@ function editAssignment(id) {
     }
 
 
-    // Put assignment data inside form
-
-    document.getElementById("assignmentTitle").value =
+    document.getElementById(
+        "assignmentTitle"
+    ).value =
         assignment.title;
 
 
-    document.getElementById("assignmentType").value =
+    document.getElementById(
+        "assignmentType"
+    ).value =
         assignment.type;
 
 
-    document.getElementById("assignmentDate").value =
+    document.getElementById(
+        "assignmentDate"
+    ).value =
         assignment.date;
 
 
-    document.getElementById("assignmentMaxScore").value =
+    document.getElementById(
+        "assignmentMaxScore"
+    ).value =
         assignment.maxScore;
 
 
-    document.getElementById("assignmentWeight").value =
+    document.getElementById(
+        "assignmentWeight"
+    ).value =
         assignment.weight;
 
 
-    document.getElementById("assignmentStatus").value =
+    document.getElementById(
+        "assignmentStatus"
+    ).value =
         assignment.status;
 
 
-    document.getElementById("assignmentTeacherId").value =
+    document.getElementById(
+        "assignmentTeacherId"
+    ).value =
         assignment.teacherId;
 
-
-    // Remember which assignment we are editing
 
     assignmentModal.dataset.editingId =
         assignment.id;
 
 
-    // Change modal title
-
-    document.querySelector(".modal-header h3").textContent =
+    document.querySelector(
+        ".modal-header h3"
+    ).textContent =
         "Edit Assignment";
 
-
-    // Change save button
 
     saveAssignmentBtn.textContent =
         "Save Changes";
 
 
-    // Open modal
-
     assignmentModal.style.display =
         "flex";
+
 }
 
 
@@ -333,10 +425,16 @@ function editAssignment(id) {
 // ========================================
 
 const filterButtons =
-    document.querySelectorAll(".highlight button");
+    document.querySelectorAll(
+        ".highlight button"
+    );
 
 
-for (let i = 0; i < filterButtons.length; i++) {
+for (
+    let i = 0;
+    i < filterButtons.length;
+    i++
+) {
 
     filterButtons[i].addEventListener(
         "click",
@@ -381,7 +479,9 @@ assignmentsList.addEventListener(
     function (event) {
 
         const assignmentRow =
-            event.target.closest(".assignment");
+            event.target.closest(
+                ".assignment"
+            );
 
 
         if (!assignmentRow) {
@@ -390,8 +490,6 @@ assignmentsList.addEventListener(
 
         }
 
-
-        // Don't allow the header row to open the modal
 
         if (
             assignmentRow.classList.contains(
@@ -424,12 +522,8 @@ addAssignmentBtn.addEventListener(
     "click",
     function () {
 
-        // Make sure we are in CREATE mode
-
         delete assignmentModal.dataset.editingId;
 
-
-        // Change title
 
         document.querySelector(
             ".modal-header h3"
@@ -437,13 +531,9 @@ addAssignmentBtn.addEventListener(
             "Add Assignment";
 
 
-        // Change button
-
         saveAssignmentBtn.textContent =
             "Save Assignment";
 
-
-        // Clear form
 
         document.getElementById(
             "assignmentTitle"
@@ -452,7 +542,8 @@ addAssignmentBtn.addEventListener(
 
         document.getElementById(
             "assignmentType"
-        ).value = "quiz";
+        ).value =
+            "quiz";
 
 
         document.getElementById(
@@ -472,15 +563,14 @@ addAssignmentBtn.addEventListener(
 
         document.getElementById(
             "assignmentStatus"
-        ).value = "pending";
+        ).value =
+            "pending";
 
 
         document.getElementById(
             "assignmentTeacherId"
         ).value = "";
 
-
-        // Open modal
 
         assignmentModal.style.display =
             "flex";
@@ -520,7 +610,7 @@ cancelAssignmentBtn.addEventListener(
 
 
 // ========================================
-// CLOSE MODAL - CLICK OUTSIDE
+// CLOSE MODAL - OUTSIDE
 // ========================================
 
 assignmentModal.addEventListener(
@@ -598,30 +688,26 @@ saveAssignmentBtn.addEventListener(
 
             type: type,
 
-            maxScore: Number(maxScore),
+            maxScore:
+                Number(maxScore),
 
             status: status,
 
             date: date,
 
-            weight: Number(weight)
+            weight:
+                Number(weight)
 
         };
 
 
         try {
 
-            // Check if we are editing
-
             const editingId =
                 assignmentModal.dataset.editingId;
 
 
             if (editingId) {
-
-                // ==============================
-                // UPDATE EXISTING ASSIGNMENT
-                // ==============================
 
                 await AssignmentsApi.update(
                     editingId,
@@ -630,10 +716,6 @@ saveAssignmentBtn.addEventListener(
 
             } else {
 
-                // ==============================
-                // CREATE NEW ASSIGNMENT
-                // ==============================
-
                 await AssignmentsApi.create(
                     assignmentData
                 );
@@ -641,34 +723,22 @@ saveAssignmentBtn.addEventListener(
             }
 
 
-            // Get fresh data from API
-
             assignments =
                 await AssignmentsApi.list();
 
 
-            // Update statistics
-
             updateStatistics();
 
 
-            // Display assignments again
-
             displayAssignments();
 
-
-            // Close modal
 
             assignmentModal.style.display =
                 "none";
 
 
-            // Reset editing mode
-
             delete assignmentModal.dataset.editingId;
 
-
-            // Reset modal title
 
             document.querySelector(
                 ".modal-header h3"
@@ -676,13 +746,9 @@ saveAssignmentBtn.addEventListener(
                 "Add Assignment";
 
 
-            // Reset button text
-
             saveAssignmentBtn.textContent =
                 "Save Assignment";
 
-
-            // Clear form
 
             document.getElementById(
                 "assignmentTitle"
