@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFlow</title>
+     <link rel="icon" href="../assets/logo.svg" type="image/x-icon"
+</head>
+<body>
+    <section class="pageContainer">
+      <!-- Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+    <main class="main-content">
+     <h1 id="studentName">
+        <!-- when click on the students name on the students page will open student details page 
+        get the name of yhe students based on the finctions in the api.js page and id of the students that clicked on its name -->
+     </h1>
+      <div id="personalCard">
+        <h2>Personal Information </h2>
+        <!-- will display id,email,courses,final grad that calculated in students page 
+        and attendence percent  -->
+      </div>
+      <div id="scores">
+         <h2>Scores</h2>
+         <table border="1">
+            <thead>
+                <tr>
+                <th>Assignment</th>
+                <th>Score</th>
+                <th>Weight</th>
+                </tr>
+            </thead>
+            <!-- will display in row the name of assignmwnt 
+            quize,project,final exam and enter the scores of this an
+             display the weight% based on the calculation in students page  -->
+            <tbody id="scoresBody"></tbody>
+         </table>
+      </div>
+      <div id="attendance">
+        <div id="attendanceList"></div>
+        <!-- display the date of day with day and attendence status based on status enterd on students page -->
+      </div>
+      <div id="feedBack">
+        <h2>Feedback : </h2>
+        <textarea name="feedbackText" id="feedBacktext" placeholder="Write a note or feedback to your student">
+           <!-- write feed back and send it with pop message the feedback was sent -->
+        </textarea>
+        <button id="feedbackBtn"> Save Feedback</button>
+      </div>
+      <button id="back">Back
+        <!-- will back to students page -->
+      </button>
+    </main>
+    </section>
+     <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/studentDetails.js"></script>
+</body>
+</html>

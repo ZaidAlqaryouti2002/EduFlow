@@ -1,0 +1,453 @@
+/* --- Google Fonts & Variables --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-white);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* --- Header --- */
+.header {
+   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    left: 0;
+   background-color: var(--white);
+   z-index: 5;
+   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.logo-tittle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo img {
+    width: 36px;
+    height: 36px;
+}
+
+.title h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.title span {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.nav {
+    display: flex;
+    gap: 32px;
+}
+
+.nav a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+.nav a:hover {
+    color: var(--primary-color);
+}
+
+.userLog {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.userLog a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.userLog button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.userLog button a {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.userLog button:hover {
+    background-color: var(--primary-dark);
+}
+
+/* --- Hero Section --- */
+.heroSection {
+    text-align: center;
+    max-width: 800px;
+    margin: 60px auto 40px;
+    padding: 0 20px;
+}
+
+.heroSection > span:first-child {
+    background-color: #eff6ff;
+    color: var(--primary-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.heroSection h2 {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text-main);
+    margin-bottom: 16px;
+}
+
+.heroSection p {
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.heroSection > span:nth-of-type(2) {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 16px;
+}
+
+.heroSection img {
+    width: 100%;
+    max-width: 900px;
+    border-radius: var(--radius);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    border: 1px solid var(--border-color);
+}
+
+/* --- Features Section --- */
+.Features {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 0 24px;
+    text-align: center;
+}
+
+.Features > span:first-child {
+    color: var(--primary-color);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.Features h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.Features > span:nth-of-type(2) {
+    color: var(--text-muted);
+    font-size: 16px;
+    display: block;
+    margin-bottom: 50px;
+}
+
+.Features div[productCard] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+    text-align: left;
+}
+
+div[cardOfProduct] {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    padding: 32px;
+    border-radius: var(--radius);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+div[cardOfProduct]:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
+}
+
+div[cardOfProduct] img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+div[cardOfProduct] h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+div[cardOfProduct] p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+div[cardOfProduct] a {
+    color: var(--primary-color);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* --- How It Work Section --- */
+.howItWork {
+    background-color: var(--dark-section);
+    color: #ffffff;
+    padding: 100px 24px;
+    text-align: center;
+}
+
+.howItWork > span {
+    color: #60a5fa;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.howItWork h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 60px;
+}
+
+.howItWork-card {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    text-align: left;
+}
+
+.workCard, .howItWork-card .card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: var(--radius);
+}
+
+.howItWork-card h5 {
+    color: #60a5fa;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.howItWork-card h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.howItWork-card p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* --- About & Stats Section --- */
+.about .whiteBack {
+    max-width: 1200px;
+    margin: -40px auto 0;
+    position: relative;
+    z-index: 10;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align: center;
+    box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.05);
+}
+
+.percent h3 {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 6px;
+}
+
+.percent span {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.blueBack {
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 100px 24px;
+    margin-top: -50px;
+    padding-top: 150px;
+}
+
+.blueBack h3 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.blueBack p {
+    font-size: 18px;
+    color: #93c5fd;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.blueBack button {
+    background-color: #ffffff;
+    color: var(--text-main);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.blueBack button:hover {
+    background-color: #f1f5f9;
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: var(--dark-section);
+    color: #ffffff;
+    padding: 80px 24px 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 60px;
+   
+    margin: 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer .section1 p {
+    color: #94a3b8;
+    font-size: 14px;
+    margin: 20px 0;
+    max-width: 300px;
+}
+
+.footer .section1 nav {
+    display: flex;
+    gap: 16px;
+}
+
+.footer .section1 nav a {
+    color: #94a3b8;
+    font-size: 18px;
+    transition: color 0.2s;
+}
+
+.footer .section1 nav a:hover {
+    color: #ffffff;
+}
+
+.footer .section2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.info .span1 {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.info span:not(.span1) {
+    color: #94a3b8;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.info span:not(.span1):hover {
+    color: #ffffff;
+}
+
+/* --- Responsive Media Queries --- */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .nav {
+        gap: 16px;
+    }
+
+    .heroSection h2 {
+        font-size: 32px;
+    }
+
+    .footer {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .footer .section2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
