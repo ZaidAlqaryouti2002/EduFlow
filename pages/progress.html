@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFlow - Progress</title>
+    <link rel="stylesheet" href="/style/layout.css">
+    <link rel="stylesheet" href="/style/progress.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/js/layout.js"></script>
+</head>
+<body data-page="progress">
+
+    <div id="sidebar-container"></div>
+
+    <div id="topbar-container"></div>
+
+    <div class="main">
+        <main class="content">
+            <div class="page-header">
+                <div>
+                    <h1>Academic Progress</h1>
+                    <p>See how each semester contributes to your degree goals.</p>
+                </div>
+                <button class="btn-primary">
+                    <i data-lucide="download"></i> Export Report
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span>Overall completion</span>
+                        <i data-lucide="pie-chart" class="text-blue"></i>
+                    </div>
+                    <h3>80%</h3>
+                    <p>96 of 120 credits</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span>Current GPA</span>
+                        <i data-lucide="award" class="text-purple"></i>
+                    </div>
+                    <h3>3.72</h3>
+                    <p>Cumulative average</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span>Credits completed</span>
+                        <i data-lucide="check-circle" class="text-green"></i>
+                    </div>
+                    <h3>96</h3>
+                    <p>24 courses passed</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span>Credits remaining</span>
+                        <i data-lucide="clock" class="text-orange"></i>
+                    </div>
+                    <h3>24</h3>
+                    <p>Approx. 2 semesters</p>
+                </div>
+            </div>
+
+            <div class="chart-section full-width">
+                <div class="chart-header-row">
+                    <h3>Progress Over Time</h3>
+                    <span class="dropdown-text">Fall 2026 <i data-lucide="chevron-down"></i></span>
+                </div>
+                <p class="subtitle">Current semester · previous semester · overall progress</p>
+                <div class="bar-chart-container">
+                    <div class="bar-wrapper"><div class="bar bg-blue" style="height: 50%;"></div><span>Sep</span></div>
+                    <div class="bar-wrapper"><div class="bar bg-purple" style="height: 60%;"></div><span>Oct</span></div>
+                    <div class="bar-wrapper"><div class="bar bg-blue" style="height: 65%;"></div><span>Nov</span></div>
+                    <div class="bar-wrapper"><div class="bar bg-orange" style="height: 70%;"></div><span>Dec</span></div>
+                    <div class="bar-wrapper"><div class="bar bg-blue" style="height: 80%;"></div><span>Jan</span></div>
+                    <div class="bar-wrapper"><div class="bar bg-green" style="height: 85%;"></div><span>Feb</span></div>
+                </div>
+            </div>
+
+            <div class="charts-grid-2">
+                <div class="chart-section">
+                    <h3>Course Performance</h3>
+                    <div class="bar-chart-container course-bars">
+                        <div class="bar-wrapper"><div class="bar bg-blue" style="height: 90%;"></div><span>DS</span></div>
+                        <div class="bar-wrapper"><div class="bar bg-purple" style="height: 95%;"></div><span>WEB</span></div>
+                        <div class="bar-wrapper"><div class="bar bg-orange" style="height: 75%;"></div><span>DB</span></div>
+                        <div class="bar-wrapper"><div class="bar bg-green" style="height: 80%;"></div><span>SE</span></div>
+                        <div class="bar-wrapper"><div class="bar bg-darkblue" style="height: 70%;"></div><span>NET</span></div>
+                    </div>
+                </div>
+                <div class="chart-section circular-section">
+                    <h3>Credit Completion</h3>
+                    <div class="circular-progress">
+                        <div class="inner-circle">80%</div>
+                    </div>
+                    <div class="badge-blue">96 completed · 24 remaining</div>
+                </div>
+            </div>
+
+            <div class="chart-section full-width table-section">
+                <h3>Semester Performance</h3>
+                <p class="subtitle">Semester · GPA · Credits · Status</p>
+                <div class="semester-table">
+                    <div class="table-row"><span>Fall 2024</span><span>3.48</span><span>16</span><span>COMPLETED</span></div>
+                    <div class="table-row"><span>Spring 2025</span><span>3.61</span><span>18</span><span>COMPLETED</span></div>
+                    <div class="table-row"><span>Fall 2025</span><span>3.68</span><span>17</span><span>COMPLETED</span></div>
+                    <div class="table-row"><span>Spring 2026</span><span>3.72</span><span>17</span><span>IN PROGRESS</span></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/progress.js"></script>
+</body>
+</html>
