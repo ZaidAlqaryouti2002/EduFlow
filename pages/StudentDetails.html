@@ -1,63 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduFlow</title>
-     <link rel="icon" href="../assets/logo.svg" type="image/x-icon"
+
+    <title>Student Details | EduFlow</title>
+
+    <link rel="stylesheet" href="../style/layout.css">
+    <link rel="stylesheet" href="../style/StudentDetails.css">
+     <title>EduFlow</title>
+
+    <link rel="icon" href="../assets/logo.svg" type="image/x-icon">
 </head>
+
 <body>
-    <section class="pageContainer">
-      <!-- Sidebar -->
-    <div id="sidebar-container"></div>
+
+   <div id="sidebar-container"></div>
 
     <!-- Topbar -->
     <div id="topbar-container"></div>
+
+    <!-- Main Content -->
     <main class="main-content">
-     <h1 id="studentName">
-        <!-- when click on the students name on the students page will open student details page 
-        get the name of yhe students based on the finctions in the api.js page and id of the students that clicked on its name -->
-     </h1>
-      <div id="personalCard">
-        <h2>Personal Information </h2>
-        <!-- will display id,email,courses,final grad that calculated in students page 
-        and attendence percent  -->
-      </div>
-      <div id="scores">
-         <h2>Scores</h2>
-         <table border="1">
-            <thead>
-                <tr>
-                <th>Assignment</th>
-                <th>Score</th>
-                <th>Weight</th>
-                </tr>
-            </thead>
-            <!-- will display in row the name of assignmwnt 
-            quize,project,final exam and enter the scores of this an
-             display the weight% based on the calculation in students page  -->
-            <tbody id="scoresBody"></tbody>
-         </table>
-      </div>
-      <div id="attendance">
-        <div id="attendanceList"></div>
-        <!-- display the date of day with day and attendence status based on status enterd on students page -->
-      </div>
-      <div id="feedBack">
-        <h2>Feedback : </h2>
-        <textarea name="feedbackText" id="feedBacktext" placeholder="Write a note or feedback to your student">
-           <!-- write feed back and send it with pop message the feedback was sent -->
-        </textarea>
-        <button id="feedbackBtn"> Save Feedback</button>
-      </div>
-      <button id="back">Back
-        <!-- will back to students page -->
-      </button>
+
+        <div class="page-header">
+            <div>
+                <h1>Student Details</h1>
+                <p>View student information, grades and attendance.</p>
+            </div>
+
+            <a href="Students.html" class="back-btn">
+                ← Back
+            </a>
+        </div>
+
+
+        <!-- Student Information -->
+        <section class="student-card">
+
+            <div class="student-header">
+
+                <div class="student-avatar" id="studentAvatar">
+                    A
+                </div>
+
+                <div>
+                    <h2 id="studentName">Loading...</h2>
+
+                    <p>
+                        ID:
+                        <span id="studentCode">-</span>
+                    </p>
+
+                    <p>
+                        Email:
+                        <span id="studentEmail">-</span>
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Statistics -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <span>Final Grade</span>
+                    <strong id="finalGrade">—</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Letter Grade</span>
+                    <strong id="letterGrade">—</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Attendance</span>
+                    <strong id="attendancePercentage">—</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Scores -->
+        <section class="content-card">
+
+            <div class="section-title">
+                <h2>Scores</h2>
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Assignment</th>
+                            <th>Type</th>
+                            <th>Score</th>
+                            <th>Weight</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="scoresTable">
+                        <tr>
+                            <td colspan="4">
+                                Loading...
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- Attendance -->
+        <section class="content-card">
+
+            <div class="section-title">
+                <h2>Attendance</h2>
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="attendanceTable">
+                        <tr>
+                            <td colspan="2">
+                                Loading...
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- Feedback -->
+        <section class="content-card">
+
+            <div class="section-title">
+                <h2>Feedback</h2>
+            </div>
+
+            <textarea
+                id="feedbackInput"
+                placeholder="Write feedback for this student..."
+                rows="5"></textarea>
+
+            <div class="feedback-actions">
+
+                <button id="saveFeedbackBtn">
+                    Save Feedback
+                </button>
+
+                <span id="feedbackMessage"></span>
+
+            </div>
+
+        </section>
+
     </main>
-    </section>
-     <script src="../js/api.js"></script>
+
+
+    <!-- JavaScript -->
+
+    <script src="../js/api.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/layout.js"></script>
-    <script src="../js/studentDetails.js"></script>
+    <script src="../js/StudentDetails.js"></script>
+
 </body>
+
 </html>

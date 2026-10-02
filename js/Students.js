@@ -22,9 +22,9 @@ const statusFilter =
 const exportStudentsBtn =
     document.getElementById("export");
 
-let allStudents = [];
-
-let editingStudent = null;
+let allStudents = []
+let allAssignments = []
+let editingStudent = null
 
 
 // ==========================================
@@ -94,6 +94,24 @@ async function loadStudents() {
 
 }
 
+// ==========================================
+// LOAD ASSIGNMENTS
+// ==========================================
+
+async function loadAssignments() {
+    try {
+        console.log("Teacher ID for assignments:", teacherId);
+
+        allAssignments = await AssignmentsApi.listMine(String(teacherId));
+
+        console.log("Assignments:", allAssignments);
+        console.log("Assignments count:", allAssignments.length);
+
+    } catch (error) {
+        console.log("Assignments error:", error);
+        allAssignments = [];
+    }
+}
 
 // ==========================================
 // 4. DISPLAY STUDENTS
@@ -158,10 +176,8 @@ function displayStudents(students) {
         // GRADE
         // ==================================
 
-        const grade =
-            calculateCourseGrade(
-                student.scores
-            );
+        const grade = getStudentGrade(student);
+const gradeLetter = grade === null ? "—" : letter(grade);
 
 
         // ==================================
@@ -171,7 +187,9 @@ function displayStudents(students) {
         row.innerHTML = `
 
             <td>
-                ${student.fullName}
+                <a href="StudentDetails.html?id=${student.id}">
+        ${student.fullName}
+    </a>
             </td>
 
 
@@ -232,7 +250,7 @@ function displayStudents(students) {
 
 
             <td>
-                ${grade.letter}
+                ${gradeLetter}
             </td>
 
 
@@ -1212,123 +1230,104 @@ studentsContainer.addEventListener(
 
 
 // ==========================================
-// 16. CALCULATE GRADE
+// 16. GRADE CALCULATION
+// Same calculation used in Grades page
 // ==========================================
 
-function calculateCourseGrade(scores) {
-
-    let total = 0;
-
-    let maxTotal = 0;
-
-
-    Object.values(
-        scores || {}
-    )
-        .forEach(courseScores => {
+const letter = g =>
+    g >= 85 ? "A" :
+    g >= 70 ? "B" :
+    g >= 50 ? "C" :
+    "D/F";
 
 
-            const marks =
-                Object.values(
-                    courseScores
-                );
+function finalGrade(student, teacherId, assignments) {
 
+    // Get this student's scores for this teacher
+    let scores = {};
 
-            const quiz =
-                Number(
-                    marks[0] || 0
-                );
-
-
-            const project =
-                Number(
-                    marks[1] || 0
-                );
-
-
-            const final =
-                Number(
-                    marks[2] || 0
-                );
-
-
-            total +=
-                quiz +
-                project +
-                final;
-
-
-            maxTotal +=
-                10 +
-                50 +
-                100;
-
-        });
-
-
-    if (maxTotal === 0) {
-
-        return {
-
-            percentage: 0,
-
-            letter: "N/A"
-
-        };
-
+    if (student.scores && student.scores[teacherId]) {
+        scores = student.scores[teacherId];
     }
 
+    let earned = 0;
+    let totalWeight = 0;
 
-    const percentage =
-        Math.round(
-            (total / maxTotal) * 100
-        );
+    // Go through every assignment
+    for (const assignment of assignments) {
 
+        const score = scores[assignment.id];
 
-    let letter;
+        const hasScore =
+            score !== undefined &&
+            score !== null &&
+            score !== "";
 
+        // Only calculate assignments that have a score
+        if (hasScore) {
 
-    if (percentage >= 90) {
+            const percentage =
+                score / assignment.maxScore;
 
-        letter = "A";
+            const contribution =
+                percentage * assignment.weight;
 
+            earned =
+                earned + contribution;
+
+            totalWeight =
+                totalWeight + assignment.weight;
+        }
     }
 
-    else if (percentage >= 80) {
-
-        letter = "B";
-
+    // No scores
+    if (totalWeight === 0) {
+        return null;
     }
 
-    else if (percentage >= 70) {
+    const finalPercent =
+        (earned / totalWeight) * 100;
 
-        letter = "C";
-
-    }
-
-    else if (percentage >= 60) {
-
-        letter = "D";
-
-    }
-
-    else {
-
-        letter = "F";
-
-    }
-
-
-    return {
-
-        percentage,
-
-        letter
-
-    };
-
+    return Number(
+        finalPercent.toFixed(1)
+    );
 }
 
+
+function getStudentGrade(student) {
+
+    return finalGrade(
+        student,
+        teacherId,
+        allAssignments
+    );
+}
+
+
+function getStudentLetter(student) {
+
+    const grade =
+        getStudentGrade(student);
+
+    if (grade === null) {
+        return "—";
+    }
+
+    return letter(grade);
+}
+
+
+
+
+        
+          
+       
+     
+       
+
+       
+
+      
 
 // ==========================================
 // 17. ATTENDANCE PERCENTAGE
@@ -1411,26 +1410,27 @@ function getActiveStudents() {
 // 19. STUDENTS NEED MONITORING
 // ==========================================
 
+
+// ==========================================
+// 19. STUDENTS NEED MONITORING
+// ==========================================
+
 function getStudentsNeedMonitoring() {
 
-    return allStudents.filter(
+    return getActiveStudents().filter(
         student => {
 
-
             const grade =
-                calculateCourseGrade(
-                    student.scores
-                );
-
+                getStudentGrade(student);
 
             return (
-                grade.percentage < 50
+                grade !== null &&
+                grade < 50
             );
-
         }
     );
-
 }
+
 
 
 // ==========================================
@@ -1439,53 +1439,38 @@ function getStudentsNeedMonitoring() {
 
 function calculateClassAverage() {
 
-    let total = 0;
+    const activeStudents =
+        getActiveStudents();
 
+    let total = 0;
     let studentsWithGrades = 0;
 
+    activeStudents.forEach(student => {
 
-    allStudents.forEach(
-        student => {
+        const grade =
+            getStudentGrade(student);
 
+        if (grade !== null) {
 
-            const grade =
-                calculateCourseGrade(
-                    student.scores
-                );
-
-
-            if (
-                Object.keys(
-                    student.scores || {}
-                ).length > 0
-            ) {
-
-                total +=
-                    grade.percentage;
-
-                studentsWithGrades++;
-
-            }
-
+            total += grade;
+            studentsWithGrades++;
         }
-    );
+    });
 
-
-    if (
-        studentsWithGrades === 0
-    ) {
-
+    if (studentsWithGrades === 0) {
         return 0;
-
     }
 
-
-    return Math.round(
-        total /
-        studentsWithGrades
+    return Number(
+        (
+            total /
+            studentsWithGrades
+        ).toFixed(1)
     );
-
 }
+
+
+
 
 
 // ==========================================
@@ -1623,10 +1608,8 @@ exportStudentsBtn.addEventListener(
             student => {
 
 
-                const grade =
-                    calculateCourseGrade(
-                        student.scores
-                    );
+               const grade = getStudentGrade(student);
+                const gradeLetter = grade === null ? "—" : letter(grade);
 
 
                 const courses =
@@ -1646,7 +1629,7 @@ exportStudentsBtn.addEventListener(
 
                     `"${courses}",` +
 
-                    `"${grade.letter}"\n`;
+                    `${gradeLetter}\n`
 
             }
         );
@@ -1738,6 +1721,10 @@ function showToast(message) {
 // 24. START PAGE
 // ==========================================
 
-loadStudents();
+async function startPage() {
+    await loadAssignments();
+    await loadStudents();
+    await loadCourses();
+}
 
-loadCourses();
+startPage();
