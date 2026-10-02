@@ -378,7 +378,7 @@ saveAssignmentBtn.addEventListener("click", async function () {
             await AssignmentsApi.create(assignmentData);
         }
 
-        assignments = await AssignmentsApi.list();
+        assignments = await AssignmentsApi.listMine(teacherId);
 
         updateStatistics();
 
