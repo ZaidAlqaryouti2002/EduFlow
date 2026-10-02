@@ -14,15 +14,10 @@ body {
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-
-    color: #292940;
-
-    background-color: var(--bg-page, #fbfcfe);
-
+    background-color: var(--bg);
+    font-family: "Inter", sans-serif;
     overflow-x: hidden;
 }
-
 
 /* =========================================================
    ASSIGNMENTS MAIN  (selector covers any <main>, even without the class)
@@ -33,20 +28,15 @@ body {
    for the moment before the script runs).
    ========================================================= */
 
-main,
 .assignments-main {
     margin-left: var(--fit-sidebar-w, 230px);
 
     min-height: 100vh;
-
     padding-top: calc(var(--fit-topbar-h, 72px) + 8px);
     padding-left: 28px;
     padding-right: 28px;
     padding-bottom: 30px;
-
-    background-color: var(--bg-page, #fbfcfe);
 }
-
 
 /* =========================================================
    MAIN HEADER
@@ -69,19 +59,14 @@ main,
 
     font-weight: 700;
 
-    color: #292940;
-
     margin-bottom: 6px;
 }
 
 .main-header small {
     display: block;
-
     font-size: 14px;
-
-    color: #77778a;
+    color: var(--muted);
 }
-
 
 /* =========================================================
    ADD ASSIGNMENT BUTTON
@@ -139,7 +124,6 @@ main,
     object-fit: contain;
 }
 
-
 /* =========================================================
    STATISTICS CARDS
    ========================================================= */
@@ -147,8 +131,7 @@ main,
 .main-cards {
     display: grid;
 
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 
     gap: 18px;
 
@@ -164,10 +147,9 @@ main,
 
     border-radius: 12px;
 
-    background-color: var(--bg-surface, #ffffff);
+    background-color: var(--surface, #ffffff);
 
-    box-shadow:
-        0 2px 8px rgba(41, 41, 64, 0.04);
+    box-shadow: 0 2px 8px rgba(41, 41, 64, 0.04);
 }
 
 .card-header {
@@ -187,15 +169,11 @@ main,
 
     font-weight: 600;
 
-    color: #666679;
+    color: var(--muted);
 }
 
-.card-header img {
-    width: 20px;
-
-    height: 20px;
-
-    object-fit: contain;
+.card-header .icon {
+    color: var(--muted);
 }
 
 .stat-card > p {
@@ -205,7 +183,7 @@ main,
 
     font-weight: 700;
 
-    color: #292940;
+    color: var(--ink);
 
     margin-bottom: 10px;
 }
@@ -213,15 +191,13 @@ main,
 .stat-card > small {
     font-size: 13px;
 
-    color: #858597;
+    color: var(--muted);
 }
 
 .stat-card > small span {
     font-weight: 600;
-
-    color: #292940;
+    color: var(--ink);
 }
-
 
 /* =========================================================
    ASSIGNMENT SECTION
@@ -248,7 +224,7 @@ main,
 
     border-radius: 9px;
 
-    background-color: var(--bg-surface, #ffffff);
+    background-color: var(--surface);
 }
 
 .highlight button {
@@ -262,7 +238,7 @@ main,
 
     background-color: transparent;
 
-    color: #6f6f82;
+    color: var(--muted);
 
     font-size: 13px;
 
@@ -276,17 +252,13 @@ main,
 }
 
 .highlight button:hover {
-    background-color: #f5f5f8;
-
-    color: #292940;
+    background-color: var(--surface-hover);
 }
 
 .highlight button.active {
     background-color: #1572fe;
-
     color: #ffffff;
 }
-
 
 /* =========================================================
    ASSIGNMENT LIST
@@ -297,14 +269,13 @@ main,
 
     padding: 20px;
 
-    border: 1px solid var(--border, #e8e8ef);
+    border: 1px solid var(--border);
 
     border-radius: 12px;
 
-    background-color: var(--bg-surface, #ffffff);
+    background-color: var(--surface);
 
-    box-shadow:
-        0 2px 8px rgba(41, 41, 64, 0.04);
+    box-shadow: 0 2px 8px rgba(41, 41, 64, 0.04);
 
     overflow-x: auto;
 }
@@ -316,9 +287,8 @@ main,
 
     font-weight: 700;
 
-    color: #292940;
+    color: var(--ink);
 }
-
 
 /* =========================================================
    ASSIGNMENT ROW
@@ -342,12 +312,12 @@ main,
 
     padding: 0 14px;
 
-    border-bottom: 1px solid #eeeeF2;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--bg);
 
     cursor: pointer;
 
-    transition:
-        background-color 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 .assignment:last-child {
@@ -355,7 +325,7 @@ main,
 }
 
 .assignment:not(.assignment-header):hover {
-    background-color: #fafafa;
+    background-color: var(--surface);
 }
 
 .assignment p {
@@ -363,7 +333,7 @@ main,
 
     font-size: 13px;
 
-    color: #666679;
+    color: var(--ink);
 
     overflow: hidden;
 
@@ -377,9 +347,8 @@ main,
 
     font-weight: 600;
 
-    color: #292940;
+    color: var(--ink);
 }
-
 
 /* =========================================================
    ASSIGNMENT HEADER
@@ -390,13 +359,9 @@ main,
 
     cursor: default;
 
-    border-bottom: 1px solid #e5e5eb;
+    border-bottom: 1px solid var(--border);
 
-    background-color: #fafafd;
-}
-
-.assignment-header:hover {
-    background-color: #fafafd;
+    background-color: var(--surface-hover);
 }
 
 .assignment-header p {
@@ -408,7 +373,6 @@ main,
 
     text-transform: uppercase;
 }
-
 
 /* =========================================================
    STATUS
@@ -429,35 +393,30 @@ main,
 
     font-size: 11px;
 
-    font-weight: 600;
+    font-weight: 700;
 
-    text-transform: capitalize;
+    text-transform: uppercase;
 }
 
 .status.pending {
-    background-color: #f5edff;
-
-    color: #7a3fc4;
+    color: var(--orange);
+    background: rgba(245, 158, 11, 0.1);
 }
 
 .status.in-progress {
-    background-color: #f1f7ff;
-
-    color: #1572fe;
+    color: var(--blue);
+    background: rgba(59, 130, 246, 0.1);
 }
 
 .status.completed {
-    background-color: #e8f8ef;
-
-    color: #25a65a;
+    color: var(--green);
+    background: rgba(22, 163, 74, 0.1);
 }
 
 .status.overdue {
-    background-color: #fdecec;
-
-    color: #d64545;
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
 }
-
 
 /* =========================================================
    MODAL OVERLAY
@@ -481,7 +440,6 @@ main,
     background-color: rgba(41, 41, 64, 0.45);
 }
 
-
 /* =========================================================
    ADD / EDIT ASSIGNMENT FORM
    ========================================================= */
@@ -497,14 +455,12 @@ main,
 
     border-radius: 12px;
 
-    background-color: #ffffff;
+    background-color: var(--surface);
 
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 
     overflow-y: auto;
 }
-
 
 /* =========================================================
    MODAL HEADER
@@ -526,8 +482,6 @@ main,
     font-size: 20px;
 
     font-weight: 700;
-
-    color: #292940;
 }
 
 .modal-header button {
@@ -545,9 +499,9 @@ main,
 
     border-radius: 6px;
 
-    background-color: #f5f5f7;
+    background-color: transparent;
 
-    color: #555568;
+    color: var(--muted);
 
     font-size: 22px;
 
@@ -561,11 +515,8 @@ main,
 }
 
 .modal-header button:hover {
-    background-color: #eeeeF2;
-
-    color: #292940;
+    background-color: var(--surface-hover);
 }
-
 
 /* =========================================================
    FORM INPUTS
@@ -583,17 +534,17 @@ main,
 
     padding: 0 12px;
 
-    border: 1px solid #ddddE5;
+    border: 1px solid var(--border);
 
     border-radius: 7px;
 
     outline: none;
 
-    background-color: #ffffff;
+    background-color: var(--surface);
 
-    color: #292940;
+    color: var(--ink);
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: inherit;
 
     font-size: 14px;
 
@@ -608,12 +559,10 @@ main,
 
 .add-assignment-form input:focus,
 .add-assignment-form select:focus {
-    border-color: #1572fe;
+    border-color: var(--primary);
 
-    box-shadow:
-        0 0 0 3px rgba(21, 114, 254, 0.10);
+    box-shadow: 0 0 0 3px rgba(21, 114, 254, 0.1);
 }
-
 
 /* =========================================================
    MODAL ACTIONS
@@ -652,27 +601,24 @@ main,
 }
 
 #cancelAssignmentBtn {
-    background-color: #f1f1f4;
+    background-color: var(--surface-hover);
 
-    color: #555568;
+    color: var(--muted);
 }
 
 #cancelAssignmentBtn:hover {
-    background-color: #e6e6eb;
+    background-color: var(--bg);
 }
 
 #saveAssignmentBtn {
-    background-color: #1572fe;
-
-    color: #ffffff;
+    background-color: var(--primary);
 }
 
 #saveAssignmentBtn:hover {
-    background-color: #0f5fd6;
+    background-color: var(--primary-hover);
 
     transform: translateY(-1px);
 }
-
 
 /* =========================================================
    TABLET
@@ -681,26 +627,21 @@ main,
    ========================================================= */
 
 @media (max-width: 1024px) {
-
     main,
     .assignments-main {
         margin-left: 0;
     }
 
     .main-cards {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
 }
-
 
 /* =========================================================
    900px
    ========================================================= */
 
 @media (max-width: 900px) {
-
     main,
     .assignments-main {
         padding-left: 22px;
@@ -724,16 +665,13 @@ main,
             1fr
             1.1fr;
     }
-
 }
-
 
 /* =========================================================
    700px
    ========================================================= */
 
 @media (max-width: 700px) {
-
     main,
     .assignments-main {
         padding-left: 18px;
@@ -778,16 +716,13 @@ main,
     .assignment-list {
         padding: 16px;
     }
-
 }
-
 
 /* =========================================================
    550px
    ========================================================= */
 
 @media (max-width: 550px) {
-
     main,
     .assignments-main {
         padding-left: 14px;
@@ -836,16 +771,13 @@ main,
     .modal-actions button {
         width: 100%;
     }
-
 }
-
 
 /* =========================================================
    380px
    ========================================================= */
 
 @media (max-width: 380px) {
-
     main,
     .assignments-main {
         padding-left: 10px;
@@ -874,5 +806,4 @@ main,
     .add-assignment-form {
         padding: 16px;
     }
-
 }
