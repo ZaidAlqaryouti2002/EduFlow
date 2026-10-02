@@ -140,7 +140,7 @@ function requireLogin() {
 
   if (!teacherId) {
 
-    location.replace("index.html");
+    location.replace("Login.html");
 
     return null;
   }
