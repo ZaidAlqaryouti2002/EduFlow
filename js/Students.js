@@ -1,8 +1,12 @@
+
 const teacherId = getTeacherId();
+console.log("Teacher ID:", teacherId);
+console.log("localStorage:", localStorage);
+console.log("sessionStorage:", sessionStorage);
 
 const addStudentBtn = document.getElementById("addStudentsBtn")
 console.log("Teacher ID:", teacherId);
-if (!teacherId) { location.replace("Login.html"); }
+
 const studentsContainer = document.getElementById("studentsContainer")
 let allStudents = [];
 const exportStudentsBtn = document.getElementById("export");
@@ -76,7 +80,7 @@ const todayAttendance =
     const grade = calculateCourseGrade(std.scores);
     row.innerHTML = `
         <td>${std.fullName}</td>
-        <td>${std.studentCode}</td>
+        <td>${std.id}</td>
         <td>
         <select class="attendance-select" data-id="${std.id}">
          <option value="Present" ${todayAttendance === "Present" ? "selected" : ""}>
@@ -126,7 +130,7 @@ searchInput.addEventListener("input",()=>{
     const findStudent = allStudents.filter(std => 
         {
             const name = String(std.fullName || "") .toLowerCase();
-    const code = String(std.studentCode || "") .toLowerCase();
+    const code = String(std.id|| "") .toLowerCase();
     return ( name.includes(value) || code.includes(value) );
 })
 displayStudentsInHtml(findStudent);
@@ -168,22 +172,45 @@ courseFilter.addEventListener("change",function(){
 })
 
 //students status ==========================================================
-const statusFilter = document.getElementById("statusFilter")
-statusFilter.addEventListener("change",()=>{
-    const selectedStatus = statusFilter.value
-    let displayStudent
-    if (selectedStatus === "active"){
-        displayStudent = allStudents.filter(std =>{
-           return !(std.archivedBy || []).map(String).includes(String(teacherId))
-        })
+// students status ==========================================================
+
+function filterStudents() {
+
+    const selectedStatus = statusFilter.value;
+
+    // ALL
+    if (selectedStatus === "all") {
+        displayStudentsInHtml(allStudents);
+        return;
     }
-    else{
-        displayStudent=allStudents.filter(std=>{
-            return(std.archivedBy || []).map(String).includes(String(teacherId))
-        })
+
+    // ACTIVE
+    if (selectedStatus === "active") {
+
+        const activeStudents = allStudents.filter(student =>
+            !(student.archivedBy || [])
+                .map(String)
+                .includes(String(teacherId))
+        );
+
+        displayStudentsInHtml(activeStudents);
+        return;
     }
-    displayStudentsInHtml(displayStudent)
-})
+
+    // ARCHIVED
+    if (selectedStatus === "archived") {
+
+        const archivedStudents = allStudents.filter(student =>
+            (student.archivedBy || [])
+                .map(String)
+                .includes(String(teacherId))
+        );
+
+        displayStudentsInHtml(archivedStudents);
+    }
+}
+
+statusFilter.addEventListener("change", filterStudents);
 //add new student ========================================================================================
 
 
@@ -275,10 +302,9 @@ function createStudentForm(student = null) {
         </div>
     `;
 
-
     document.body.appendChild(formBox);
 
-
+document.querySelector("#studentFormBox").style.marginLeft = "250px";
     // submit
     document
         .getElementById("studentForm")
@@ -388,8 +414,6 @@ async function saveStudent(event) {
 
             const result =
                 await StudentsApi.create(newStudent);
-
-
             allStudents.push(result);
             updateDashboardStats()
 
@@ -441,19 +465,49 @@ addStudentBtn.addEventListener("click", function () {
     //archive student ========================================================================================
  
 async function archiveStudent(student) {
-     let archivedBy = student.archivedBy || []
-      const isArchived = archivedBy .map(String) .includes(String(teacherId))
-       if (isArchived) { 
-      archivedBy = archivedBy.filter( id => String(id) !== String(teacherId) ) 
-    } else 
-        {  archivedBy.push( String(teacherId) ) } 
-        try { 
-            const updatedStudent = await StudentsApi.update( student.id, { ...student, archivedBy: archivedBy } )
-             const index = allStudents.findIndex( item => String(item.id) === String(student.id) ); allStudents[index] = updatedStudent
-              displayStudentsInHtml(allStudents)} 
-              catch (error) {
-                 alert(error.message);
-                } }
+
+    let archivedBy = student.archivedBy || [];
+
+    const isArchived = archivedBy
+        .map(String)
+        .includes(String(teacherId));
+
+    if (isArchived) {
+
+        archivedBy = archivedBy.filter(
+            id => String(id) !== String(teacherId)
+        );
+
+    } else {
+
+        archivedBy.push(String(teacherId));
+
+    }
+
+    try {
+
+        const updatedStudent = await StudentsApi.update(
+            student.id,
+            {
+                ...student,
+                archivedBy: archivedBy
+            }
+        );
+
+        const index = allStudents.findIndex(
+            item => String(item.id) === String(student.id)
+        );
+
+        allStudents[index] = updatedStudent;
+
+        filterStudents();
+
+    } catch (error) {
+
+        alert(error.message);
+
+    }
+}
     //delete student ========================================================================================
 async function deleteStudent(student) {
      const confirmDelete = confirm( `Delete ${student.fullName}?` )
