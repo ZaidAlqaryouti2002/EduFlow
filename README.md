@@ -43,7 +43,6 @@ EduFlow/
 ├── pages/           # HTML views (Login, Dashboard, Students, etc.)
 ├── Screenshots/     # UI preview captures
 ├── style/           # Stylesheets (layout.css, courses.css, etc.)
-├── index.html       # Deployment entry & redirect
 └── README.md        # Documentation
 ```
 
