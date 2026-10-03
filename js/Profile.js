@@ -557,6 +557,7 @@ function showFormMessage(message, type) {
 // Open password modal
 
 changePasswordBtn.addEventListener("click", function () {
+
     passwordForm.reset();
 
     passwordMessage.textContent = "";
@@ -566,88 +567,272 @@ changePasswordBtn.addEventListener("click", function () {
     passwordModal.classList.add("show");
 });
 
-// Close password modal
+
+// =========================================================
+// CLOSE PASSWORD MODAL
+// =========================================================
 
 function closePasswordModal() {
+
     passwordModal.classList.remove("show");
 }
 
-closePasswordModalBtn.addEventListener("click", closePasswordModal);
+closePasswordModalBtn.addEventListener(
+    "click",
+    closePasswordModal
+);
 
-cancelPasswordBtn.addEventListener("click", closePasswordModal);
+cancelPasswordBtn.addEventListener(
+    "click",
+    closePasswordModal
+);
+
 
 // =========================================================
 // CLOSE PASSWORD MODAL WHEN CLICKING OUTSIDE
 // =========================================================
 
-passwordModal.addEventListener("click", function (event) {
-    if (event.target === passwordModal) {
-        closePasswordModal();
+passwordModal.addEventListener(
+    "click",
+    function (event) {
+
+        if (event.target === passwordModal) {
+
+            closePasswordModal();
+        }
     }
-});
+);
+
 
 // =========================================================
 // PASSWORD FORM
 // =========================================================
 
-passwordForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+passwordForm.addEventListener(
+    "submit",
+    async function (event) {
 
-    const currentPassword = document.getElementById("currentPassword").value;
+        event.preventDefault();
 
-    const newPassword = document.getElementById("newPassword").value;
 
-    const confirmPassword = document.getElementById("confirmPassword").value;
+        // -----------------------------------------
+        // Get values
+        // -----------------------------------------
 
-    // -----------------------------------------
-    // Current password
-    // -----------------------------------------
+        const currentPassword =
+            document
+                .getElementById("currentPassword")
+                .value;
 
-    if (!currentPassword) {
-        passwordMessage.textContent = "Current password is required.";
+        const newPassword =
+            document
+                .getElementById("newPassword")
+                .value;
 
-        passwordMessage.className = "form-message error";
+        const confirmPassword =
+            document
+                .getElementById("confirmPassword")
+                .value;
 
-        return;
+
+        // -----------------------------------------
+        // Current password required
+        // -----------------------------------------
+
+        if (!currentPassword) {
+
+            passwordMessage.textContent =
+                "Current password is required.";
+
+            passwordMessage.className =
+                "form-message error";
+
+            return;
+        }
+
+
+        // -----------------------------------------
+        // New password required
+        // -----------------------------------------
+
+        if (!newPassword) {
+
+            passwordMessage.textContent =
+                "New password is required.";
+
+            passwordMessage.className =
+                "form-message error";
+
+            return;
+        }
+
+
+        // -----------------------------------------
+        // Password length
+        // -----------------------------------------
+
+        if (newPassword.length < 6) {
+
+            passwordMessage.textContent =
+                "Password must be at least 6 characters.";
+
+            passwordMessage.className =
+                "form-message error";
+
+            return;
+        }
+
+
+        // -----------------------------------------
+        // Confirm password
+        // -----------------------------------------
+
+        if (newPassword !== confirmPassword) {
+
+            passwordMessage.textContent =
+                "Passwords do not match.";
+
+            passwordMessage.className =
+                "form-message error";
+
+            return;
+        }
+
+
+        // -----------------------------------------
+        // Make sure teacher exists
+        // -----------------------------------------
+
+        if (!teacher) {
+
+            passwordMessage.textContent =
+                "Profile is still loading. Please try again.";
+
+            passwordMessage.className =
+                "form-message error";
+
+            return;
+        }
+
+
+        try {
+
+            // -----------------------------------------
+            // Show loading message
+            // -----------------------------------------
+
+            passwordMessage.textContent =
+                "Checking current password...";
+
+            passwordMessage.className =
+                "form-message";
+
+
+            // -----------------------------------------
+            // Hash current password
+            // -----------------------------------------
+
+            const currentPasswordHash =
+                await hashPassword(currentPassword);
+
+
+            // -----------------------------------------
+            // Check current password
+            // -----------------------------------------
+
+            if (
+                teacher.passwordHash !==
+                currentPasswordHash
+            ) {
+
+                passwordMessage.textContent =
+                    "Current password is incorrect.";
+
+                passwordMessage.className =
+                    "form-message error";
+
+                return;
+            }
+
+
+            // -----------------------------------------
+            // Hash new password
+            // -----------------------------------------
+
+            passwordMessage.textContent =
+                "Updating password...";
+
+            const newPasswordHash =
+                await hashPassword(newPassword);
+
+
+            // -----------------------------------------
+            // Create updated teacher
+            // -----------------------------------------
+
+            const updatedTeacher = {
+
+                ...teacher,
+
+                passwordHash: newPasswordHash
+            };
+
+
+            // -----------------------------------------
+            // Update teacher in MockAPI
+            // -----------------------------------------
+
+            teacher =
+                await TeachersApi.update(
+                    teacher.id,
+                    updatedTeacher
+                );
+
+
+            // -----------------------------------------
+            // Success
+            // -----------------------------------------
+
+            passwordMessage.textContent =
+                "Password changed successfully.";
+
+            passwordMessage.className =
+                "form-message success";
+
+
+            // -----------------------------------------
+            // Clear form
+            // -----------------------------------------
+
+            passwordForm.reset();
+
+
+            // -----------------------------------------
+            // Close modal
+            // -----------------------------------------
+
+            setTimeout(function () {
+
+                closePasswordModal();
+
+            }, 1000);
+
+
+        } catch (error) {
+
+            console.error(
+                "Error changing password:",
+                error
+            );
+
+            passwordMessage.textContent =
+                "Could not change password. Please try again.";
+
+            passwordMessage.className =
+                "form-message error";
+        }
     }
-
-    // -----------------------------------------
-    // Password length
-    // -----------------------------------------
-
-    if (newPassword.length < 8) {
-        passwordMessage.textContent = "Password must be at least 8 characters.";
-
-        passwordMessage.className = "form-message error";
-
-        return;
-    }
-
-    // -----------------------------------------
-    // Password confirmation
-    // -----------------------------------------
-
-    if (newPassword !== confirmPassword) {
-        passwordMessage.textContent = "Passwords do not match.";
-
-        passwordMessage.className = "form-message error";
-
-        return;
-    }
-
-    /*
-     * Password backend logic will
-     * be connected later.
-     */
-
-    passwordMessage.textContent = "Password changed successfully.";
-
-    passwordMessage.className = "form-message success";
-
-    setTimeout(function () {
-        closePasswordModal();
-    }, 1000);
-});
+);
 
 // =========================================================
 // LANGUAGE SETTINGS
