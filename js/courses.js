@@ -7,7 +7,7 @@ const courseNameInput = document.getElementById("course-name");
 const courseCodeInput = document.getElementById("course-code");
 const coursesContainer = document.getElementById("courses-container");
 
-// جلب معرّف المعلم والمهام لحساب التقدم
+// Hydrate from localStorage to avoid a blank UI flash while the API loads
 let assignments = [];
 let courses = JSON.parse(localStorage.getItem("edutrack_courses")) || [];
 
@@ -23,9 +23,8 @@ const closeModal = () => {
 const renderCourses = () => {
     coursesContainer.innerHTML = "";
 
-    // ==========================================
-    // حساب نسبة التقدم العامة بناءً على المهام
-    // ==========================================
+    // TODO: The API currently doesn't map assignments to specific courses.
+    // Hack: We're rendering a global progress average across all cards for now.
     let globalProgress = 0;
     if (assignments.length > 0) {
         const completed = assignments.filter(a => a.status === "completed").length;
@@ -33,7 +32,7 @@ const renderCourses = () => {
     }
 
     courses.forEach((course) => {
-        // إذا كان لديك courseId داخل المهام مستقبلاً، فعّل هذا الكود لحساب نسبة كل كورس بشكل مستقل:
+        // TODO: Swap to this per-course logic once the backend includes `courseId` in the assignment payload
         /*
         let courseAssignments = assignments.filter(a => String(a.courseId) === String(course.id));
         let courseProgress = 0;
@@ -44,11 +43,13 @@ const renderCourses = () => {
         let currentProgress = courseProgress; 
         */
         
-        let currentProgress = globalProgress; // حالياً نعتمد على التقدم العام
+        let currentProgress = globalProgress; 
 
         const card = document.createElement("div");
         card.classList.add("course-card");
 
+        // Note: Using innerHTML here is safe enough since we trust the mock API, 
+        // but keep an eye on XSS if we start allowing un-sanitized user inputs for course names.
         card.innerHTML = `
             <div class="card-header">
                 <div class="course-icon"><i data-lucide="book"></i></div>
@@ -81,6 +82,7 @@ const renderCourses = () => {
         coursesContainer.appendChild(card);
     });
 
+    // Re-initialize icons for the newly injected DOM nodes
     if (window.lucide) {
         lucide.createIcons();
     }
@@ -89,20 +91,20 @@ const renderCourses = () => {
 const courses_API = "https://6abd87975121d616d90ceedd.mockapi.io/api/courses";
 
 const fetchCoursesAPI = async () => {
-    // 1. محاولة جلب المهام لحساب التقدم (مفصولة بـ try/catch لحالها عشان ما توقف الكورسات)
+    // Fetch assignments independently. If it throws, we catch it silently so it doesn't nuke the whole course view.
     try {
         if (typeof AssignmentsApi !== "undefined") {
             assignments = await AssignmentsApi.listMine(teacherId);
         }
     } catch (err) {
-        console.warn("لم نتمكن من جلب المهام، سيتم عرض التقدم كـ 0%", err);
+        console.warn("Failed to fetch assignments, defaulting to 0% progress", err);
     }
 
-    // 2. جلب بيانات الكورسات الأساسية
     try {
         const response = await fetch(courses_API);
         const data = await response.json();
 
+        // Normalize the payload. The mock API is inconsistent and sometimes sends `title` instead of `name`.
         const formattedData = data.map((item) => ({
             id: item.id,
             name: item.title || item.name,
@@ -115,7 +117,7 @@ const fetchCoursesAPI = async () => {
         renderCourses();
     } catch (error) {
         console.error("Error loading courses:", error);
-        // إذا فشل النت، ارسم الكورسات القديمة المخزنة
+        // Graceful degradation: render stale cached data if the network drops
         renderCourses();
     }
 };
@@ -126,8 +128,10 @@ courseForm.addEventListener("submit", async (event) => {
     const nameValue = courseNameInput.value.trim();
     const codeValue = courseCodeInput.value.trim();
 
+    // Bail early on empty inputs
     if (nameValue === "" || codeValue === "") return;
 
+    // Enforce unique names client-side to prevent UI clutter
     const isDuplicate = courses.some(
         (course) => course.name.toLowerCase() === nameValue.toLowerCase(),
     );
@@ -153,6 +157,7 @@ courseForm.addEventListener("submit", async (event) => {
 
         const savedCourse = await response.json();
 
+        // Normalize response again to match our local state shape
         const formattedNewCourse = {
             id: savedCourse.id,
             name: savedCourse.title || savedCourse.name,
@@ -171,6 +176,7 @@ courseForm.addEventListener("submit", async (event) => {
     }
 });
 
+// Event delegation: Attach listener to the parent container since course cards are dynamically destroyed/created
 coursesContainer.addEventListener("click", async (event) => {
     const deleteBtn = event.target.closest(".delete-course-btn");
 
@@ -180,6 +186,7 @@ coursesContainer.addEventListener("click", async (event) => {
         const confirmDelete = confirm("Are you sure you want to delete this course?");
         if (!confirmDelete) return;
 
+        // Lock the UI immediately to prevent double-click deletion spam while network is pending
         deleteBtn.style.opacity = "0.5";
         deleteBtn.disabled = true;
 
@@ -210,6 +217,7 @@ closeModalBtn.addEventListener("click", closeModal);
 cancelModalBtn.addEventListener("click", closeModal);
 
 modalOverlay.addEventListener("click", (event) => {
+    // Only close if they clicked the backdrop, not the modal content itself
     if (event.target === modalOverlay) {
         closeModal();
     }

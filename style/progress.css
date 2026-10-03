@@ -1,3 +1,7 @@
+/*
+ * Progress Table View Styles
+ */
+
 .page-header {
     margin-bottom: 32px;
 }
@@ -8,6 +12,10 @@
     color: var(--ink);
 }
 
+/* 
+ * Wrapper handles horizontal overflow so the table doesn't blow out 
+ * the main layout on narrower viewports. 
+ */
 .table-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -34,14 +42,17 @@
     font-size: 13px;
     font-weight: 600;
     color: var(--ink);
-    white-space: nowrap;
+    white-space: nowrap; /* Prevent ugly wrapping on long column headers */
 }
 
 .progress-table tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* التنسيقات التالية ستُطبق تلقائياً على العناصر التي ستضيفها عبر الـ JS */
+/* 
+ * Hydration Targets 
+ * These classes are applied to DOM nodes dynamically injected by progress.js 
+ */
 .student-name {
     font-size: 14px;
     font-weight: 500;
@@ -72,6 +83,10 @@
     background-color: rgba(214, 60, 60, 0.05);
 }
 
+/* 
+ * Nuke the native number input arrows (spinners) across all browsers. 
+ * They clutter the compact table UI and users just type the numbers anyway.
+ */
 .grade-input::-webkit-outer-spin-button,
 .grade-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -83,6 +98,7 @@
     -moz-appearance: textfield;
 }
 
+/* TODO: These badges belong in a global ui.css. Same with the buttons below. Extract them in the next sprint. */
 .badge {
     display: inline-flex;
     align-items: center;
@@ -150,6 +166,9 @@
     background-color: var(--primary-hover);
 }
 
+/* 
+ * Mobile layout hacks for the data table
+ */
 @media (max-width: 768px) {
     .page-header {
         margin-bottom: 24px;
@@ -162,12 +181,13 @@
     .table-card {
         width: 100%;
         overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        -webkit-overflow-scrolling: touch; /* Enable native-feeling momentum scrolling on iOS Safari */
         display: block;
         margin: 0; 
         border-radius: 8px;
     }
 
+    /* Force the table to stay wide so inputs don't squash into unclickable slivers. */
     .progress-table {
         min-width: 800px; 
     }
@@ -178,6 +198,10 @@
         white-space: nowrap;
     }
 
+    /* 
+     * Classic sticky-column hack. Keeps the student's name pinned to the left edge 
+     * while the user pans horizontally across the assignment grades. 
+     */
     .progress-table th:first-child,
     .progress-table td:first-child {
         position: sticky;
@@ -198,6 +222,7 @@
         gap: 12px;
     }
 
+    /* Stack buttons for easier thumb targets */
     .btn-primary,
     .btn-secondary {
         width: 100%;
