@@ -505,7 +505,7 @@ body {
 
     max-width: 500px;
 
-    background: rgb(189, 194, 222);
+    background: var(--surface);
 
     border-radius: 18px;
 
@@ -627,13 +627,12 @@ body {
 /* Cancel */
 
 #cancelForm {
-    background: #f1f3f7;
-
-    color: var(--navy);
+    background-color: var(--surface-hover);
+    color: var(--muted);
 }
 
 #cancelForm:hover {
-    background: #e5e8ee;
+    background-color: var(--bg);
 }
 
 /* =========================================================
