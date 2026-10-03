@@ -1,5 +1,5 @@
 # EduFlow 🎓
-**Simplify Student Progress.**
+**Simplify Student Progress**
 
 EduFlow is a web-based student progress management system. We built this platform to give teachers and administrators a clean, centralized place to manage students, track courses, handle assignments, and generate performance reports without the usual headache.
 
