@@ -46,10 +46,10 @@ EduFlow/
 
 ## 📸 Screenshots
 Here is a look at what we've built:
-
 ![Signup Page](Screenshots/Signup.png)
 ![Login Page](Screenshots/Login.png)
-![Students Page](Screenshots/students.png)
+![Dashboard Page](Screenshots/Dashboard(2).png)
+![Students Page](Screenshots/Students.png)
 ![Courses Page](Screenshots/Courses.png)
 ![Progress Page](Screenshots/Progress.png)
 ![Assignment Page](Screenshots/Assignment.png)
