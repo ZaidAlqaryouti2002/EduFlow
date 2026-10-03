@@ -48,7 +48,7 @@ EduFlow/
 Here is a look at what we've built:
 ![Signup Page](Screenshots/Signup.png)
 ![Login Page](Screenshots/Login.png)
-![Dashboard Page](Screenshots/Dashboard(2).png)
+![Dashboard Page](Screenshots/Dashboard.png)
 ![Students Page](Screenshots/Students.png)
 ![Courses Page](Screenshots/Courses.png)
 ![Progress Page](Screenshots/Progress.png)
