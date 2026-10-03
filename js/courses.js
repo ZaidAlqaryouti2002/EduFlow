@@ -69,12 +69,12 @@ const renderCourses = () => {
 
             <div style="display: flex; justify-content: flex-end; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
                 <button class="delete-course-btn" data-id="${course.id}" 
-                    onmouseenter="this.querySelector('i').style.transform='scale(1.25)'" 
-                    onmouseleave="this.querySelector('i').style.transform='scale(1)'"
-                    style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: none; padding: 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease;"
-                    title="Delete Course">
-                    <i data-lucide="trash-2" style="width: 16px; height: 16px; transition: transform 0.2s ease;"></i>
-                </button>
+                 onmouseenter="this.querySelector('svg').style.transform='scale(1.25)'" 
+                 onmouseleave="this.querySelector('svg').style.transform='scale(1)'"
+                 style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: none; padding: 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease;"
+                 title="Delete Course">
+                 <i data-lucide="trash-2" style="width: 16px; height: 16px; transition: transform 0.2s ease;"></i>
+                س</button>
             </div>
         `;
 
