@@ -4,7 +4,6 @@ const closeModalBtn = document.getElementById("close-modal-btn");
 const cancelModalBtn = document.getElementById("cancel-modal-btn");
 const courseForm = document.getElementById("add-course-form");
 const courseNameInput = document.getElementById("course-name");
-const courseCodeInput = document.getElementById("course-code");
 const coursesContainer = document.getElementById("courses-container");
 
 // Hydrate from localStorage to avoid a blank UI flash while the API loads
@@ -108,7 +107,7 @@ const fetchCoursesAPI = async () => {
         const formattedData = data.map((item) => ({
             id: item.id,
             name: item.title || item.name,
-            code: item.code ? `Course Code: ${item.code}` : `Course ID: ${item.id}`,
+            code: `Course ID: ${item.id}`,
         }));
 
         courses = formattedData;
@@ -126,10 +125,9 @@ courseForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const nameValue = courseNameInput.value.trim();
-    const codeValue = courseCodeInput.value.trim();
 
     // Bail early on empty inputs
-    if (nameValue === "" || codeValue === "") return;
+    if (nameValue === "") return;
 
     // Enforce unique names client-side to prevent UI clutter
     const isDuplicate = courses.some(
@@ -137,13 +135,14 @@ courseForm.addEventListener("submit", async (event) => {
     );
 
     if (isDuplicate) {
-        alert("هذا الكورس موجود مسبقاً، لا يمكن إضافة كورس بنفس الاسم!");
+        alert("This course already exists. Cannot add a course with the same name!");
         return;
     }
 
+    // Fix: Send 'name' instead of 'title', and attach the current teacher to the 'teacherIds' array
     const newCourseData = {
-        title: nameValue,
-        code: codeValue,
+        name: nameValue,
+        teacherIds: [String(teacherId)] 
     };
 
     try {
@@ -157,13 +156,11 @@ courseForm.addEventListener("submit", async (event) => {
 
         const savedCourse = await response.json();
 
-        // Normalize response again to match our local state shape
+        // Fix: Read 'name' directly from the saved API response
         const formattedNewCourse = {
             id: savedCourse.id,
-            name: savedCourse.title || savedCourse.name,
-            code: savedCourse.code
-                ? `Course Code: ${savedCourse.code}`
-                : `Course ID: ${savedCourse.id}`,
+            name: savedCourse.name,
+            code: `Course ID: ${savedCourse.id}`
         };
 
         courses.push(formattedNewCourse);
