@@ -1,8 +1,6 @@
 # EduFlow 🎓
 **Simplify Student Progress**
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Online-success?style=for-the-badge&logo=github)](https://zaidalqaryouti2002.github.io/EduFlow/)
-
 EduFlow is a web-based student progress management system. We built this platform to give teachers and administrators a clean, centralized place to manage students, track courses, handle assignments, and generate performance reports without the usual headache.
 
 ## ✨ What You Can Do
