@@ -19,24 +19,23 @@ body {
     overflow-x: hidden;
 }
 
-/* =========================================================
-   ASSIGNMENTS MAIN  (selector covers any <main>, even without the class)
 
-   The shared Sidebar + Topbar are styled by layout.css.
-   --fit-sidebar-w / --fit-topbar-h are set by layout-fit.js
-   from their real size (the numbers here are only fallbacks
-   for the moment before the script runs).
+/* =========================================================
+   ASSIGNMENTS MAIN
    ========================================================= */
 
 .assignments-main {
     margin-left: var(--fit-sidebar-w, 230px);
 
     min-height: 100vh;
+
     padding-top: calc(var(--fit-topbar-h, 72px) + 8px);
+
     padding-left: 28px;
     padding-right: 28px;
     padding-bottom: 30px;
 }
+
 
 /* =========================================================
    MAIN HEADER
@@ -64,9 +63,12 @@ body {
 
 .main-header small {
     display: block;
+
     font-size: 14px;
+
     color: var(--muted);
 }
+
 
 /* =========================================================
    ADD ASSIGNMENT BUTTON
@@ -123,6 +125,7 @@ body {
 
     object-fit: contain;
 }
+
 
 /* =========================================================
    STATISTICS CARDS
@@ -196,8 +199,10 @@ body {
 
 .stat-card > small span {
     font-weight: 600;
+
     color: var(--ink);
 }
+
 
 /* =========================================================
    ASSIGNMENT SECTION
@@ -257,8 +262,10 @@ body {
 
 .highlight button.active {
     background-color: #1572fe;
+
     color: #ffffff;
 }
+
 
 /* =========================================================
    ASSIGNMENT LIST
@@ -290,6 +297,7 @@ body {
     color: var(--ink);
 }
 
+
 /* =========================================================
    ASSIGNMENT ROW
    ========================================================= */
@@ -297,22 +305,33 @@ body {
 .assignment {
     display: grid;
 
+    /*
+       Assignment
+       Type
+       Due Date
+       Max Score
+       Status
+       Actions
+    */
+
     grid-template-columns:
         2fr
         1fr
         1.2fr
         1fr
-        1.2fr;
+        1.2fr
+        0.9fr;
 
     align-items: center;
 
-    min-width: 650px;
+    min-width: 750px;
 
     min-height: 58px;
 
     padding: 0 14px;
 
     border-bottom: 1px solid var(--border);
+
     background-color: var(--bg);
 
     cursor: pointer;
@@ -350,6 +369,7 @@ body {
     color: var(--ink);
 }
 
+
 /* =========================================================
    ASSIGNMENT HEADER
    ========================================================= */
@@ -373,6 +393,50 @@ body {
 
     text-transform: uppercase;
 }
+
+
+/* =========================================================
+   REMOVE ASSIGNMENT BUTTON
+   ========================================================= */
+
+.remove-assignment-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 72px;
+
+    height: 32px;
+
+    padding: 0 10px;
+
+    border: 1px solid var(--danger);
+
+    border-radius: 6px;
+
+    background-color: transparent;
+
+    color: var(--danger);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.remove-assignment-btn:hover {
+    background-color: var(--danger);
+
+    color: #ffffff;
+}
+
 
 /* =========================================================
    STATUS
@@ -400,23 +464,28 @@ body {
 
 .status.pending {
     color: var(--orange);
+
     background: rgba(245, 158, 11, 0.1);
 }
 
 .status.in-progress {
     color: var(--blue);
+
     background: rgba(59, 130, 246, 0.1);
 }
 
 .status.completed {
     color: var(--green);
+
     background: rgba(22, 163, 74, 0.1);
 }
 
 .status.overdue {
     color: var(--danger);
+
     background: rgba(239, 68, 68, 0.1);
 }
+
 
 /* =========================================================
    MODAL OVERLAY
@@ -440,6 +509,7 @@ body {
     background-color: rgba(41, 41, 64, 0.45);
 }
 
+
 /* =========================================================
    ADD / EDIT ASSIGNMENT FORM
    ========================================================= */
@@ -461,6 +531,7 @@ body {
 
     overflow-y: auto;
 }
+
 
 /* =========================================================
    MODAL HEADER
@@ -518,6 +589,7 @@ body {
     background-color: var(--surface-hover);
 }
 
+
 /* =========================================================
    FORM INPUTS
    ========================================================= */
@@ -563,6 +635,7 @@ body {
 
     box-shadow: 0 0 0 3px rgba(21, 114, 254, 0.1);
 }
+
 
 /* =========================================================
    MODAL ACTIONS
@@ -612,6 +685,8 @@ body {
 
 #saveAssignmentBtn {
     background-color: var(--primary);
+
+    color: #ffffff;
 }
 
 #saveAssignmentBtn:hover {
@@ -620,28 +695,32 @@ body {
     transform: translateY(-1px);
 }
 
+
 /* =========================================================
    TABLET
    Shared sidebar becomes a mobile drawer below 1025px
-   (same breakpoint as layout.js), so no left offset here.
    ========================================================= */
 
 @media (max-width: 1024px) {
+
     main,
     .assignments-main {
         margin-left: 0;
     }
 
     .main-cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 }
+
 
 /* =========================================================
    900px
    ========================================================= */
 
 @media (max-width: 900px) {
+
     main,
     .assignments-main {
         padding-left: 22px;
@@ -663,19 +742,24 @@ body {
             1fr
             1.2fr
             1fr
-            1.1fr;
+            1.1fr
+            0.9fr;
     }
 }
+
 
 /* =========================================================
    700px
    ========================================================= */
 
 @media (max-width: 700px) {
+
     main,
     .assignments-main {
         padding-left: 18px;
+
         padding-right: 18px;
+
         padding-bottom: 25px;
     }
 
@@ -718,15 +802,19 @@ body {
     }
 }
 
+
 /* =========================================================
    550px
    ========================================================= */
 
 @media (max-width: 550px) {
+
     main,
     .assignments-main {
         padding-left: 14px;
+
         padding-right: 14px;
+
         padding-bottom: 20px;
     }
 
@@ -773,11 +861,13 @@ body {
     }
 }
 
+
 /* =========================================================
    380px
    ========================================================= */
 
 @media (max-width: 380px) {
+
     main,
     .assignments-main {
         padding-left: 10px;
@@ -807,3 +897,4 @@ body {
         padding: 16px;
     }
 }
+
