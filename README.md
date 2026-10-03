@@ -1,6 +1,8 @@
 # EduFlow 🎓
 **Simplify Student Progress**
-🔗 **Live Demo:** [EduFlow Live](https://zaidalqaryouti2002.github.io/EduFlow/)
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Online-success?style=for-the-badge&logo=github)](https://zaidalqaryouti2002.github.io/EduFlow/)
+
 EduFlow is a web-based student progress management system. We built this platform to give teachers and administrators a clean, centralized place to manage students, track courses, handle assignments, and generate performance reports without the usual headache.
 
 ## ✨ What You Can Do
@@ -38,10 +40,13 @@ You don't need any complex backend environment to test this out. Just follow the
 A quick look at how we organized our code:
 ```text
 EduFlow/
-├── pages/         # HTML views (Login, dashboard, Students, courses, etc.)
-├── css/           # Stylesheets (style.css, etc.)
-├── js/            # Core logic (api, auth, courses, progress, reports, ui)
-└── README.md      # You are here!
+├── assets/          # Static assets & icons
+├── js/              # Core logic (api, auth, courses, progress, etc.)
+├── pages/           # HTML views (Login, Dashboard, Students, etc.)
+├── Screenshots/     # UI preview captures
+├── style/           # Stylesheets (layout.css, courses.css, etc.)
+├── index.html       # Deployment entry & redirect
+└── README.md        # Documentation
 ```
 
 ## 📸 Screenshots
