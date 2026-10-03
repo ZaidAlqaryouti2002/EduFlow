@@ -12,6 +12,7 @@ EduFlow is a web-based student progress management system. We built this platfor
 * **Work Anywhere:** A fully responsive interface that looks great on Desktop, Tablet, and Mobile.
 
 ## 💻 Built With
+* **Design & Prototyping:** [Figma UI Mockup](https://www.figma.com/design/i3witCvEgKX9swob9VtQRB/Untitled?node-id=56-1717&t=iHfAZBemhe4IwYMP-0)
 * **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 * **Data & Storage:** REST API (MockAPI) & Local Storage
 * **Version Control:** Git & GitHub
