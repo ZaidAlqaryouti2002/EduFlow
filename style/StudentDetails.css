@@ -5,7 +5,14 @@
 /* ---------- Page ---------- */
 
 /* ---------- Header ---------- */
-
+.body{
+     font-family:
+        "Inter",
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        sans-serif;
+}
 .page-header {
     display: flex;
     justify-content: space-between;

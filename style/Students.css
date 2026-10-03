@@ -10,6 +10,14 @@
 body {
     background: var(--bg);
     color: var(--text-primary);
+    .body{
+     font-family:
+        "Inter",
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        sans-serif;
+}
 }
 
 /* =========================================================
