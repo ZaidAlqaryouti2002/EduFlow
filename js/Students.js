@@ -2,28 +2,17 @@
 // 1. VARIABLES
 // ==========================================
 
+const studentsContainer = document.getElementById("studentsContainer");
+const addStudentBtn = document.getElementById("addStudentsBtn");
+const searchInput = document.getElementById("searchInput");
+const courseFilter = document.getElementById("courseFilter");
+const statusFilter = document.getElementById("statusFilter");
+const exportStudentsBtn = document.getElementById("export");
 
-const studentsContainer =
-    document.getElementById("studentsContainer");
-
-const addStudentBtn =
-    document.getElementById("addStudentsBtn");
-
-const searchInput =
-    document.getElementById("searchInput");
-
-const courseFilter =
-    document.getElementById("courseFilter");
-
-const statusFilter =
-    document.getElementById("statusFilter");
-
-const exportStudentsBtn =
-    document.getElementById("export");
-
-let allStudents = []
-let allAssignments = []
-let editingStudent = null
+let allStudents = [];
+let allAssignments = [];
+let allCourses = [];        // NEW: used to show course names from ids
+let editingStudent = null;
 
 
 // ==========================================
@@ -32,35 +21,19 @@ let editingStudent = null
 
 const ATTENDANCE_KEY = "attendance";
 
-
 // Get attendance from Local Storage
 function getAttendanceData() {
-
-    return JSON.parse(
-        localStorage.getItem(ATTENDANCE_KEY)
-    ) || {};
-
+    return JSON.parse(localStorage.getItem(ATTENDANCE_KEY)) || {};
 }
-
 
 // Save attendance to Local Storage
 function saveAttendanceData(data) {
-
-    localStorage.setItem(
-        ATTENDANCE_KEY,
-        JSON.stringify(data)
-    );
-
+    localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(data));
 }
-
 
 // Get today's date
 function getToday() {
-
-    return new Date()
-        .toISOString()
-        .split("T")[0];
-
+    return new Date().toISOString().split("T")[0];
 }
 
 
@@ -72,14 +45,11 @@ async function loadStudents() {
 
     try {
 
-        const students =
-            await StudentsApi.listMine(
-                String(teacherId)
-            );
+        const students = await StudentsApi.listMine(String(teacherId));
 
         allStudents = students;
 
-        displayStudents(allStudents);
+        filterStudents();
 
         updateDashboardStats();
 
@@ -92,6 +62,7 @@ async function loadStudents() {
     }
 
 }
+
 
 // ==========================================
 // LOAD ASSIGNMENTS
@@ -112,6 +83,7 @@ async function loadAssignments() {
     }
 }
 
+
 // ==========================================
 // 4. DISPLAY STUDENTS
 // ==========================================
@@ -119,7 +91,6 @@ async function loadAssignments() {
 function displayStudents(students) {
 
     studentsContainer.innerHTML = "";
-
 
     if (students.length === 0) {
 
@@ -134,50 +105,35 @@ function displayStudents(students) {
         return;
     }
 
-
     // Get attendance from Local Storage
-    const attendanceData =
-        getAttendanceData();
+    const attendanceData = getAttendanceData();
 
-
-    const today =
-        getToday();
-
+    const today = getToday();
 
     students.forEach(student => {
 
-        const row =
-            document.createElement("tr");
-
+        const row = document.createElement("tr");
 
         // ==================================
         // ARCHIVE STATUS
         // ==================================
 
-        const isArchived =
-            (student.archivedBy || [])
-                .map(String)
-                .includes(
-                    String(teacherId)
-                );
-
+        const isArchived = (student.archivedBy || [])
+            .map(String)
+            .includes(String(teacherId));
 
         // ==================================
         // ATTENDANCE
         // ==================================
 
-        const attendance =
-            attendanceData[student.id]?.[today]
-            || "Not Marked";
-
+        const attendance = attendanceData[student.id]?.[today] || "Not Marked";
 
         // ==================================
         // GRADE
         // ==================================
 
         const grade = getStudentGrade(student);
-const gradeLetter = grade === null ? "—" : letter(grade);
-
+        const gradeLetter = grade === null ? "—" : letter(grade);
 
         // ==================================
         // ROW
@@ -187,118 +143,58 @@ const gradeLetter = grade === null ? "—" : letter(grade);
 
             <td>
                 <a href="StudentDetails.html?id=${student.id}">
-        ${student.fullName}
-    </a>
+                    ${student.fullName}
+                </a>
             </td>
-
 
             <td>
                 ${student.id}
             </td>
 
-
             <td>
-
-                <select
-                    class="attendance-select"
-                    data-id="${student.id}"
-                >
-
-                    <option
-                        value="Not Marked"
-                        ${attendance === "Not Marked"
-                            ? "selected"
-                            : ""}
-                    >
+                <select class="attendance-select" data-id="${student.id}">
+                    <option value="Not Marked" ${attendance === "Not Marked" ? "selected" : ""}>
                         Not Marked
                     </option>
-
-
-                    <option
-                        value="Present"
-                        ${attendance === "Present"
-                            ? "selected"
-                            : ""}
-                    >
+                    <option value="Present" ${attendance === "Present" ? "selected" : ""}>
                         Present
                     </option>
-
-
-                    <option
-                        value="Absent"
-                        ${attendance === "Absent"
-                            ? "selected"
-                            : ""}
-                    >
+                    <option value="Absent" ${attendance === "Absent" ? "selected" : ""}>
                         Absent
                     </option>
-
-
-                    <option
-                        value="Late"
-                        ${attendance === "Late"
-                            ? "selected"
-                            : ""}
-                    >
+                    <option value="Late" ${attendance === "Late" ? "selected" : ""}>
                         Late
                     </option>
-
                 </select>
-
             </td>
-
 
             <td>
                 ${gradeLetter}
             </td>
 
-
             <td>
-                ${isArchived
-                    ? "Archived"
-                    : "Active"}
+                ${isArchived ? "Archived" : "Active"}
             </td>
 
-
             <td>
-
-                <button
-                    class="view-btn"
-                    data-id="${student.id}"
-                >
+                <button class="view-btn" data-id="${student.id}">
                     View
                 </button>
 
-
-                <button
-                    class="edit-btn"
-                    data-id="${student.id}"
-                >
+                <button class="edit-btn" data-id="${student.id}">
                     Edit
                 </button>
 
-
-                <button
-                    class="archive-btn"
-                    data-id="${student.id}"
-                >
-                    ${isArchived
-                        ? "Unarchive"
-                        : "Archive"}
+                <button class="archive-btn" data-id="${student.id}">
+                    ${isArchived ? "Unarchive" : "Archive"}
                 </button>
 
-
-                <button
-                    class="delete-btn"
-                    data-id="${student.id}"
-                >
+                <button class="delete-btn" data-id="${student.id}">
                     Delete
                 </button>
-
             </td>
 
         `;
-
 
         studentsContainer.appendChild(row);
 
@@ -309,47 +205,10 @@ const gradeLetter = grade === null ? "—" : letter(grade);
 
 // ==========================================
 // 5. SEARCH
+// (uses the same combined filter below)
 // ==========================================
 
-searchInput.addEventListener(
-    "input",
-    () => {
-
-        const value =
-            searchInput.value
-                .trim()
-                .toLowerCase();
-
-
-        const filteredStudents =
-            allStudents.filter(student => {
-
-                const name =
-                    String(
-                        student.fullName || ""
-                    ).toLowerCase();
-
-
-                const id =
-                    String(
-                        student.id || ""
-                    ).toLowerCase();
-
-
-                return (
-                    name.includes(value) ||
-                    id==value
-                );
-
-            });
-
-
-        displayStudents(
-            filteredStudents
-        );
-
-    }
-);
+searchInput.addEventListener("input", filterStudents);
 
 
 // ==========================================
@@ -360,31 +219,23 @@ async function loadCourses() {
 
     try {
 
-        const courses =
-            await CoursesApi.listMine(
-                String(teacherId)
-            );
+        const courses = await CoursesApi.listMine(String(teacherId));
 
+        allCourses = courses;
+
+        console.log("Courses:", courses);
 
         courses.forEach(course => {
 
-            const option =
-                document.createElement(
-                    "option"
-                );
+            const option = document.createElement("option");
 
+            // FIX: students store course IDs, so the value must be the id
+            option.value = course.id;
 
-            option.value =
-                course.name;
+            // The user still sees the course name
+            option.textContent = course.name;
 
-
-            option.textContent =
-                course.name;
-
-
-            courseFilter.appendChild(
-                option
-            );
+            courseFilter.appendChild(option);
 
         });
 
@@ -396,102 +247,63 @@ async function loadCourses() {
 
 }
 
-
-courseFilter.addEventListener(
-    "change",
-    filterStudents
-);
+courseFilter.addEventListener("change", filterStudents);
 
 
 // ==========================================
 // 7. STATUS FILTER
 // ==========================================
 
-statusFilter.addEventListener(
-    "change",
-    filterStudents
-);
+statusFilter.addEventListener("change", filterStudents);
 
 
 // ==========================================
-// 8. ONE FILTER FUNCTION
+// 8. ONE FILTER FUNCTION (search + course + status)
 // ==========================================
 
 function filterStudents() {
 
-    const selectedCourse =
-        courseFilter.value;
+    const value = searchInput.value.trim().toLowerCase();
+    const selectedCourse = courseFilter.value;
+    const selectedStatus = statusFilter.value;
 
+    const isArchived = student =>
+        (student.archivedBy || [])
+            .map(String)
+            .includes(String(teacherId));
 
-    const selectedStatus =
-        statusFilter.value;
+    const filteredStudents = allStudents.filter(student => {
 
+        // SEARCH
+        const name = String(student.fullName || "").toLowerCase();
+        const id = String(student.id || "").toLowerCase();
 
-    let filteredStudents =
-        [...allStudents];
+        const matchSearch =
+            !value ||
+            name.includes(value) ||
+            id === value;
 
+        // COURSE
+        const matchCourse =
+            selectedCourse === "all" ||
+            (student.courses || [])
+                .map(String)
+                .includes(String(selectedCourse));
 
-    // ==================================
-    // COURSE
-    // ==================================
+        // STATUS
+        let matchStatus = true;
 
-    if (selectedCourse !== "all") {
+        if (selectedStatus === "active") {
+            matchStatus = !isArchived(student);
+        } else if (selectedStatus === "archived") {
+            matchStatus = isArchived(student);
+        }
 
-        filteredStudents =
-            filteredStudents.filter(
-                student =>
+        return matchSearch && matchCourse && matchStatus;
 
-                    (student.courses || [])
-                        .map(String)
-                        .includes(
-                            String(
-                                selectedCourse
-                            )
-                        )
-            );
+    });
 
-    }
-
-
-    // ==================================
-    // STATUS
-    // ==================================
-
-    if (selectedStatus === "active") {
-
-        filteredStudents =
-            filteredStudents.filter(
-                student =>
-
-                    !(student.archivedBy || [])
-                        .map(String)
-                        .includes(
-                            String(teacherId)
-                        )
-            );
-
-    }
-
-
-    if (selectedStatus === "archived") {
-
-        filteredStudents =
-            filteredStudents.filter(
-                student =>
-
-                    (student.archivedBy || [])
-                        .map(String)
-                        .includes(
-                            String(teacherId)
-                        )
-            );
-
-    }
-
-
-    displayStudents(
-        filteredStudents
-    );
+    displayStudents(filteredStudents);
 
 }
 
@@ -500,35 +312,21 @@ function filterStudents() {
 // 9. ADD / EDIT FORM
 // ==========================================
 
-function openStudentForm(
-    student = null
-) {
+function openStudentForm(student = null) {
 
     editingStudent = student;
 
-
     // Remove old form
-    const oldForm =
-        document.getElementById(
-            "studentFormBox"
-        );
-
+    const oldForm = document.getElementById("studentFormBox");
 
     if (oldForm) {
-
         oldForm.remove();
-
     }
 
+    const formBox = document.createElement("div");
 
-    const formBox =
-        document.createElement("div");
-
-
-    formBox.id =
-        "studentFormBox";
-        formBox.style.marginLeft = "250px";
-
+    formBox.id = "studentFormBox";
+    formBox.style.marginLeft = "250px";
 
     formBox.innerHTML = `
 
@@ -537,23 +335,13 @@ function openStudentForm(
             <div class="student-form">
 
                 <h2>
-                    ${
-                        student
-                            ? "Edit Student"
-                            : "Add Student"
-                    }
+                    ${student ? "Edit Student" : "Add Student"}
                 </h2>
-
 
                 <form id="studentForm">
 
-
                     <!-- FULL NAME -->
-
-                    <label>
-                        Full Name
-                    </label>
-
+                    <label>Full Name</label>
                     <input
                         type="text"
                         id="fullName"
@@ -561,13 +349,8 @@ function openStudentForm(
                         required
                     >
 
-
                     <!-- EMAIL -->
-
-                    <label>
-                        Email
-                    </label>
-
+                    <label>Email</label>
                     <input
                         type="email"
                         id="email"
@@ -575,13 +358,8 @@ function openStudentForm(
                         required
                     >
 
-
                     <!-- STUDENT CODE -->
-
-                    <label>
-                        Student Code
-                    </label>
-
+                    <label>Student Code</label>
                     <input
                         type="text"
                         id="studentCode"
@@ -589,42 +367,22 @@ function openStudentForm(
                         required
                     >
 
-
-                    <!-- COURSES -->
-
-                    <label>
-                        Courses
-                    </label>
-
+                    <!-- COURSES (course ids, comma separated) -->
+                    <label>Courses (ids, e.g. 1, 2, 3)</label>
                     <input
                         type="text"
                         id="courses"
-                        value="${
-                            (student?.courses || [])
-                                .join(", ")
-                        }"
+                        value="${(student?.courses || []).join(", ")}"
                     >
 
-
                     <!-- BUTTONS -->
-
                     <div class="form-buttons">
 
-                        <button
-                            type="submit"
-                        >
-                            ${
-                                student
-                                    ? "Update"
-                                    : "Add"
-                            }
+                        <button type="submit">
+                            ${student ? "Update" : "Add"}
                         </button>
 
-
-                        <button
-                            type="button"
-                            id="cancelForm"
-                        >
+                        <button type="button" id="cancelForm">
                             Cancel
                         </button>
 
@@ -638,36 +396,23 @@ function openStudentForm(
 
     `;
 
-
-    document.body.appendChild(
-        formBox
-    );
-
+    document.body.appendChild(formBox);
 
     // Submit
-
     document
         .getElementById("studentForm")
-        .addEventListener(
-            "submit",
-            saveStudent
-        );
-
+        .addEventListener("submit", saveStudent);
 
     // Cancel
-
     document
         .getElementById("cancelForm")
-        .addEventListener(
-            "click",
-            () => {
+        .addEventListener("click", () => {
 
-                formBox.remove();
+            formBox.remove();
 
-                editingStudent = null;
+            editingStudent = null;
 
-            }
-        );
+        });
 
 }
 
@@ -680,51 +425,30 @@ async function saveStudent(event) {
 
     event.preventDefault();
 
+    const fullName = document.getElementById("fullName").value.trim();
 
-    const fullName =
-        document
-            .getElementById("fullName")
-            .value
-            .trim();
+    const email = document.getElementById("email").value.trim();
 
+    const studentCode = document.getElementById("studentCode").value.trim();
 
-    const email =
-        document
-            .getElementById("email")
-            .value
-            .trim();
+    const courses = document
+        .getElementById("courses")
+        .value
+        .split(",")
+        .map(course => course.trim())
+        .filter(course => course !== "");
 
+    const emailExists = allStudents.some(student =>
+        student.email?.toLowerCase() === email.toLowerCase() &&
+        String(student.id) !== String(editingStudent?.id)
+    );
 
-    const studentCode =
-        document
-            .getElementById("studentCode")
-            .value
-            .trim();
+    if (emailExists) {
+        showToast("This email is already registered!");
+        return;
+    }
 
-
-    const courses =
-        document
-            .getElementById("courses")
-            .value
-            .split(",")
-            .map(course =>
-                course.trim()
-            )
-            .filter(
-                course => course !== ""
-            );
-
-const emailExists = allStudents.some(student =>
-    student.email?.toLowerCase() === email.toLowerCase() &&
-    String(student.id) !== String(editingStudent?.id)
-);
-
-if (emailExists) {
-    showToast("This email is already registered!");
-    return;
-}
     try {
-
 
         // ==================================
         // EDIT
@@ -732,61 +456,38 @@ if (emailExists) {
 
         if (editingStudent) {
 
-
             const updatedStudent = {
 
                 // Keep original ID
                 ...editingStudent,
 
                 fullName,
-
                 email,
-
                 studentCode,
-
                 courses
 
             };
 
-
-            const result =
-                await StudentsApi.update(
-
-                    editingStudent.id,
-
-                    updatedStudent
-
-                );
-
-
-            const index =
-                allStudents.findIndex(
-                    student =>
-
-                        String(student.id) ===
-                        String(
-                            editingStudent.id
-                        )
-                );
-
-
-            allStudents[index] =
-                result;
-
-
-            showToast(
-                "Student updated successfully!"
+            const result = await StudentsApi.update(
+                editingStudent.id,
+                updatedStudent
             );
 
-        }
+            const index = allStudents.findIndex(
+                student => String(student.id) === String(editingStudent.id)
+            );
 
+            allStudents[index] = result;
+
+            showToast("Student updated successfully!");
+
+        }
 
         // ==================================
         // ADD
         // ==================================
 
         else {
-
 
             const newStudent = {
 
@@ -795,16 +496,11 @@ if (emailExists) {
                 // API will generate it.
 
                 fullName,
-
                 email,
-
                 studentCode,
-
                 courses,
 
-                teacherIds: [
-                    String(teacherId)
-                ],
+                teacherIds: [String(teacherId)],
 
                 archivedBy: [],
 
@@ -812,48 +508,26 @@ if (emailExists) {
 
                 notes: {},
 
-                createdAt:
-                    new Date()
-                        .toISOString()
+                createdAt: new Date().toISOString()
 
             };
 
+            const result = await StudentsApi.create(newStudent);
 
-            const result =
-                await StudentsApi.create(
-                    newStudent
-                );
+            allStudents.push(result);
 
-
-            allStudents.push(
-                result
-            );
-
-
-            showToast(
-                "Student added successfully!"
-            );
+            showToast("Student added successfully!");
 
         }
 
-
-        displayStudents(
-            allStudents
-        );
-
+        // FIX: keep the current search / course / status filters
+        filterStudents();
 
         updateDashboardStats();
 
-
-        document
-            .getElementById(
-                "studentFormBox"
-            )
-            .remove();
-
+        document.getElementById("studentFormBox").remove();
 
         editingStudent = null;
-
 
     } catch (error) {
 
@@ -868,10 +542,7 @@ if (emailExists) {
 // 11. ADD BUTTON
 // ==========================================
 
-addStudentBtn.addEventListener(
-    "click",
-    () => openStudentForm()
-);
+addStudentBtn.addEventListener("click", () => openStudentForm());
 
 
 // ==========================================
@@ -880,73 +551,43 @@ addStudentBtn.addEventListener(
 
 async function toggleArchive(student) {
 
-    let archivedBy =
-        student.archivedBy || [];
+    let archivedBy = student.archivedBy || [];
 
-
-    const isArchived =
-        archivedBy
-            .map(String)
-            .includes(
-                String(teacherId)
-            );
-
+    const isArchived = archivedBy
+        .map(String)
+        .includes(String(teacherId));
 
     if (isArchived) {
 
-
-        archivedBy =
-            archivedBy.filter(
-                id =>
-                    String(id) !==
-                    String(teacherId)
-            );
+        archivedBy = archivedBy.filter(
+            id => String(id) !== String(teacherId)
+        );
 
     } else {
 
-
-        archivedBy.push(
-            String(teacherId)
-        );
+        archivedBy.push(String(teacherId));
 
     }
 
-
     try {
 
+        const updatedStudent = await StudentsApi.update(
+            student.id,
+            {
+                ...student,
+                archivedBy
+            }
+        );
 
-        const updatedStudent =
-            await StudentsApi.update(
+        const index = allStudents.findIndex(
+            item => String(item.id) === String(student.id)
+        );
 
-                student.id,
-
-                {
-                    ...student,
-
-                    archivedBy
-
-                }
-
-            );
-
-
-        const index =
-            allStudents.findIndex(
-                item =>
-
-                    String(item.id) ===
-                    String(student.id)
-            );
-
-
-        allStudents[index] =
-            updatedStudent;
-
+        allStudents[index] = updatedStudent;
 
         filterStudents();
 
         updateDashboardStats();
-
 
     } catch (error) {
 
@@ -963,65 +604,33 @@ async function toggleArchive(student) {
 
 async function deleteStudent(student) {
 
-    const confirmed =
-        confirm(
-            `Delete ${student.fullName}?`
-        );
-
+    const confirmed = confirm(`Delete ${student.fullName}?`);
 
     if (!confirmed) {
-
         return;
-
     }
-
 
     try {
 
+        await StudentsApi.remove(student.id);
 
-        await StudentsApi.remove(
-            student.id
+        allStudents = allStudents.filter(
+            item => String(item.id) !== String(student.id)
         );
 
+        // Also remove student's attendance from Local Storage
+        const attendanceData = getAttendanceData();
 
-        allStudents =
-            allStudents.filter(
-                item =>
+        delete attendanceData[student.id];
 
-                    String(item.id) !==
-                    String(student.id)
-            );
+        saveAttendanceData(attendanceData);
 
-
-        // Also remove student's
-        // attendance from Local Storage
-
-        const attendanceData =
-            getAttendanceData();
-
-
-        delete attendanceData[
-            student.id
-        ];
-
-
-        saveAttendanceData(
-            attendanceData
-        );
-
-
-        displayStudents(
-            allStudents
-        );
-
+        // FIX: keep the current search / course / status filters
+        filterStudents();
 
         updateDashboardStats();
 
-
-        showToast(
-            "Student deleted successfully!"
-        );
-
+        showToast("Student deleted successfully!");
 
     } catch (error) {
 
@@ -1036,196 +645,98 @@ async function deleteStudent(student) {
 // 14. TABLE BUTTONS
 // ==========================================
 
-studentsContainer.addEventListener(
-    "click",
-    event => {
+studentsContainer.addEventListener("click", event => {
 
+    const id = event.target.dataset.id;
 
-        const id =
-            event.target.dataset.id;
+    if (!id) {
+        return;
+    }
 
+    const student = allStudents.find(
+        item => String(item.id) === String(id)
+    );
 
-        if (!id) {
+    if (!student) {
+        return;
+    }
 
-            return;
+    // VIEW
+    if (event.target.classList.contains("view-btn")) {
 
-        }
-
-
-        const student =
-            allStudents.find(
-                item =>
-
-                    String(item.id) ===
-                    String(id)
-            );
-
-
-        if (!student) {
-
-            return;
-
-        }
-
-
-        // ==================================
-        // VIEW
-        // ==================================
-
-        if (
-            event.target.classList
-                .contains("view-btn")
-        ) {
-
-            location.href =
-                `studentDetails.html?id=${student.id}`;
-
-        }
-
-
-        // ==================================
-        // EDIT
-        // ==================================
-
-        else if (
-            event.target.classList
-                .contains("edit-btn")
-        ) {
-
-            openStudentForm(
-                student
-            );
-
-        }
-
-
-        // ==================================
-        // ARCHIVE
-        // ==================================
-
-        else if (
-            event.target.classList
-                .contains("archive-btn")
-        ) {
-
-            toggleArchive(
-                student
-            );
-
-        }
-
-
-        // ==================================
-        // DELETE
-        // ==================================
-
-        else if (
-            event.target.classList
-                .contains("delete-btn")
-        ) {
-
-            deleteStudent(
-                student
-            );
-
-        }
+        location.href = `studentDetails.html?id=${student.id}`;
 
     }
-);
+
+    // EDIT
+    else if (event.target.classList.contains("edit-btn")) {
+
+        openStudentForm(student);
+
+    }
+
+    // ARCHIVE
+    else if (event.target.classList.contains("archive-btn")) {
+
+        toggleArchive(student);
+
+    }
+
+    // DELETE
+    else if (event.target.classList.contains("delete-btn")) {
+
+        deleteStudent(student);
+
+    }
+
+});
 
 
 // ==========================================
 // 15. ATTENDANCE
 // ==========================================
 
-studentsContainer.addEventListener(
-    "change",
-    event => {
+studentsContainer.addEventListener("change", event => {
 
+    if (!event.target.classList.contains("attendance-select")) {
+        return;
+    }
 
-        if (
-            !event.target.classList
-                .contains(
-                    "attendance-select"
-                )
-        ) {
+    const studentId = event.target.dataset.id;
 
-            return;
+    const attendanceStatus = event.target.value;
 
-        }
+    const today = getToday();
 
+    // Get old attendance
+    const attendanceData = getAttendanceData();
 
-        const studentId =
-            event.target.dataset.id;
+    // Create student object if it doesn't exist
+    if (!attendanceData[studentId]) {
+        attendanceData[studentId] = {};
+    }
 
+    // NOT MARKED
+    if (attendanceStatus === "Not Marked") {
 
-        const attendanceStatus =
-            event.target.value;
-
-
-        const today =
-            getToday();
-
-
-        // Get old attendance
-        const attendanceData =
-            getAttendanceData();
-
-
-        // Create student object
-        // if it doesn't exist
-
-        if (
-            !attendanceData[studentId]
-        ) {
-
-            attendanceData[studentId] =
-                {};
-
-        }
-
-
-        // ==================================
-        // NOT MARKED
-        // ==================================
-
-        if (
-            attendanceStatus ===
-            "Not Marked"
-        ) {
-
-            delete attendanceData[
-                studentId
-            ][today];
-
-        }
-
-
-        // ==================================
-        // PRESENT / ABSENT / LATE
-        // ==================================
-
-        else {
-
-            attendanceData[
-                studentId
-            ][today] =
-                attendanceStatus;
-
-        }
-
-
-        // Save
-        saveAttendanceData(
-            attendanceData
-        );
-
-
-        // Update dashboard
-        updateDashboardStats();
+        delete attendanceData[studentId][today];
 
     }
-);
+
+    // PRESENT / ABSENT / LATE
+    else {
+
+        attendanceData[studentId][today] = attendanceStatus;
+
+    }
+
+    // Save
+    saveAttendanceData(attendanceData);
+
+    // Update dashboard
+    updateDashboardStats();
+
+});
 
 
 // ==========================================
@@ -1265,17 +776,13 @@ function finalGrade(student, teacherId, assignments) {
         // Only calculate assignments that have a score
         if (hasScore) {
 
-            const percentage =
-                score / assignment.maxScore;
+            const percentage = score / assignment.maxScore;
 
-            const contribution =
-                percentage * assignment.weight;
+            const contribution = percentage * assignment.weight;
 
-            earned =
-                earned + contribution;
+            earned = earned + contribution;
 
-            totalWeight =
-                totalWeight + assignment.weight;
+            totalWeight = totalWeight + assignment.weight;
         }
     }
 
@@ -1284,29 +791,20 @@ function finalGrade(student, teacherId, assignments) {
         return null;
     }
 
-    const finalPercent =
-        (earned / totalWeight) * 100;
+    const finalPercent = (earned / totalWeight) * 100;
 
-    return Number(
-        finalPercent.toFixed(1)
-    );
+    return Number(finalPercent.toFixed(1));
 }
 
 
 function getStudentGrade(student) {
-
-    return finalGrade(
-        student,
-        teacherId,
-        allAssignments
-    );
+    return finalGrade(student, teacherId, allAssignments);
 }
 
 
 function getStudentLetter(student) {
 
-    const grade =
-        getStudentGrade(student);
+    const grade = getStudentGrade(student);
 
     if (grade === null) {
         return "—";
@@ -1316,72 +814,37 @@ function getStudentLetter(student) {
 }
 
 
-
-
-        
-          
-       
-     
-       
-
-       
-
-      
-
 // ==========================================
 // 17. ATTENDANCE PERCENTAGE
 // ==========================================
 
-function calculateAttendancePercentage(
-    studentId
-) {
+function calculateAttendancePercentage(studentId) {
 
+    const attendanceData = getAttendanceData();
 
-    const attendanceData =
-        getAttendanceData();
-
-
-    const records =
-        Object.values(
-            attendanceData[
-                studentId
-            ] || {}
-        );
-
+    const records = Object.values(attendanceData[studentId] || {});
 
     if (records.length === 0) {
-
         return 0;
-
     }
-
 
     let points = 0;
 
-
     records.forEach(status => {
 
-
         if (status === "Present") {
-
             points += 1;
-
         }
 
         else if (status === "Late") {
-
             points += 0.5;
-
         }
 
         // Absent = 0
 
     });
 
-
-    return Math.round(
-        (points / records.length) * 100
-    );
+    return Math.round((points / records.length) * 100);
 
 }
 
@@ -1394,20 +857,12 @@ function getActiveStudents() {
 
     return allStudents.filter(
         student =>
-
             !(student.archivedBy || [])
                 .map(String)
-                .includes(
-                    String(teacherId)
-                )
+                .includes(String(teacherId))
     );
 
 }
-
-
-// ==========================================
-// 19. STUDENTS NEED MONITORING
-// ==========================================
 
 
 // ==========================================
@@ -1416,20 +871,15 @@ function getActiveStudents() {
 
 function getStudentsNeedMonitoring() {
 
-    return getActiveStudents().filter(
-        student => {
+    return getActiveStudents().filter(student => {
 
-            const grade =
-                getStudentGrade(student);
+        const grade = getStudentGrade(student);
 
-            return (
-                grade !== null &&
-                grade < 50
-            );
-        }
-    );
+        return grade !== null && grade < 50;
+
+    });
+
 }
-
 
 
 // ==========================================
@@ -1438,19 +888,16 @@ function getStudentsNeedMonitoring() {
 
 function calculateClassAverage() {
 
-    const activeStudents =
-        getActiveStudents();
+    const activeStudents = getActiveStudents();
 
     let total = 0;
     let studentsWithGrades = 0;
 
     activeStudents.forEach(student => {
 
-        const grade =
-            getStudentGrade(student);
+        const grade = getStudentGrade(student);
 
         if (grade !== null) {
-
             total += grade;
             studentsWithGrades++;
         }
@@ -1460,16 +907,8 @@ function calculateClassAverage() {
         return 0;
     }
 
-    return Number(
-        (
-            total /
-            studentsWithGrades
-        ).toFixed(1)
-    );
+    return Number((total / studentsWithGrades).toFixed(1));
 }
-
-
-
 
 
 // ==========================================
@@ -1478,101 +917,54 @@ function calculateClassAverage() {
 
 function updateDashboardStats() {
 
+    const activeStudents = getActiveStudents();
 
-    const activeStudents =
-        getActiveStudents();
+    const monitoringStudents = getStudentsNeedMonitoring();
 
-
-    const monitoringStudents =
-        getStudentsNeedMonitoring();
-
-
-    const classAverage =
-        calculateClassAverage();
-
+    const classAverage = calculateClassAverage();
 
     // ==================================
     // ATTENDANCE FROM LOCAL STORAGE
     // ==================================
 
-    const attendanceData =
-        getAttendanceData();
-
+    const attendanceData = getAttendanceData();
 
     let attendanceTotal = 0;
 
     let studentsWithAttendance = 0;
 
+    allStudents.forEach(student => {
 
-    allStudents.forEach(
-        student => {
+        const records = attendanceData[student.id] || {};
 
+        const attendance = calculateAttendancePercentage(student.id);
 
-            const records =
-                attendanceData[
-                    student.id
-                ] || {};
+        if (Object.keys(records).length > 0) {
 
+            attendanceTotal += attendance;
 
-            const attendance =
-                calculateAttendancePercentage(
-                    student.id
-                );
-
-
-            if (
-                Object.keys(records)
-                    .length > 0
-            ) {
-
-                attendanceTotal +=
-                    attendance;
-
-                studentsWithAttendance++;
-
-            }
+            studentsWithAttendance++;
 
         }
-    );
 
+    });
 
     const attendanceAverage =
         studentsWithAttendance === 0
-
             ? 0
-
-            : Math.round(
-                attendanceTotal /
-                studentsWithAttendance
-            );
-
+            : Math.round(attendanceTotal / studentsWithAttendance);
 
     // ==================================
     // UPDATE UI
     // ==================================
 
-    document.getElementById(
-        "classAverage"
-    ).textContent =
-        `${classAverage}%`;
+    document.getElementById("classAverage").textContent = `${classAverage}%`;
 
+    document.getElementById("attendanceAverage").textContent = `${attendanceAverage}%`;
 
-    document.getElementById(
-        "attendanceAverage"
-    ).textContent =
-        `${attendanceAverage}%`;
+    document.getElementById("monitoringCount").textContent = monitoringStudents.length;
 
-
-    document.getElementById(
-        "monitoringCount"
-    ).textContent =
-        monitoringStudents.length;
-
-
-    document.getElementById(
-        "activeStudentsCount"
-    ).textContent =
-        activeStudents.length;
+    document.getElementById("activeStudentsCount").textContent = activeStudents.length;
 
 }
 
@@ -1581,97 +973,68 @@ function updateDashboardStats() {
 // 22. EXPORT CSV
 // ==========================================
 
-exportStudentsBtn.addEventListener(
-    "click",
-    () => {
+// Turn course ids into course names (falls back to the id)
+function getCourseNames(student) {
 
+    return (student.courses || [])
+        .map(courseId => {
 
-        if (
-            allStudents.length === 0
-        ) {
-
-            alert(
-                "No students to export."
+            const course = allCourses.find(
+                item => String(item.id) === String(courseId)
             );
 
-            return;
+            return course ? course.name : courseId;
 
-        }
+        })
+        .join(" - ");
 
-
-        let csv =
-            "Student ID,Student Code,Full Name,Email,Courses,Grade\n";
-
-
-        allStudents.forEach(
-            student => {
+}
 
 
-               const grade = getStudentGrade(student);
-                const gradeLetter = grade === null ? "—" : letter(grade);
+exportStudentsBtn.addEventListener("click", () => {
 
+    if (allStudents.length === 0) {
 
-                const courses =
-                    (student.courses || [])
-                        .join(" - ");
+        alert("No students to export.");
 
-
-                csv +=
-
-                    `"${student.id}",` +
-
-                    `"${student.studentCode || ""}",` +
-
-                    `"${student.fullName}",` +
-
-                    `"${student.email}",` +
-
-                    `"${courses}",` +
-
-                    `${gradeLetter}\n`
-
-            }
-        );
-
-
-        const blob =
-            new Blob(
-                [csv],
-                {
-                    type:
-                        "text/csv;charset=utf-8;"
-                }
-            );
-
-
-        const url =
-            URL.createObjectURL(
-                blob
-            );
-
-
-        const link =
-            document.createElement(
-                "a"
-            );
-
-
-        link.href = url;
-
-
-        link.download =
-            "students.csv";
-
-
-        link.click();
-
-
-        URL.revokeObjectURL(
-            url
-        );
+        return;
 
     }
-);
+
+    let csv = "Student ID,Student Code,Full Name,Email,Courses,Grade\n";
+
+    allStudents.forEach(student => {
+
+        const grade = getStudentGrade(student);
+        const gradeLetter = grade === null ? "—" : letter(grade);
+
+        const courses = getCourseNames(student);
+
+        csv +=
+            `"${student.id}",` +
+            `"${student.studentCode || ""}",` +
+            `"${student.fullName}",` +
+            `"${student.email || ""}",` +
+            `"${courses}",` +
+            `${gradeLetter}\n`;
+
+    });
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = "students.csv";
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+});
 
 
 // ==========================================
@@ -1680,38 +1043,19 @@ exportStudentsBtn.addEventListener(
 
 function showToast(message) {
 
+    const toast = document.getElementById("toast");
 
-    const toast =
-        document.getElementById(
-            "toast"
-        );
+    const toastMessage = document.getElementById("toastMessage");
 
+    toastMessage.textContent = message;
 
-    const toastMessage =
-        document.getElementById(
-            "toastMessage"
-        );
+    toast.classList.add("show");
 
+    setTimeout(() => {
 
-    toastMessage.textContent =
-        message;
+        toast.classList.remove("show");
 
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    setTimeout(
-        () => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        },
-        2500
-    );
+    }, 2500);
 
 }
 
@@ -1722,8 +1066,8 @@ function showToast(message) {
 
 async function startPage() {
     await loadAssignments();
+    await loadCourses();   // load courses before students so names are ready
     await loadStudents();
-    await loadCourses();
 }
 
 startPage();
