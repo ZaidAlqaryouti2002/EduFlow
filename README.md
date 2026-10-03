@@ -22,7 +22,7 @@ You don't need any complex backend environment to test this out. Just follow the
 
 1. **Clone the repository:**
     ```bash
-    git clone YOUR_GITHUB_REPOSITORY_URL
+    git clone https://github.com/ZaidAlqaryouti2002/EduFlow.git
     ```
 2. **Open the project folder:**
     ```bash
