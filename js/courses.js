@@ -7,6 +7,8 @@ const courseNameInput = document.getElementById("course-name");
 const courseCodeInput = document.getElementById("course-code");
 const coursesContainer = document.getElementById("courses-container");
 
+// جلب معرّف المعلم والمهام لحساب التقدم
+let assignments = [];
 let courses = JSON.parse(localStorage.getItem("edutrack_courses")) || [];
 
 const openModal = () => {
@@ -21,7 +23,29 @@ const closeModal = () => {
 const renderCourses = () => {
     coursesContainer.innerHTML = "";
 
+    // ==========================================
+    // حساب نسبة التقدم العامة بناءً على المهام
+    // ==========================================
+    let globalProgress = 0;
+    if (assignments.length > 0) {
+        const completed = assignments.filter(a => a.status === "completed").length;
+        globalProgress = Math.round((completed / assignments.length) * 100);
+    }
+
     courses.forEach((course) => {
+        // إذا كان لديك courseId داخل المهام مستقبلاً، فعّل هذا الكود لحساب نسبة كل كورس بشكل مستقل:
+        /*
+        let courseAssignments = assignments.filter(a => String(a.courseId) === String(course.id));
+        let courseProgress = 0;
+        if (courseAssignments.length > 0) {
+            let comp = courseAssignments.filter(a => a.status === "completed").length;
+            courseProgress = Math.round((comp / courseAssignments.length) * 100);
+        }
+        let currentProgress = courseProgress; 
+        */
+        
+        let currentProgress = globalProgress; // حالياً نعتمد على التقدم العام
+
         const card = document.createElement("div");
         card.classList.add("course-card");
 
@@ -36,10 +60,10 @@ const renderCourses = () => {
             <div class="progress-section">
                 <div class="progress-labels">
                     <span>Progress</span>
-                    <span>0%</span>
+                    <span>${currentProgress}%</span>
                 </div>
                 <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: 0%; background-color: var(--primary);"></div>
+                    <div class="progress-bar-fill" style="width: ${currentProgress}%; background-color: var(--primary); transition: width 0.5s ease;"></div>
                 </div>
             </div>
 
@@ -65,6 +89,16 @@ const renderCourses = () => {
 const courses_API = "https://6abd87975121d616d90ceedd.mockapi.io/api/courses";
 
 const fetchCoursesAPI = async () => {
+    // 1. محاولة جلب المهام لحساب التقدم (مفصولة بـ try/catch لحالها عشان ما توقف الكورسات)
+    try {
+        if (typeof AssignmentsApi !== "undefined") {
+            assignments = await AssignmentsApi.listMine(teacherId);
+        }
+    } catch (err) {
+        console.warn("لم نتمكن من جلب المهام، سيتم عرض التقدم كـ 0%", err);
+    }
+
+    // 2. جلب بيانات الكورسات الأساسية
     try {
         const response = await fetch(courses_API);
         const data = await response.json();
@@ -77,9 +111,11 @@ const fetchCoursesAPI = async () => {
 
         courses = formattedData;
         localStorage.setItem("edutrack_courses", JSON.stringify(courses));
+        
         renderCourses();
     } catch (error) {
-        console.error(error);
+        console.error("Error loading courses:", error);
+        // إذا فشل النت، ارسم الكورسات القديمة المخزنة
         renderCourses();
     }
 };

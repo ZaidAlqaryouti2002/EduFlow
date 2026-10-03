@@ -159,17 +159,15 @@
         font-size: 24px;
     }
 
-    /* 1. ضبط الحاوية عشان السكرول يشتغل */
     .table-card {
         width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         display: block;
-        margin: 0; /* شلنا المارجن السالب عشان ما يكسر العرض */
+        margin: 0; 
         border-radius: 8px;
     }
 
-    /* 2. إجبار الجدول يكون أعرض من الشاشة لتفعيل السكرول */
     .progress-table {
         min-width: 800px; 
     }
@@ -180,14 +178,13 @@
         white-space: nowrap;
     }
 
-    /* 3. تثبيت عمود اسم الطالب أثناء السحب لليمين */
     .progress-table th:first-child,
     .progress-table td:first-child {
         position: sticky;
         left: 0;
         background-color: var(--surface);
         z-index: 2;
-        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15); /* ظل أوضح لفصل الاسم */
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15); 
     }
 
     .grade-input {
