@@ -47,7 +47,6 @@ function showMessage(message, type = "error") {
   }
 
   messageBox.textContent = message;
-
   messageBox.className = "message " + type;
 }
 
@@ -129,7 +128,35 @@ function deleteCookie(name) {
 // Get the logged-in teacher ID
 function getTeacherId() {
 
-  return sessionStorage.getItem(SESSION_KEY);
+  // First check the current session
+  const sessionTeacherId =
+    sessionStorage.getItem(SESSION_KEY);
+
+  if (sessionTeacherId) {
+    return sessionTeacherId;
+  }
+
+
+  // If there is no session,
+  // check the Remember Me cookie
+  const rememberedTeacherId =
+    getCookie("edutrack_teacher");
+
+  if (rememberedTeacherId) {
+
+    // Restore the teacher ID
+    // into the current session
+    sessionStorage.setItem(
+      SESSION_KEY,
+      rememberedTeacherId
+    );
+
+    return rememberedTeacherId;
+  }
+
+
+  // No logged-in teacher
+  return null;
 }
 
 
@@ -152,7 +179,14 @@ function requireLogin() {
 // Logout
 function logout() {
 
+  // Remove current session
   sessionStorage.removeItem(SESSION_KEY);
+
+  // Remove Remember Me
+  deleteCookie("edutrack_teacher");
+
+  // Remove remembered email
+  deleteCookie("edutrack_remember");
 
   location.replace("Login.html");
 }
@@ -178,7 +212,11 @@ if (registerForm) {
 
       // Get values from the form
       const name =
-        document.getElementById("name").value.trim();
+        document
+          .getElementById("name")
+          .value
+          .trim();
+
 
       const email =
         document
@@ -187,17 +225,24 @@ if (registerForm) {
           .trim()
           .toLowerCase();
 
+
       const department =
         document
           .getElementById("department")
           .value
           .trim();
 
+
       const password =
-        document.getElementById("password").value;
+        document
+          .getElementById("password")
+          .value;
+
 
       const confirmPassword =
-        document.getElementById("confirmPassword").value;
+        document
+          .getElementById("confirmPassword")
+          .value;
 
 
       // Get the Register button
@@ -297,7 +342,6 @@ if (registerForm) {
           passwordHash: passwordHash,
 
           createdAt: new Date().toISOString()
-
         });
 
 
@@ -310,7 +354,6 @@ if (registerForm) {
 
         // Go to login page
         location.href = "Login.html";
-
       }
 
       catch (error) {
@@ -324,7 +367,6 @@ if (registerForm) {
           "Register"
         );
       }
-
     }
   );
 }
@@ -340,7 +382,8 @@ const loginForm =
 
 if (loginForm) {
 
-  // If already logged in, go to dashboard
+  // If already logged in,
+  // go to dashboard
   if (getTeacherId()) {
 
     location.replace("dashboard.html");
@@ -350,6 +393,7 @@ if (loginForm) {
   // Get inputs
   const emailInput =
     document.getElementById("email");
+
 
   const rememberInput =
     document.getElementById("rememberMe");
@@ -406,6 +450,7 @@ if (loginForm) {
         emailInput.value
           .trim()
           .toLowerCase();
+
 
       const password =
         document
@@ -472,23 +517,49 @@ if (loginForm) {
         }
 
 
-        // Save teacher ID in sessionStorage
+        // ==================================
+        // LOGIN SUCCESS
+        // ==================================
+
+
+        // Always save teacher ID
+        // for the current session
         sessionStorage.setItem(
           SESSION_KEY,
           teacher.id
         );
 
 
-        // Remember email if checkbox is checked
+        // ==================================
+        // REMEMBER ME
+        // ==================================
+
         if (rememberInput.checked) {
 
+          // Remember teacher login
+          setCookie(
+            "edutrack_teacher",
+            teacher.id,
+            30
+          );
+
+
+          // Remember email
           setCookie(
             "edutrack_remember",
-            email
+            email,
+            30
           );
 
         } else {
 
+          // Do not remember teacher login
+          deleteCookie(
+            "edutrack_teacher"
+          );
+
+
+          // Do not remember email
           deleteCookie(
             "edutrack_remember"
           );
@@ -497,12 +568,13 @@ if (loginForm) {
 
         // Go to dashboard
         location.href = "dashboard.html";
-
       }
 
       catch (error) {
 
-        showMessage(error.message);
+        showMessage(
+          error.message
+        );
 
 
         // Clear password
@@ -518,7 +590,6 @@ if (loginForm) {
           "Sign In"
         );
       }
-
     }
   );
 }
