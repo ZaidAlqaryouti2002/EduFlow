@@ -1,104 +1,65 @@
-# EduFlow
-EduFlow
-Simplify Student Progress.
+# EduFlow 🎓
+**Simplify Student Progress.**
 
-EduFlow is a student progress management system designed to help teachers and administrators manage students, courses, grades, attendance, assignments, and reports in one place.
+EduFlow is a web-based student progress management system. We built this platform to give teachers and administrators a clean, centralized place to manage students, track courses, handle assignments, and generate performance reports without the usual headache.
 
-=========================Setup========================= 
+## ✨ What You Can Do
+* **Dashboard:** Get a quick overview of stats, active students, and overall progress at a glance.
+* **Student Management:** Add new students, search, filter, and view detailed academic records.
+* **Courses & Assignments:** Browse available courses, connect them to students, and track assignment completion.
+* **Progress & Reports:** Monitor grades, check attendance, and generate clear academic performance reports.
+* **Secure Access:** Fully functional authentication system (Login/Signup/Logout) with protected pages.
+* **Work Anywhere:** A fully responsive interface that looks great on Desktop, Tablet, and Mobile.
 
-Follow these steps to run the project locally:
+## 💻 Built With
+* **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+* **Data & Storage:** REST API (MockAPI) & Local Storage
+* **Version Control:** Git & GitHub
 
-1. Clone the repository
-git clone YOUR_GITHUB_REPOSITORY_URL
-2. Open the project
-cd EduFlow
-3. Run the project
+## 🚀 How to Run It Locally
+You don't need any complex backend environment to test this out. Just follow these steps:
 
-Open the project using Visual Studio Code and run it with Live Server.
+1. **Clone the repository:**
+    ```bash
+    git clone YOUR_GITHUB_REPOSITORY_URL
+    ```
+2. **Open the project folder:**
+    ```bash
+    cd EduFlow
+    ```
+3. **Run the app:**
+    * Open the project in Visual Studio Code and use the **Live Server** extension.
+    * Or, simply open the `pages/Login.html` file directly in your web browser.
 
-You can also open the main HTML page directly in your browser.
+> **Note:** EduFlow uses MockAPI to fetch and save data in real-time. Make sure you have an active internet connection when using the application.
 
-4. API
-
-EduFlow uses MockAPI to store and retrieve student and teacher data.
-
-Make sure you have an active internet connection when using the API features.
-
-=========================Features========================= 
-
-1-Dashboard
-Overview of student progress
-Statistics and important information
-Quick access to the main sections
-
-2-Students
-Display all students
-Search for students
-Filter students
-Add new students
-View student information
-Manage student records
-
-3-Courses
-Display available courses
-Manage course information
-Connect students with courses
-
-4-Progress
-Track student academic progress
-View grades and performance
-Monitor attendance
-
-5-Assignments
-Manage student assignments
-Track assignment progress
-
-6-Reports
-Display student and course reports
-View academic performance data
-Profile
-Display user profile information
-Manage account information
-
-7-Authentication
-Login system
-User authentication
-Protected pages
-Logout functionality
-
-8-Responsive Design
-Desktop layout
-Tablet support
-Mobile-friendly interface
-=========================Technologies========================= 
-1-HTML5
-2-CSS3
-3-JavaScript
-4-REST API / MockAPI
-5-Local Storage
-6-Git & GitHub
-=========================Project Structure========================= 
+## 📂 Project Structure
+A quick look at how we organized our code:
+```text
 EduFlow/
- │ ├── pages/ │ ├── Login.html │ ├── dashboard.html │ ├── Students.html │ ├── courses.html │ ├── progress.html │ ├── reports.html │ profile.html │ 
- ├── css/├── style.css
- ├── js/ ├── api.js ├── auth.js │ ├── grades.js │ ├── progress.js │ ├── reports.js │ └── ui.js │
-  └── README.md
+├── pages/         # HTML views (Login, dashboard, Students, courses, etc.)
+├── css/           # Stylesheets (style.css, etc.)
+├── js/            # Core logic (api, auth, courses, progress, reports, ui)
+└── README.md      # You are here!
+```
 
-  =========================Screenshots========================= 
- ![Signup Page](Screenshots/Signup.png)
- ![Login Page](Screenshots/Login.png)
- ![Students Page](Screenshots/students.png)
- ![Courses Page](Screenshots/Courses.png)
- ![Progress Page](Screenshots/Progress.png)
- ![Assignment Page](Screenshots/Assignment.png)
- ![Report Page](Screenshots/Report.png)
- ![Profile Page](Screenshots/Profile.png)
+## 📸 Screenshots
+Here is a look at what we've built:
 
- =========================Team========================= 
-EduFlow was developed as a team project :
-1-ScrumMaster : Zaid Alabed
-2-Product Owner : Radgad Alzghoul 
---Development Team :
-3-Besan Nazzal 
-4-Mousa Joudeh 
-5-Hamza Obaidat
+![Signup Page](Screenshots/Signup.png)
+![Login Page](Screenshots/Login.png)
+![Students Page](Screenshots/students.png)
+![Courses Page](Screenshots/Courses.png)
+![Progress Page](Screenshots/Progress.png)
+![Assignment Page](Screenshots/Assignment.png)
+![Report Page](Screenshots/Report.png)
+![Profile Page](Screenshots/Profile.png)
+
+## 🤝 The Team
+This project was developed collaboratively by our team:
+* **Scrum Master:** Zaid Alabed
+* **Product Owner:** Raghad Alzghoul
+* **Development Team:** 
+  * Besan Nazzal
+  * Mousa Joudeh
+  * Hamza Obaidat
