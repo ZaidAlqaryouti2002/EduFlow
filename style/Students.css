@@ -258,9 +258,8 @@ body {
     border: 1px solid var(--border);
 
     border-radius: var(--radius-lg);
-
-    overflow: hidden;
-
+    overflow-x: auto;
+    overflow-y: hidden;
     box-shadow: var(--shadow-sm);
 }
 
@@ -692,10 +691,9 @@ body {
    16. RESPONSIVE - TABLET
    ========================================================= */
 
-@media (max-width: 1100px) {
+@media (max-width: 900px) {
     .main-content {
-        margin-left: 230px;
-
+          margin-left: 0;
         padding-left: 25px;
         padding-right: 25px;
     }
@@ -718,7 +716,7 @@ body {
    17. RESPONSIVE - MOBILE
    ========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .main-content {
         margin-left: 0;
 
@@ -758,12 +756,13 @@ body {
         width: 100%;
     }
 
-    .studentsTable {
-        overflow-x: auto;
+     .studentsTable {
+       overflow-x: auto;
+        overflow-y: hidden;
     }
 
     .studentsTable table {
-        min-width: 850px;
+       width: 850px;
     }
 
     .toast {
@@ -780,20 +779,4 @@ body {
    18. SMALL MOBILE
    ========================================================= */
 
-@media (max-width: 480px) {
-    .impInfo {
-        grid-template-columns: 1fr;
-    }
 
-    .student-form {
-        padding: 22px;
-
-        max-height: 90vh;
-
-        overflow-y: auto;
-    }
-
-    .form-buttons {
-        flex-direction: column;
-    }
-}
