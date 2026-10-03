@@ -20,12 +20,14 @@ function initializeTheme() {
 
 // ---------- Sidebar controls ----------
 function initializeSidebar() {
+    // Get the elements used to control the mobile sidebar
     const sidebar = document.querySelector(".sidebar");
     const overlay = document.querySelector(".sidebar-overlay");
     const menuToggle = document.querySelector(".menu-toggle");
     const closeButton = document.querySelector(".sidebar-close");
     const desktopQuery = window.matchMedia("(min-width: 1025px)");
 
+    // Open the mobile sidebar and prevent background scrolling
     function openSidebar() {
         sidebar.classList.add("sidebar--open");
         overlay.classList.add("sidebar-overlay--visible");
@@ -34,6 +36,7 @@ function initializeSidebar() {
         closeButton.focus();
     }
 
+    // Close the mobile sidebar and restore the page
     function closeSidebar() {
         sidebar.classList.remove("sidebar--open");
         overlay.classList.remove("sidebar-overlay--visible");
@@ -41,6 +44,7 @@ function initializeSidebar() {
         menuToggle.setAttribute("aria-expanded", "false");
     }
 
+    // Close the sidebar using links, overlay, Escape key, or resize
     menuToggle.addEventListener("click", openSidebar);
     closeButton.addEventListener("click", () => {
         closeSidebar();
