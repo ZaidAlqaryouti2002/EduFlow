@@ -74,7 +74,7 @@ const renderCourses = () => {
                  style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: none; padding: 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease;"
                  title="Delete Course">
                  <i data-lucide="trash-2" style="width: 16px; height: 16px; transition: transform 0.2s ease;"></i>
-                س</button>
+                </button>
             </div>
         `;
 
