@@ -15,11 +15,14 @@
         <section class="logo-tittle">
           <div class="logo"><img src="../assets/logo.svg" alt=""></div>
           <div class="title">
-            <h3>EduFlow</h3>
+            <h3 >EduFlow</h3>
             <span>Simplify Students Progress</span>
           </div>
         </section>
-        <nav class="nav">
+         <button class="menu" id="menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+        <nav class="nav" id="navMenu">
             <a href="#product">Product</a>
             <a href="#feature">Features</a>
             <a href="#HowItWork">How it Works</a>
@@ -136,7 +139,7 @@
         <section class="logo-tittle">
           <div class="logo"><img src="../assets/logo.svg" alt=""></div>
           <div class="title">
-            <h3>EduFlow</h3>
+            <h3 style="color: white;">EduFlow</h3>
             <span>Simplify Students Progress</span>
           </div>
         </section>
@@ -165,5 +168,17 @@
     </section>
     
    </footer>
+
+
+   <script>
+    const Bmenu = document.getElementById("menu");
+    const navMenu = document.getElementById("navMenu");
+
+    Bmenu.addEventListener("click", function () {
+        navMenu.classList.toggle("active");
+    });
+</script>
+
+
 </body>
 </html>

@@ -330,15 +330,15 @@ searchInput.addEventListener(
                     ).toLowerCase();
 
 
-                const code =
+                const id =
                     String(
-                        student.studentCode || ""
+                        student.id || ""
                     ).toLowerCase();
 
 
                 return (
                     name.includes(value) ||
-                    code.includes(value)
+                    id==value
                 );
 
             });
