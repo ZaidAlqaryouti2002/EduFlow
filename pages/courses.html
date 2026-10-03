@@ -23,13 +23,16 @@
             type="image/x-icon"
         />
         
+        <!-- Loading theme and icons in head to prevent FOUC (Flash of Unstyled Content) on initial paint -->
         <script src="https://unpkg.com/@jsblocks/theme@1/dist/theme.min.js"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
-        <!-- تم إزالة layout.js من هنا ونقله للأسفل -->
     </head>
+    
+    <!-- layout.js hooks into data-page to highlight the active sidebar item -->
     <body data-page="courses">
+        
+        <!-- Hydrated by layout.js on DOMContentLoaded. Kept empty to avoid layout shift -->
         <div id="sidebar-container"></div>
-
         <div id="topbar-container"></div>
 
         <div class="main">
@@ -54,6 +57,7 @@
             </main>
         </div>
 
+        <!-- TODO: Add proper focus-trapping and aria attributes for a11y. Fine for now, but needs fixing before beta -->
         <div
             id="add-course-modal"
             class="modal-overlay hidden"
@@ -77,6 +81,7 @@
                             placeholder="e.g. Database Systems"
                             required
                         />
+                        <!-- Client-side error state container. API 400s will unhide and populate this -->
                         <p
                             id="course-error"
                             class="form-error hidden"
@@ -110,7 +115,7 @@
             </div>
         </div>
         
-        <!-- الترتيب الصحيح لملفات الجافاسكريبت -->
+        <!-- Strict dependency chain. Don't reorder these or courses.js will crash looking for auth/api singletons -->
         <script src="../js/api.js"></script>
         <script src="../js/auth.js"></script>
         <script src="../js/layout.js"></script>

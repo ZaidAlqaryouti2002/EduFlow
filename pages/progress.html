@@ -7,6 +7,7 @@
             content="width=device-width, initial-scale=1.0"
         />
         <title>EduTrack - Progress</title>
+        
         <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -26,6 +27,10 @@
             type="image/x-icon"
         />
         
+        <!-- 
+          Loading theme and icons synchronously to avoid FOUC. 
+          auth.js is up here to eagerly block render/redirect if the session token is expired.
+        -->
         <script src="https://unpkg.com/@jsblocks/theme@1/dist/theme.min.js"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -33,7 +38,11 @@
         <script src="../js/auth.js"></script>
         <script src="../js/layout.js"></script>
     </head>
+    
+    <!-- layout.js hooks into data-page to highlight the active sidebar tab -->
     <body data-page="progress">
+        
+        <!-- Hydrated by layout.js on DOMContentLoaded -->
         <div id="sidebar-container"></div>
 
         <div class="main">
@@ -46,7 +55,11 @@
 
                 <div class="table-card">
                     <table class="progress-table">
-                        <!-- يمكن أيضاً جعل الـ thead ديناميكياً إذا كانت الكويزات متغيرة، لكن تركته حسب التصميم لتوضيح الهيكل -->
+                        <!-- 
+                          TODO: Refactor this to be driven by the active course's syllabus payload. 
+                          Hardcoding the grading schema for now to match the initial UI mockups, 
+                          but this will break as soon as a course has different weightings or missing assignments.
+                        -->
                         <thead id="progress-table-head">
                             <tr>
                                 <th>Student</th>
@@ -57,13 +70,21 @@
                                 <th>Final</th>
                             </tr>
                         </thead>
+                        
+                        <!-- 
+                          Hydrated by progress.js. 
+                          Make sure to handle the empty state gracefully if the class roster is null.
+                        -->
                         <tbody id="progress-table-body">
-                            <!-- سيتم حقن صفوف الطلاب والعلامات هنا بواسطة الجافاسكريبت -->
                         </tbody>
                     </table>
                 </div>
 
                 <div class="page-actions">
+                    <!-- 
+                      Hack: This is sitting outside a traditional <form> because the table cells 
+                      act as individual inline inputs. progress.js serializes the dirty DOM state into a bulk payload on click.
+                    -->
                     <button
                         type="button"
                         class="btn-primary"

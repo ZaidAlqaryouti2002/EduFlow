@@ -1,3 +1,8 @@
+/*
+ * Courses View Styles
+ * Relies on global CSS variables (--primary, --surface, etc.) injected by the theme manager.
+ */
+
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -16,6 +21,10 @@
     font-size: 14px;
 }
 
+/* 
+ * TODO: These button classes look generic enough that they probably belong in layout.css or a shared ui.css. 
+ * Leaving them here for now, but we should refactor to avoid duplication later.
+ */
 .btn-primary {
     background-color: var(--primary);
     color: #fff;
@@ -32,6 +41,7 @@
     transition: background-color 0.2s ease;
 }
 
+/* Bail on the hover state if disabled so users don't think it's interactive */
 .btn-primary:hover:not(:disabled) {
     background-color: var(--primary-hover);
 }
@@ -53,6 +63,7 @@
     cursor: pointer;
 }
 
+/* Fluid grid: auto-fill prevents awkward card stretching on ultra-wide screens compared to auto-fit */
 .courses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -108,6 +119,11 @@
     margin-bottom: 24px;
 }
 
+/* 
+ * Progress UI 
+ * TODO: Add a width transition to .progress-bar-fill so it animates nicely 
+ * when the API populates the user's course progress data.
+ */
 .progress-section {
     margin-bottom: 24px;
 }
@@ -132,6 +148,7 @@
     border-radius: 999px;
 }
 
+/* High z-index to punch through any sticky navs or sidebars. */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -217,10 +234,15 @@
     margin-top: 6px;
 }
 
+/* Nuclear option for JS state toggling. !important prevents overriding battles. */
 .hidden {
     display: none !important;
 }
 
+/* 
+ * Mobile overrides 
+ * Focuses on stacking flex layouts and maximizing tap targets for thumbs.
+ */
 @media (max-width: 768px) {
     .page-header {
         flex-direction: column;
@@ -233,6 +255,7 @@
         justify-content: center;
     }
 
+    /* Force single column. The 300px minmax in the grid breaks on very narrow viewports (e.g. iPhone SE) */
     .courses-grid {
         grid-template-columns: 1fr; 
         gap: 16px;
@@ -248,6 +271,7 @@
         margin: 20px;
     }
 
+    /* Stack buttons vertically on mobile for easier reach. Primary button sits on top via column-reverse */
     .modal-actions {
         flex-direction: column-reverse;
         gap: 10px;
