@@ -79,6 +79,7 @@
 }
 
 .grade-input[type=number] {
+     appearance: none;
     -moz-appearance: textfield;
 }
 
@@ -147,4 +148,59 @@
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+        font-size: 24px;
+    }
+
+    .table-card {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        display: block;
+        margin: 0; 
+        border-radius: 8px;
+    }
+
+    .progress-table {
+        min-width: 800px; 
+    }
+
+    .progress-table th,
+    .progress-table td {
+        padding: 12px 10px;
+        white-space: nowrap;
+    }
+
+    .progress-table th:first-child,
+    .progress-table td:first-child {
+        position: sticky;
+        left: 0;
+        background-color: var(--surface);
+        z-index: 2;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15); 
+    }
+
+    .grade-input {
+        width: 65px;
+        height: 32px;
+        font-size: 13px;
+    }
+
+    .page-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
 }
