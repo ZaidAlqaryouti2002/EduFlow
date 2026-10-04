@@ -22,27 +22,17 @@ const closeModal = () => {
 const renderCourses = () => {
     coursesContainer.innerHTML = "";
 
-    // TODO: The API currently doesn't map assignments to specific courses.
-    // Hack: We're rendering a global progress average across all cards for now.
-    let globalProgress = 0;
-    if (assignments.length > 0) {
-        const completed = assignments.filter(a => a.status === "completed").length;
-        globalProgress = Math.round((completed / assignments.length) * 100);
-    }
-
     courses.forEach((course) => {
-        // TODO: Swap to this per-course logic once the backend includes `courseId` in the assignment payload
-        /*
+        // Filter assignments specific to this course using the newly added courseId
         let courseAssignments = assignments.filter(a => String(a.courseId) === String(course.id));
-        let courseProgress = 0;
+        
+        let currentProgress = 0;
+        
+        // Calculate dynamic progress based on completed assignments for this specific course
         if (courseAssignments.length > 0) {
             let comp = courseAssignments.filter(a => a.status === "completed").length;
-            courseProgress = Math.round((comp / courseAssignments.length) * 100);
+            currentProgress = Math.round((comp / courseAssignments.length) * 100);
         }
-        let currentProgress = courseProgress; 
-        */
-        
-        let currentProgress = globalProgress; 
 
         const card = document.createElement("div");
         card.classList.add("course-card");
